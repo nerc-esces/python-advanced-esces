@@ -119,7 +119,7 @@ fig = plt.figure(figsize=(10,5))
 axis = fig.add_subplot(1, 1, 1, projection=ccrs.PlateCarree())
 dataset.tempanomaly.sel(time="2000-01-15").plot(ax = axis, transform=ccrs.PlateCarree())
 axis.coastlines()
-axis.gridlines(draw_labels=True,x_loc=[-180,-90,0,90,180])
+axis.gridlines(draw_labels=True,xlocs=[-180,-90,0,90,180])
 ~~~
 {: .language-python}
 
