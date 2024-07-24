@@ -141,7 +141,7 @@ fig = plt.figure(figsize=(10,5))
 axis = fig.add_subplot(1, 1, 1, projection=ccrs.PlateCarree())
 dataset.tempanomaly.sel(time="2000-01-15").plot(ax = axis, transform=ccrs.PlateCarree())
 axis.coastlines()
-axis.gridlines(draw_labels=True))
+axis.gridlines(draw_labels=True)
 axis.add_feature(cfeature.BORDERS)
 axis.add_feature(cfeature.LAKES)
 axis.add_feature(cfeature.RIVERS)
@@ -158,7 +158,7 @@ fig = plt.figure(figsize=(10,5))
 axis = fig.add_subplot(1, 1, 1, projection=ccrs.PlateCarree())
 dataset.tempanomaly.sel(time="2000-01-15").plot(ax = axis, transform=ccrs.PlateCarree(), cmap=colormaps.get_cmap('plasma'))
 axis.coastlines()
-axis.gridlines(draw_labels=True))
+axis.gridlines(draw_labels=True)
 axis.add_feature(cfeature.BORDERS)
 axis.add_feature(cfeature.LAKES)
 axis.add_feature(cfeature.RIVERS)
@@ -212,3 +212,4 @@ axis.add_feature(cfeature.RIVERS)
 {: .challenge}
 
 {% include links.md %}
+g
