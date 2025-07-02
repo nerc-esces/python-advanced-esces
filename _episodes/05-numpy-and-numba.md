@@ -18,8 +18,8 @@ keypoints:
 - "We should measure performance before attemping to optimise code and target our optimisations at the things which take longest."
 - "Numpy can perform operations to whole arrays, this will perform faster than using for loops."
 - "Numba can replace some Numpy operations with just in time compilation that is even faster."
-- "One way numba achieves higher performance is to use vectorisation extensions of some GPUs that process multiple pieces of data in one instruction."
-- "Numba ufuncs let us write arbitary functions for Numba to use."
+- "One way numba achieves higher performance is to use vectorisation extensions of some CPUs that process multiple pieces of data in one instruction."
+- "Numba ufuncs let us write arbitary functions for Numba to use. It's Just In Time compiler can still speed these up."
 ---
 
 This episode is based in material from Ed Bennett's [Performant Numpy lesson](https://github.com/edbennett/performant-numpy)
@@ -471,15 +471,14 @@ a_plus_tr_tanh_a(a)
 
 > ## Compare Performance
 >
-> Try to run the same code with the following changes:
-> 1. Run a version without any Numba Jit.
-> 2. Run without parallelism.
-> 3. Run with a larger matrix.
+> Try to run the same code without any Numba Jit or parallelisation.
+> Try decreasing and increasing the matrix size and compare the results.
+>
 > Which one has the best results?
 >
 > > ## Solution
-> >
-> > Parallelization doesn't always lead to faster execution times, especially for small computations or when the overhead of parallelization outweighs the benefits. It's essential to profile your code and experiment with different approaches to find the most efficient solution for your specific use case.
+> > You might find a smaller matrix shows little or no difference in execution times, but a larger one sees the parallelised/JIT version go faster. 
+> > For small computations the overhead of parallelization can outweigh the benefits. It's essential to profile your code and experiment with different approaches to find the most efficient solution for your specific use case.
 > {: .solution}
 {: .challenge}
 
