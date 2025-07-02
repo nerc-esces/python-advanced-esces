@@ -212,7 +212,7 @@ This is defined by a YAML file that is downloaded alongside the course materials
 > print("Intake version:", intake.__version__)
 > print("Zarr version:", zarr.__version__)
 > print("netCDF4 version:", netCDF4.__version__)
-> !parallel
+> !parallel --version
 > ~~~
 > {: .language-python}
 > > ## Solution
