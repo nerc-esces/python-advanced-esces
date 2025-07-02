@@ -336,30 +336,30 @@ Therefore requesting `[0,0,0]` means the southern most and western most coordina
 
 #### Read some NetCDF data
 > ## Challenge
-> There are 90 elements to the latitude dimension, one every two degrees and 180 in the longitude dimension, also with one every two degrees. 
-> To translate from a real latitude and longitude to an index we'll need to divide the longitude by two and add 90 to the longitude. 
-> For the latitude we'll need to flip the coordinate's sign by subtracting it from zero and then divide by two and add 45. 
+> There are 90 elements to the latitude dimension, one every two degrees and 180 in the longitude dimension, also with one every two degrees.
+> To translate from a real latitude and longitude to an index we'll need to divide the longitude by two and add 90 to the longitude.
+> For the latitude we'll need to divide by two and add 45.
 > In Python this can be expressed as the following, we'll also want to ensure the result is an integer by wrapping the whole calculation in `int()`:
 > ~~~
-> latitude_index = int(((0 - latitude) / 2) + 45)
+> latitude_index = int(((latitude) / 2) + 45)
 > longitude_index = int((longitude / 2) + 90)
 > ~~~
 > {: .language-python}
 > For the time dimension, each element represents one month starting from January 2000, so for example element 12 will be January 2001 (0-11 are January to December 2000).
 > For example 54 degrees north (latitude) and 2 degrees west will translate to the array index 72, 46
-> Write some code to get the temperature anomaly for January 2020 in Oslo, Norway (approximately 60 North, 10 East)
+> Write some code to get the temperature anomaly for January 2020 in Astana, Kazakhstan (approximately 51 North, 71 East)
 > > ## Solution
 > > ~~~
-> > latitude = 60
-> > longitude = 10
-> > latitude_index = int(((0 - latitude) / 2) + 45)
+> > latitude = 71
+> > longitude = 51
+> > latitude_index = int(((latitude) / 2) + 45)
 > > longitude_index = int((longitude / 2) + 90)
 > > time_index = 20 * 12   #we want jan 2020, dataset starts at jan 2000 and has monthly entries 
 > > print(dataset.variables['tempanomaly'][time_index,latitude_index,longitude_index])
 > > ~~~
 > > {: .language-python}
 > > ~~~
-> > 0.39999998
+> > 6.8999996
 > > ~~~
 > > {: .output}
 > {: .solution}
