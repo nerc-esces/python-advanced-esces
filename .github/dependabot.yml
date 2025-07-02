@@ -1,0 +1,10 @@
+version: 2
+updates:
+  - package-ecosystem: "RubyGems"
+    directory: "/"
+    schedule:
+      interval: "daily"
+    groups:
+      actions-deps:
+        patterns:
+          - "*"
