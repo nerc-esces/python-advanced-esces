@@ -274,15 +274,40 @@ print(dataset)
 {: .language-python}
 
 
+~~~
+<class 'netCDF4.Dataset'>
+root group (NETCDF4 data model, file format HDF5):
+    title: GISTEMP Surface Temperature Analysis
+    institution: NASA Goddard Institute for Space Studies
+    source: http://data.giss.nasa.gov/gistemp/
+    Conventions: CF-1.6
+    history: Created 2024-03-08 11:37:27 by SBBX_to_nc 2.0 - ILAND=1200, IOCEAN=NCDC/ER5, Base: 1951-1980
+    dimensions(sizes): lat(90), lon(180), time(288), nv(2)
+    variables(dimensions): float32 lat(lat), float32 lon(lon), int32 time(time), int32 time_bnds(time, nv), int16 tempanomaly(time, lat, lon)
+    groups: 
+~~~
+{: .output}
 
 #### Get the list of attributes
 ~~~
 dataset.ncattrs()
-['title', 'institution', 'source', 'Conventions', 'history']
-print(dataset.title)
-'GISTEMP Surface Temperature Analysis'
 ~~~
 {: .language-python}
+
+~~~
+['title', 'institution', 'source', 'Conventions', 'history']
+~~~
+{: .output}
+
+~~~
+print(dataset.title)
+~~~
+{: .language-python}
+
+~~~
+'GISTEMP Surface Temperature Analysis'
+~~~
+{: .output}
 
 #### Get the list of variables
 ~~~
