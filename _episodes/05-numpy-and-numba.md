@@ -33,7 +33,7 @@ There are several ways to measure the performance of your code.
 We can get a reasonable picture of the performance of individual functions and code snippets
 by using the `timeit` module. `timeit` will run the code multiple times and take an average runtime.
 
-In Jupyter, `timeit` is provided by line and cell magics. A magic is some special extra helper features added to Python. 
+In Jupyter, `timeit` is provided by line and cell magics. A magic is some special extra helper features added to Python.
 
 The line magic:
 
@@ -117,7 +117,7 @@ and optimize it as needed.
 
 # Numpy whole array operations
 
-Numpy whole array operations refer to performing operations on entire arrays at once, rather than looping through individual elements. 
+Numpy whole array operations refer to performing operations on entire arrays at once, rather than looping through individual elements.
 This approach leverages the optimized C and Fortran implementations underlying NumPy, leading to significantly faster computations compared to traditional Python loops.
 
 Let's illustrate this with an example:
@@ -158,7 +158,7 @@ cProfile.run("numpy_multiply(arr)")
 ~~~
 {: .language-python}
 
-In this example, `traditional_multiply` uses nested loops to multiply each element of the array by 2, while `numpy_multiply` performs the same operation using a single NumPy 
+In this example, `traditional_multiply` uses nested loops to multiply each element of the array by 2, while `numpy_multiply` performs the same operation using a single NumPy
 operation. When comparing the execution times using `%timeit`, you'll likely observe that `numpy_multiply` is significantly faster.
 
 > The reason why the Numpy operation is faster than the traditional loop-based approach is because:
@@ -237,14 +237,14 @@ trig(a, b)
 TypeError                                 Traceback (most recent call last)
 <ipython-input-1-0d551152e5fe> in <module>
       9 b = np.ones((5, 5))
-    10 
+    10
 ---> 11 trig(a, b)
 
 <ipython-input-1-0d551152e5fe> in trig(a, b)
-      2 
+      2
       3 def trig(a, b):
 ----> 4     return math.sin(a ** 2) * math.exp(b)
-      5 
+      5
       6 import numpy as np
 
 TypeError: only size-1 arrays can be converted to Python scalars
@@ -275,7 +275,7 @@ whole-array operation?
 ~~~
 def numpy_trig(a, b):
     return np.sin(a ** 2) * np.exp(b)
-  
+
 
 a = np.random.random((1000, 1000))
 b = np.random.random((1000, 1000))
@@ -383,10 +383,10 @@ Performance Computing (HPC) system then this is important!)
 > ## Creating your own ufunc
 >
 > Try creating a ufunc to calculate the discriminant of a quadratic
-> equation, $\Delta = b^2 - 4ac$. (For now, make it a serial
-> function by just using the @vectorize decorator *WITHOUT* the parallel target). 
-> 
-> Use the existing 1000x1000 arrays `a` and `b` as the input. Make `c` a single integer value. 
+> equation, $$\Delta = b^2 - 4ac$$. (For now, make it a serial
+> function by just using the @vectorize decorator *WITHOUT* the parallel target).
+>
+> Use the existing 1000x1000 arrays `a` and `b` as the input. Make `c` a single integer value.
 >
 > Compare the timings with using Numpy whole-array operations in
 > serial. Do you see the results you might expect?
@@ -419,7 +419,7 @@ Performance Computing (HPC) system then this is important!)
 ## Numba Jit decorator
 
 Numba can also speed up things that don't work element-wise at all.
-Numba provides the @jit decorator to compile functions and can parallelize loops using prange for NumPy arrays.
+Numba provides the @jit decorator to compile functions and can parallelize loops using range for NumPy arrays.
 
 ~~~
 %env NUMBA_NUM_THREADS=4
@@ -477,7 +477,7 @@ a_plus_tr_tanh_a(a)
 > Which one has the best results?
 >
 > > ## Solution
-> > You might find a smaller matrix shows little or no difference in execution times, but a larger one sees the parallelised/JIT version go faster. 
+> > You might find a smaller matrix shows little or no difference in execution times, but a larger one sees the parallelised/JIT version go faster.
 > > For small computations the overhead of parallelization can outweigh the benefits. It's essential to profile your code and experiment with different approaches to find the most efficient solution for your specific use case.
 > {: .solution}
 {: .challenge}

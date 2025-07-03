@@ -1,0 +1,769 @@
+
+
+
+
+
+
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta http-equiv="last-modified" content="2025-07-03 11:11:57 -0500">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- meta "search-domain" used for google site search function google_search() -->
+    <meta name="search-domain" value="">
+    <link rel="stylesheet" type="text/css" href="/assets/css/bootstrap.css" />
+    <link rel="stylesheet" type="text/css" href="/assets/css/bootstrap-theme.css" />
+    <link rel="stylesheet" type="text/css" href="/assets/css/lesson.css" />
+    <link rel="stylesheet" type="text/css" href="/assets/css/syntax.css" />
+    
+    <link rel="license" href="#license-info" />
+
+    
+
+
+
+    <!-- Favicons for everyone -->
+    <link rel="apple-touch-icon-precomposed" sizes="57x57" href="/assets/favicons/cp/apple-touch-icon-57x57.png" />
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="/assets/favicons/cp/apple-touch-icon-114x114.png" />
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="/assets/favicons/cp/apple-touch-icon-72x72.png" />
+    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/assets/favicons/cp/apple-touch-icon-144x144.png" />
+    <link rel="apple-touch-icon-precomposed" sizes="60x60" href="/assets/favicons/cp/apple-touch-icon-60x60.png" />
+    <link rel="apple-touch-icon-precomposed" sizes="120x120" href="/assets/favicons/cp/apple-touch-icon-120x120.png" />
+    <link rel="apple-touch-icon-precomposed" sizes="76x76" href="/assets/favicons/cp/apple-touch-icon-76x76.png" />
+    <link rel="apple-touch-icon-precomposed" sizes="152x152" href="/assets/favicons/cp/apple-touch-icon-152x152.png" />
+    <link rel="icon" type="image/png" href="/assets/favicons/cp/favicon-196x196.png" sizes="196x196" />
+    <link rel="icon" type="image/png" href="/assets/favicons/cp/favicon-96x96.png" sizes="96x96" />
+    <link rel="icon" type="image/png" href="/assets/favicons/cp/favicon-32x32.png" sizes="32x32" />
+    <link rel="icon" type="image/png" href="/assets/favicons/cp/favicon-16x16.png" sizes="16x16" />
+    <link rel="icon" type="image/png" href="/assets/favicons/cp/favicon-128.png" sizes="128x128" />
+    <meta name="application-name" content="The Carpentries - Advanced Python for Environmental Scientists"/>
+    <meta name="msapplication-TileColor" content="#FFFFFF" />
+    <meta name="msapplication-TileImage" content="/assets/favicons/cp/mstile-144x144.png" />
+    <meta name="msapplication-square70x70logo" content="/assets/favicons/cp/mstile-70x70.png" />
+    <meta name="msapplication-square150x150logo" content="/assets/favicons/cp/mstile-150x150.png" />
+    <meta name="msapplication-wide310x150logo" content="/assets/favicons/cp/mstile-310x150.png" />
+    <meta name="msapplication-square310x310logo" content="/assets/favicons/cp/mstile-310x310.png" />
+
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+	<script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+	<script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+	<![endif]-->
+
+  <title>
+  Storing and Accessing Data in Parallelism Friendly Formats &ndash; Advanced Python for Environmental Scientists
+  </title>
+
+  </head>
+  <body>
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div class="container">
+      
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+
+<nav class="navbar navbar-default">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+
+      
+      
+      <a href="https://carpentries.org/" class="pull-left">
+        <img class="navbar-logo" src="/assets/img/cp-logo-blue.svg" alt="The Carpentries logo" />
+      </a>
+      
+
+      
+      <a class="navbar-brand" href="/index.html">Home</a>
+
+    </div>
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+      <ul class="nav navbar-nav">
+
+	
+        <li><a href="/CODE_OF_CONDUCT.html">Code of Conduct</a></li>
+
+        
+	
+        <li><a href="/setup.html">Setup</a></li>
+
+        
+        
+        <li class="dropdown">
+          <a href="/" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Episodes <span class="caret"></span></a>
+          <ul class="dropdown-menu">
+            
+            
+            <li><a href="/01-intro/index.html">Introduction</a></li>
+            
+            
+            <li><a href="/02-coffee/index.html">Coffee Break</a></li>
+            
+            
+            <li><a href="/03-dataset-parallelism/index.html">Dataset Parallelism</a></li>
+            
+            
+            <li><a href="/04-lunch/index.html">Lunch Break</a></li>
+            
+            
+            <li><a href="/05-numpy-and-numba/index.html">Parallelisation with Numpy and Numba</a></li>
+            
+            
+            <li><a href="/06-coffee/index.html">Coffee Break</a></li>
+            
+            
+            <li><a href="/07-working-with-xarray/index.html">Working with data in Xarray</a></li>
+            
+            
+            <li><a href="/08-cartopy/index.html">Plotting Geospatial Data with Cartopy</a></li>
+            
+            
+            <li><a href="/09-coffee/index.html">Coffee Break</a></li>
+            
+            
+            <li><a href="/10-dask/index.html">Parallelising with Dask</a></li>
+            
+            
+            <li><a href="/11-lunch/index.html">Lunch Break</a></li>
+            
+            
+            <li><a href="/12-parallelism-friendly-data-formats/index.html">Storing and Accessing Data in Parallelism Friendly Formats</a></li>
+            
+            
+            <li><a href="/13-coffee/index.html">Coffee Break</a></li>
+            
+            
+            <li><a href="/14-gpus/index.html">GPUs</a></li>
+            
+	    <li role="separator" class="divider"></li>
+            <li><a href="/aio/index.html">All in one page (Beta)</a></li>
+          </ul>
+        </li>
+        
+	
+
+	
+	
+        <li class="dropdown">
+          <a href="/" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Extras <span class="caret"></span></a>
+          <ul class="dropdown-menu">
+            <li><a href="/reference.html">Reference</a></li>
+            
+            
+            
+              <li><a href="/about/index.html">About</a></li>
+            
+            
+            
+            
+              <li><a href="/discuss/index.html">Discussion</a></li>
+            
+            
+            
+            
+              <li><a href="/figures/index.html">Figures</a></li>
+            
+            
+            
+            
+              <li><a href="/guide/index.html">Instructor Notes</a></li>
+            
+            
+          </ul>
+        </li>
+	
+
+	
+        <li><a href="/LICENSE.html">License</a></li>
+        
+
+        
+	<li><a href="/edit//_episodes/12-parallelism-friendly-data-formats.md" data-checker-ignore>Improve this page <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span></a></li>
+	
+      </ul>
+      <form class="navbar-form navbar-right" role="search" id="search" onsubmit="google_search(); return false;">
+        <div class="form-group">
+          <input type="text" id="google-search" placeholder="Search..." aria-label="Google site search">
+        </div>
+      </form>
+    </div>
+  </div>
+</nav>
+
+<script type="text/javascript" id="MathJax-script" async
+  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+<div class="row">
+  <div class="col-xs-1">
+    <h3 class="text-left">
+      
+      <a href="/11-lunch/index.html"><span class="glyphicon glyphicon-menu-left" aria-hidden="true"></span><span class="sr-only">previous episode</span></a>
+      
+    </h3>
+  </div>
+  <div class="col-xs-10">
+    
+    <h3 class="maintitle"><a href="/">Advanced Python for Environmental Scientists</a></h3>
+    
+  </div>
+  <div class="col-xs-1">
+    <h3 class="text-right">
+      
+      <a href="/13-coffee/index.html"><span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span><span class="sr-only">next episode</span></a>
+      
+    </h3>
+  </div>
+</div>
+
+<article>
+<div class="row">
+  <div class="col-md-1">
+  </div>
+  <div class="col-md-10">
+    <h1 class="maintitle">Storing and Accessing Data in Parallelism Friendly Formats</h1>
+  </div>
+  <div class="col-md-1">
+  </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+<blockquote class="objectives">
+  <h2>Overview</h2>
+
+  <div class="row">
+    <div class="col-md-3">
+      <strong>Teaching:</strong> 50 min
+      <br/>
+      <strong>Exercises:</strong> 30 min
+    </div>
+    <div class="col-md-9">
+      <strong>Questions</strong>
+      <ul>
+	
+	<li><p>How is the performance of data access impacted by bandwidth and latency?</p>
+</li>
+	
+	<li><p>How can we use an object store to store data that is accessible over the internet?</p>
+</li>
+	
+	<li><p>How do we access data in an object store using Xarray?</p>
+</li>
+	
+      </ul>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-3">
+    </div>
+    <div class="col-md-9">
+      <strong>Objectives</strong>
+      <ul>
+	
+	<li><p>Understand the relative performance of memory, local disks, local networks and the internet.</p>
+</li>
+	
+	<li><p>Understand that object stores are a convienient and scalable way to store data to be accessed over the internet.</p>
+</li>
+	
+	<li><p>Understand how Zarr files can be structured in an object store friendly way.</p>
+</li>
+	
+	<li><p>Apply Xarray to access Zarr files stored in an object store.</p>
+</li>
+	
+      </ul>
+    </div>
+  </div>
+
+</blockquote>
+
+<h1 id="data-access-speeds">Data Access Speeds</h1>
+
+<p>The time spent accessing data from disk is orders of magnitude more than accessing data stored in RAM and accessing data over a network is orders of magnitude more than
+accessing data on a local disk. This is visualised nicely in the diagram below</p>
+
+<p><img src="../fig/latency.png" alt="graphical representation of how long different computational operations take" /></p>
+
+<p>(from <a href="https://gist.github.com/hellerbarde/2843375">https://gist.github.com/hellerbarde/2843375</a>)</p>
+
+<p>Lets multiply all these durations by a billion:</p>
+
+<p>Magnitudes:</p>
+
+<p>Minute:</p>
+<ul>
+  <li>L1 cache reference                  0.5 s         One heart beat (0.5 s)</li>
+  <li>Branch mispredict                   5 s           Yawn</li>
+  <li>L2 cache reference                  7 s           Long yawn</li>
+  <li>Mutex lock/unlock                   25 s          Making a coffee</li>
+</ul>
+
+<p>Hour:</p>
+<ul>
+  <li>Main memory reference               100 s         Brushing your teeth</li>
+  <li>Compress 1K bytes with Zippy        50 min        One episode of a TV show (including ad breaks)</li>
+</ul>
+
+<p>Day:</p>
+<ul>
+  <li>Send 2K bytes over 1 Gbps network   5.5 hr        From lunch to end of work day</li>
+</ul>
+
+<p>Week</p>
+<ul>
+  <li>SSD random read                     1.7 days      A normal weekend</li>
+  <li>Read 1 MB sequentially from memory  2.9 days      A long weekend</li>
+  <li>Round trip within same datacenter   5.8 days      A medium vacation</li>
+  <li>Read 1 MB sequentially from SSD    11.6 days      Waiting for almost 2 weeks for a delivery</li>
+</ul>
+
+<p>Year</p>
+<ul>
+  <li>Disk seek                           16.5 weeks    A semester in university</li>
+  <li>Read 1 MB sequentially from disk    7.8 months    Almost producing a new human being</li>
+  <li>The above 2 together                1 year</li>
+</ul>
+
+<p>Decade</p>
+<ul>
+  <li>Send packet CA-&gt;Netherlands-&gt;CA     4.8 years     Average time it takes to complete a bachelor’s degree</li>
+</ul>
+
+<p>We are going to have to wait a really long time to get data from the internet when compared to processing it locally. But in the modern era when we might be working
+with multiterabyte (or even petabyte) datasets it isn’t likely to be practical to store it all on our local computer. By applying parallel working patterns we can also
+have multiple computers each compute part of a dataset and/or we can have multiple computers each store part of the dataset allowing us to transfer several parts of it in parallel.</p>
+
+<h2 id="parallel-filesystems">Parallel Filesystems</h2>
+
+<p>On many high performance computing (HPC) systems it is common for there to be a large parallel filesystem. These will spread data across a large number of physical disks and servers,
+when a user requests some data it might be supplied by several servers simultaneously. Since each disk can only supply data so fast (usually between 10s and 100s of megabytes per second)
+we can achieve faster data access by requesting from several disks spread across several servers. Many parallel filesystems will be configured to provide access speeds of
+multiple gigabytes per second. However HPC systems also tend to be shared systems with many users all running different tasks at any given time, so the activities of other
+users will also impact how quickly we can access data.</p>
+
+<h1 id="object-stores">Object Stores</h1>
+
+<p>Object stores are a scalable way to store data in a manner that is readily accessible over the internet. They use the Hyper Text Transfer Protocol (HTTP) or its secure alternatie
+(HTTPS) to access “objects”. In this case each object will have a unique URL and the appearance of a file on a filesystem. Where object stores differ from traditional filesystem
+is that there isn’t any directory hierarchy to the objects, although sometimes object stores are configured to give the illusion of this. For example we might create object
+names that contain path separators. The underlying storage can “stripe” the data of an object across several disks and/or servers to achieve higher throughput speeds in a similar
+way to the parallel filesystems described above, this can allow object stores to scale very well to store both large numbers of objects and very large individual objects. Some
+object stores will also replicate an object across several locations to both improve reslience and performance.</p>
+
+<p>Another benefit of object stores is that they allow clients to request just part of an object, this has spawned a number of “cloud optimised” file formats where some metadata
+describes what can be found in what part of the object and the client then requests only what it needs. This could be especially useful if say we have a very high resolution
+geospatial dataset and only wish to retreive the part relating to a specific area or we have a dataset which spans a long time period and we’re only interested in a short time
+period.</p>
+
+<p>One of the most popular object stores is Amazon’s S3 which is used by many websites to store their contents. S3 is accessed via HTTP, typically using the GET method to request
+and object or using the PUT or DELETE methods. S3 also has a lot of features to manage who can access an object and whether they can only read it or read and write it. Many other
+object stores copy the S3 protocol both for accessing objects, managing permissions and metadata associated with them.</p>
+
+<h1 id="zarr-files">Zarr files</h1>
+
+<p>Zarr is a cloud optimised file format designed for working with multidimensional data. Its is very similar to NetCDF, but it splits up data into chunks. When requesting the
+Zarr file from an object store (or a local disk) we can limit which chunks we transfer. Zarr files contain a header which describes the structure of the file and information
+about the chunks, when loading the file this header will be loaded to allow the Zarr library to know about the rest of the file. Zarr is also designed to support multiple concurrent readers, allowing us to read the
+file in parallel using multiple threads or even with Dask tasks that are distributed across multiple computers. Zarr has been built with Python in mind and has libraries to
+allow native Python operations on Zarr. There is support for Zarr in other languages such as C in the recent versions of the NetCDF libraries.</p>
+
+<h2 id="zarr-and-xarray">Zarr and Xarray</h2>
+
+<p>Xarray can open Zarr files using the <code class="language-plaintext highlighter-rouge">open_zarr</code> function that is similar to the <code class="language-plaintext highlighter-rouge">open_datset</code> function we’ve been using to open NetCDF data. We will be using the outputs of the <a href="https://noc-msm.github.io/NOC_Near_Present_Day/">Near-Present-Day simulations developed by the National Oceanography Centre</a>, specifically related to the eORCA025 model and covers the ocean globally. Each dataset can have more than 200GB, DO NOT DOWNLOAD IT!</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">xarray</span> <span class="k">as</span> <span class="n">xr</span>
+
+<span class="n">ds</span> <span class="o">=</span> <span class="n">xr</span><span class="p">.</span><span class="n">open_zarr</span><span class="p">(</span><span class="s">"https://noc-msm-o.s3-ext.jc.rl.ac.uk/npd-eorca025-jra55v1/T1m/so_abs"</span><span class="p">)</span>
+<span class="n">ds</span>
+</code></pre></div></div>
+
+<p>We can now see the metadata for the Zarr file. It includes 75 depth levels, 577 time steps and a 1206x1440
+spatial resolution. In this case, there is only one variable, <code class="language-plaintext highlighter-rouge">so_abs</code>, which is the absolute salinity of the ocean. To access other variables, you can take a look on the <a href="https://noc-msm.github.io/NOC_Near_Present_Day/">NOC Near-Present-Day documentation</a>. For example:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">xarray</span> <span class="k">as</span> <span class="n">xr</span>
+
+<span class="n">ds</span> <span class="o">=</span> <span class="n">xr</span><span class="p">.</span><span class="n">open_zarr</span><span class="p">(</span><span class="s">"https://noc-msm-o.s3-ext.jc.rl.ac.uk/npd-eorca025-jra55v1/T1m/zos"</span><span class="p">)</span>
+<span class="n">ds</span>
+</code></pre></div></div>
+
+<p>In this case, the variable is <code class="language-plaintext highlighter-rouge">zos</code>, which is the “Sea Surface Height Above Geoid”. It only covers the ocean surface and don’t use the depth dimension. All of this information has come from the header of the Zarr file,
+so far none of the actual data has been transferred, we have done what is known as a “lazy load” where data will only be transferred from the object store when we actually access it.</p>
+
+<p>Let’s try and read it by slicing out a small part of the file, we’ll only get the <code class="language-plaintext highlighter-rouge">zos</code> dataset:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">ssh</span> <span class="o">=</span> <span class="n">ds</span><span class="p">[</span><span class="s">'zos'</span><span class="p">].</span><span class="n">isel</span><span class="p">(</span><span class="n">time_counter</span><span class="o">=</span><span class="nb">slice</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">),</span><span class="n">y</span><span class="o">=</span><span class="nb">slice</span><span class="p">(</span><span class="mi">500</span><span class="p">,</span><span class="mi">700</span><span class="p">),</span> <span class="n">x</span><span class="o">=</span><span class="nb">slice</span><span class="p">(</span><span class="mi">1000</span><span class="p">,</span><span class="mi">1200</span><span class="p">))</span>
+<span class="n">ssh</span>
+</code></pre></div></div>
+
+<p>We can see that ds_sub is now a 200x200x1 array that only takes up 156.25kB from the original 3.73GB file. Even at this point no data will have been transferred.
+If we explore further and print the <code class="language-plaintext highlighter-rouge">ssh</code> array we’ll see that it is actually using a Dask array underneath.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">print</span><span class="p">(</span><span class="n">ssh</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>To convert this into a standard Xarray DataArray we can call <code class="language-plaintext highlighter-rouge">.compute</code> on the <code class="language-plaintext highlighter-rouge">ssh</code>.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">ssh_local</span> <span class="o">=</span> <span class="n">ssh</span><span class="p">.</span><span class="n">compute</span><span class="p">()</span>
+</code></pre></div></div>
+
+<p>We can now plot this by using:</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">ssh_local</span><span class="p">.</span><span class="n">plot</span><span class="p">()</span>
+</code></pre></div></div>
+
+<p>Or access some of the data:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">ssh_local</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span>
+</code></pre></div></div>
+
+<p>It is important to note that this data is not on a regular grid. Therefore, slicing the data using <code class="language-plaintext highlighter-rouge">isel</code> will not give you an exact rectangular area, but only the data that lies within the boundaries of the grid. If you want to get a specific area, you may need to reproject the data to a regular grid. There are python libraries like <code class="language-plaintext highlighter-rouge">iris</code> and <code class="language-plaintext highlighter-rouge">xESMF</code> that help with this activity,</p>
+
+<blockquote class="challenge">
+  <h2 id="plot-sea-surface-temperature">Plot Sea Surface Temperature</h2>
+  <p>Extract and plot the sea surface temperature (sst variable) for the nearest date to January 1st 1965 that is in the dataset.</p>
+  <blockquote class="solution">
+    <h2 id="solution">Solution</h2>
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">xarray</span> <span class="k">as</span> <span class="n">xr</span>
+<span class="n">ds</span> <span class="o">=</span> <span class="n">xr</span><span class="p">.</span><span class="n">open_zarr</span><span class="p">(</span><span class="s">"https://noc-msm-o.s3-ext.jc.rl.ac.uk/npd-eorca025-jra55v1/T1m/tos_con"</span><span class="p">)</span>
+<span class="n">sst</span> <span class="o">=</span> <span class="n">ds</span><span class="p">[</span><span class="s">'tos_con'</span><span class="p">].</span><span class="n">sel</span><span class="p">(</span><span class="n">time_counter</span><span class="o">=</span><span class="s">"1965-01-01"</span><span class="p">,</span><span class="n">method</span><span class="o">=</span><span class="s">"nearest"</span><span class="p">)</span>
+<span class="n">sst</span><span class="p">.</span><span class="n">plot</span><span class="p">()</span>
+</code></pre></div>    </div>
+  </blockquote>
+</blockquote>
+
+<blockquote class="challenge">
+  <h2 id="calculate-the-mean-sea-surface-temperature-for-two-years">Calculate the mean sea surface temperature for two years</h2>
+  <p>Calculate the mean sea surface temperature for the years between 1990 and 1991 using the same dataset as above.</p>
+  <blockquote class="solution">
+    <h2 id="solution-1">Solution</h2>
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">xarray</span> <span class="k">as</span> <span class="n">xr</span>
+<span class="n">ds</span> <span class="o">=</span> <span class="n">xr</span><span class="p">.</span><span class="n">open_zarr</span><span class="p">(</span><span class="s">"https://noc-msm-o.s3-ext.jc.rl.ac.uk/npd-eorca025-jra55v1/T1m/tos_con"</span><span class="p">)</span>
+<span class="n">sst</span> <span class="o">=</span> <span class="n">ds</span><span class="p">[</span><span class="s">'tos_con'</span><span class="p">].</span><span class="n">sel</span><span class="p">(</span><span class="n">time_counter</span><span class="o">=</span><span class="nb">slice</span><span class="p">(</span><span class="s">"1990"</span><span class="p">,</span> <span class="s">"1991"</span><span class="p">))</span>
+<span class="n">grouped_mean</span> <span class="o">=</span> <span class="n">sst</span><span class="p">.</span><span class="n">groupby</span><span class="p">(</span><span class="s">"time_counter.year"</span><span class="p">).</span><span class="n">mean</span><span class="p">()</span>
+<span class="n">mean_sst</span> <span class="o">=</span> <span class="n">grouped_mean</span><span class="p">.</span><span class="n">mean</span><span class="p">(</span><span class="n">dim</span><span class="o">=</span><span class="p">[</span><span class="s">'y'</span><span class="p">,</span><span class="s">'x'</span><span class="p">])</span> <span class="c1"># this will take the mean across the specified dimensions
+</span><span class="n">mean_sst</span> <span class="o">=</span> <span class="n">mean_sst</span><span class="p">.</span><span class="n">compute</span><span class="p">()</span>
+<span class="n">mean_sst</span>
+</code></pre></div>    </div>
+  </blockquote>
+</blockquote>
+
+<blockquote class="challenge">
+  <h2 id="calculate-the-mean-sea-surface-temperature-for-10-years-with-dask">Calculate the mean sea surface temperature for 10 years with Dask</h2>
+  <p>Calculate the mean sea surface temperature for 1990 and 1999. Use the JASMIN Dask gateway to parallelise the calculation, use 10 worker threads and set the
+time_counter chunk size to 10 when opening the zarr file. Measure how long it takes to compute the result, try changing the number of workers up and down to see
+what the optimal number is.</p>
+  <blockquote class="solution">
+    <h2 id="solution-2">Solution</h2>
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">xarray</span> <span class="k">as</span> <span class="n">xr</span>
+<span class="kn">import</span> <span class="nn">dask_gateway</span>
+
+<span class="n">gw</span> <span class="o">=</span> <span class="n">dask_gateway</span><span class="p">.</span><span class="n">Gateway</span><span class="p">(</span><span class="s">"https://dask-gateway.jasmin.ac.uk"</span><span class="p">,</span> <span class="n">auth</span><span class="o">=</span><span class="s">"jupyterhub"</span><span class="p">)</span>
+
+<span class="n">options</span> <span class="o">=</span> <span class="n">gw</span><span class="p">.</span><span class="n">cluster_options</span><span class="p">()</span>
+<span class="n">options</span><span class="p">.</span><span class="n">worker_cores</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="n">options</span><span class="p">.</span><span class="n">scheduler_cores</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="n">options</span><span class="p">.</span><span class="n">worker_setup</span><span class="o">=</span><span class="s">'source /apps/jasmin/jaspy/mambaforge_envs/jaspy3.10/mf-22.11.1-4/bin/activate ~/.conda/envs/esces'</span>
+
+<span class="n">clusters</span> <span class="o">=</span> <span class="n">gw</span><span class="p">.</span><span class="n">list_clusters</span><span class="p">()</span>
+<span class="k">if</span> <span class="ow">not</span> <span class="n">clusters</span><span class="p">:</span>
+    <span class="n">cluster</span> <span class="o">=</span> <span class="n">gw</span><span class="p">.</span><span class="n">new_cluster</span><span class="p">(</span><span class="n">options</span><span class="p">,</span> <span class="n">shutdown_on_close</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="n">cluster</span> <span class="o">=</span> <span class="n">gw</span><span class="p">.</span><span class="n">connect</span><span class="p">(</span><span class="n">clusters</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="n">name</span><span class="p">)</span>
+
+<span class="n">cluster</span><span class="p">.</span><span class="n">adapt</span><span class="p">(</span><span class="n">minimum</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">maximum</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+<span class="n">client</span> <span class="o">=</span> <span class="n">cluster</span><span class="p">.</span><span class="n">get_client</span><span class="p">()</span>
+<span class="n">client</span>
+
+<span class="n">ds</span> <span class="o">=</span> <span class="n">xr</span><span class="p">.</span><span class="n">open_zarr</span><span class="p">(</span><span class="s">"https://noc-msm-o.s3-ext.jc.rl.ac.uk/npd-eorca025-jra55v1/T1m/tos_con"</span><span class="p">)</span>
+<span class="n">sst</span> <span class="o">=</span> <span class="n">ds</span><span class="p">[</span><span class="s">'sst'</span><span class="p">].</span><span class="n">sel</span><span class="p">(</span><span class="n">time_counter</span><span class="o">=</span><span class="nb">slice</span><span class="p">(</span><span class="s">"1990"</span><span class="p">,</span><span class="s">"1999"</span><span class="p">))</span>
+<span class="c1"># mean_sst = dataset.mean(dim=['lat','lon']) #better way to do this
+</span><span class="n">grouped_mean</span> <span class="o">=</span> <span class="n">sst</span><span class="p">.</span><span class="n">groupby</span><span class="p">(</span><span class="s">"time_counter.year"</span><span class="p">).</span><span class="n">mean</span><span class="p">()</span>
+<span class="n">mean_sst</span> <span class="o">=</span> <span class="n">grouped_mean</span><span class="p">.</span><span class="n">mean</span><span class="p">(</span><span class="n">dim</span><span class="o">=</span><span class="p">[</span><span class="s">'y'</span><span class="p">,</span><span class="s">'x'</span><span class="p">])</span>
+<span class="n">result</span> <span class="o">=</span> <span class="n">client</span><span class="p">.</span><span class="n">compute</span><span class="p">(</span><span class="n">mean_sst</span><span class="p">).</span><span class="n">result</span><span class="p">()</span>
+<span class="n">result</span><span class="p">.</span><span class="n">plot</span><span class="p">()</span>
+<span class="n">cluster</span><span class="p">.</span><span class="n">shutdown</span><span class="p">()</span>
+</code></pre></div>    </div>
+    <p>Optimal workers is probably 10 and execution should take around 22 seconds. Single threaded execution time is 57 seconds.</p>
+  </blockquote>
+</blockquote>
+
+<h1 id="data-catalogues">Data Catalogues</h1>
+
+<p>It is a common problem that environmental scientists will need to work with datasets that span across many files. There is a common practice with larger datasets stored in
+Zarr or NetCDF formats to split them into multiple files with either one variable per file or one time period per file. Once we have more than a few files in our dataset
+keeping the correct filenames or URLs can become more difficult, especially if those names change or data gets relocated.</p>
+
+<p>There are several ways to solve this problem, most of then related on building a catalogue of the dataset. This catalogue can be a simple text file that lists the filenames and URLs of the files in the dataset (<a href="https://raw.githubusercontent.com/NOC-MSM/NOC_Near_Present_Day/main/jasmin_os/catalogs/npd_jra55_v1_catalog.csv">like this example</a>), or it can be a more complex database or catalogue that stores metadata about the files and their contents.</p>
+
+<p>Two most used catalogues for this type of data are <a href="https://stacspec.org/">STAC</a> and <a href="https://github.com/intake/intake">Intake</a>. STAC is a standard for describing geospatial data in a way that allows it to be easily discovered and accessed, while Intake is a Python library that provides a way to manage and access datasets in a more flexible way. We will show an example using intake.</p>
+
+<p>To open a catalogue we call the <code class="language-plaintext highlighter-rouge">open_catalog</code> function in the intake library. By converting the response of this to a Python list we can find the names of all of the datasets
+in the catalogue.</p>
+
+<div class="language-plaintext langauge-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>import intake
+xcat = intake.open_catalog('https://raw.githubusercontent.com/intake/intake-xarray/master/examples/catalog.yml')
+list(xcat)
+</code></pre></div></div>
+
+<p>Let’s open the image example and use the skimage library to plot it. First you will need to install the skimage library with the following command in the terminal:</p>
+
+<div class="language-plaintext langauge-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>mamba install -n esces scikit-image
+</code></pre></div></div>
+
+<div class="language-plaintext langauge-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>from skimage.io import imshow
+image = xcat.image.read()
+imshow(image)
+</code></pre></div></div>
+
+
+
+
+
+
+<blockquote class="keypoints">
+  <h2>Key Points</h2>
+  <ul>
+    
+    <li><p>We can process faster in parallel if we can read or write data in parallel too</p>
+</li>
+    
+    <li><p>Data storage is many times slower than accessing our computer’s memory</p>
+</li>
+    
+    <li><p>Object stores are one way to store data that is accessible over the web/http, allows replication of data and can scale to very large quantities of data.</p>
+</li>
+    
+    <li><p>Zarr is an object store friendly file format intended for storing large array data.</p>
+</li>
+    
+    <li><p>Zarr files are stored in chunks and software such as Xarray can just read the chunks that it needs instead of the whole file.</p>
+</li>
+    
+    <li><p>Xarray can be used to read in Zarr files</p>
+</li>
+    
+  </ul>
+</blockquote>
+
+</article>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+<div class="row">
+  <div class="col-xs-1">
+    <h3 class="text-left">
+      
+      <a href="/11-lunch/index.html"><span class="glyphicon glyphicon-menu-left" aria-hidden="true"></span><span class="sr-only">previous episode</span></a>
+      
+    </h3>
+  </div>
+  <div class="col-xs-10">
+    
+  </div>
+  <div class="col-xs-1">
+    <h3 class="text-right">
+      
+      <a href="/13-coffee/index.html"><span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span><span class="sr-only">next episode</span></a>
+      
+    </h3>
+  </div>
+</div>
+
+
+      
+      
+
+
+
+
+
+
+<footer>
+  <div class="row">
+    <div class="col-md-6 license" id="license-info" align="left">
+	
+	Licensed under <a href="https://creativecommons.org/licenses/by/4.0/">CC-BY 4.0</a> 2018–2025
+	by <a href="https://carpentries.org/">The Carpentries</a>
+	
+    </div>
+    <div class="col-md-6 help-links" align="right">
+    
+    
+    <a href="/edit//_episodes/12-parallelism-friendly-data-formats.md" data-checker-ignore>Edit on GitHub</a>
+    
+	/
+	<a href="/blob//CONTRIBUTING.md" data-checker-ignore>Contributing</a>
+	/
+	<a href="/">Source</a>
+	/
+	<a href="/blob//CITATION" data-checker-ignore>Cite</a>
+	/
+	<a href="mailto:team@carpentries.org">Contact</a>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-12" align="center">
+      Using <a href="https://github.com/carpentries/styles/">The Carpentries style</a>
+      version <a href="https://github.com/carpentries/styles/releases/tag/v9.5.3">9.5.3</a>.
+    </div>
+  </div>
+</footer>
+
+      
+    </div>
+    
+<script src="/assets/js/jquery.min.js"></script>
+<script src="/assets/js/bootstrap.min.js"></script>
+<script src="/assets/js/lesson.js"></script>
+
+
+<!-- Matomo -->
+<script>
+  var _paq = window._paq = window._paq || [];
+  /* tracker methods like "setCustomDimension" should be called before "trackPageView" */
+  _paq.push(["setDocumentTitle", document.domain + "/" + document.title]);
+  _paq.push(["setDomains", ["*.lessons.carpentries.org","*.datacarpentry.github.io","*.datacarpentry.org","*.librarycarpentry.github.io","*.librarycarpentry.org","*.swcarpentry.github.io"]]);
+  _paq.push(["setDoNotTrack", true]);
+  _paq.push(["disableCookies"]);
+  _paq.push(['trackPageView']);
+  _paq.push(['enableLinkTracking']);
+  (function() {
+    var u="https://carpentries.matomo.cloud/";
+    _paq.push(['setTrackerUrl', u+'matomo.php']);
+    _paq.push(['setSiteId', '1']);
+    var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
+    g.async=true; g.src='//cdn.matomo.cloud/carpentries.matomo.cloud/matomo.js'; s.parentNode.insertBefore(g,s);
+  })();
+</script>
+<!-- End Matomo Code -->
+
+
+<script src="/assets/js/anchor.min.js"></script>
+<script>
+    anchors.add();
+</script>
+
+  </body>
+</html>

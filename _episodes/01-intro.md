@@ -49,26 +49,26 @@ In this lesson we will look at a few tools to help you work with big data and to
 
 ### CPU
 
-At the heart of every computer is the CPU or Central Processing Unit. This takes the form of a microchip and typically the CPU is the biggest microchip in the computer. 
-The CPU can be thought of as the "brain" of the computer and is what ultimately runs all of our software and carries out any operations we perform on our data. 
+At the heart of every computer is the CPU or Central Processing Unit. This takes the form of a microchip and typically the CPU is the biggest microchip in the computer.
+The CPU can be thought of as the "brain" of the computer and is what ultimately runs all of our software and carries out any operations we perform on our data.
 
 ### Core
 
 Until around 2010 most CPUs had a single processing core and could only do one thing at a time. They gave the illusion of doing multiple things at once by rapidly switching from one
 task to another. A few higher end computers would have multiple CPUs and could do 2/4/8 things at once if they had 2/4/8 CPUs. Since around 2010 most CPUs have multiple cores, which
-is effectively putting multiple CPUs onto a single chip. By having multiple cores modern computers can perform multiple tasks simultaneously. 
+is effectively putting multiple CPUs onto a single chip. By having multiple cores modern computers can perform multiple tasks simultaneously.
 
 ### Node/Cluster
 
 A single computer in a group of computers known as a cluster is often called a "node". A cluster allows us to run large programs over multiple computers with data being exchanged over
-a high speed network called an interconnect. 
+a high speed network called an interconnect.
 
 ### Process
 
-A process is a single running copy of a computer program. If for example launch a (simple) Python program then it will create one Python process to run this. We can see a list of 
+A process is a single running copy of a computer program. If for example launch a (simple) Python program then it will create one Python process to run this. We can see a list of
 processes running on a Linux computer with the `ps` or `top` command or on windows using the Task Manager. The computer's operating system will decide which core should run which process
 and will rapidly switch between all the running processes to ensure that they all have a chance to do some work. If a process is waiting on input from the user or for data to arrive
-from a hardware device such as a disk or network then it might give up its turn to do any work until the input/data arrives. The operating system isolates each process from the others, 
+from a hardware device such as a disk or network then it might give up its turn to do any work until the input/data arrives. The operating system isolates each process from the others,
 each will have its own memory allocated and won't be able to read or write data to another process's memory.
 
 ### Thread
@@ -89,14 +89,14 @@ There are two main types of computer memory, RAM or volatile storage and disk or
 
 #### RAM
 
-RAM or Random Access Memory is the computer's short term memory, any program which is running must be loaded into RAM as is any data which that program needs. When the computer is 
+RAM or Random Access Memory is the computer's short term memory, any program which is running must be loaded into RAM as is any data which that program needs. When the computer is
 switched off the contents of the RAM are lost. RAM is very fast to access and the "Random" in the name means it be both read from and written to. A typical modern computer might have
 a few gigabytes (a few billion characters) worth of RAM.
 
 #### Storage
 
 Disk or storage or non-volatile storage is where computers store things for longer term keeping. Traditionally this was on a hard disk that had spinning platters which could be magnetised
-(or before that on removable floppy disks which also magnetise a spinning disk). Many modern computers use Solid State Disks (SSDs) which are faster and smaller than hard disks, 
+(or before that on removable floppy disks which also magnetise a spinning disk). Many modern computers use Solid State Disks (SSDs) which are faster and smaller than hard disks,
 but they are still slower than RAM and are often more expensive. A typical modern computer might have a few hundred gigabytes to a few terabytes (trillion characters) worth of disk.
 
 HPC systems will often have very large arrays of many disks attached to them with hundreds of terabytes or even petabytes (1000 TB) between them. On some systems this will include
@@ -112,24 +112,24 @@ sends them some data or receives some data from them. Typically server computers
 
 High Performance Computing (sometimes called Super Computing) refers to large computing systems and clusters that are typically made up of many individual computers with a large number
 of cores between them. They're often used for research problems such as processing large environmental datasets or running large models and simulations such as climate models. High Performance
-Computing (HPC) systems are usually shared between many users. To ensure that one user doesn't take all the resources for themselves or prevent another users program from running 
+Computing (HPC) systems are usually shared between many users. To ensure that one user doesn't take all the resources for themselves or prevent another users program from running
 users are required to write a job description which tells the HPC what program they want to run and what resources it will need. This is then placed in a queue and will be run when
-the required resources are available. Typically when a job runs it will have a set of CPU cores dedicated to it and no other programs (apart from the operating system) will be able to 
+the required resources are available. Typically when a job runs it will have a set of CPU cores dedicated to it and no other programs (apart from the operating system) will be able to
 use those cores.
 
-![https://jasmin.ac.uk/assets/img/sections/section_content/14EC2458_JASMIN_2_computing_clus.2e16d0ba.fill-2000x1000.jpg](A picture of the JASMIN HPC system)
+![A picture of the JASMIN HPC system](https://jasmin.ac.uk/assets/img/sections/section_content/14EC2458_JASMIN_2_computing_clus.2e16d0ba.fill-2000x1000.jpg)
 
 ### JASMIN
 
 [https://jasmin.ac.uk](JASMIN) is the UK's data analysis facility for data intensive environmental science. It combines several computing services together including:
 
 * High Performance Computing system called Lotus with over 19,000 processing cores and 300 nodes.
-* Virtual machines 
+* Virtual machines
 * Jupyter Notebooks service
 * Data Storage on both disk and tape
 * Moderate sized shared "sci" servers, with between 8 and 48 CPU cores and 32G to 1TB of RAM
 
-![https://help.jasmin.ac.uk/img/docs/lotus-overview/file-QPxolXD1Tu-1400x1587.webp](An image illustrating the JASMIN system)
+![An image illustrating the JASMIN system](https://help.jasmin.ac.uk/img/docs/lotus-overview/file-QPxolXD1Tu-1400x1587.webp)
 
 
 ### SSH
@@ -147,14 +147,14 @@ Jupyter Lab on our own computer by downloading Anaconda and running Jupyter Lab 
 own computer. We can also use a service called a Jupyter Hub run by somebody else, usually on a server computer. When run in this way any code written in the Notebook will run on
 the server. This means we can take advantage of the server having more memory, CPU cores, storage or large datasets that aren't on our computer.
 
-Jupyter Lab also allows us to open a terminal and type in commands that run either on our computer or the Jupyter server. This can be helpful alternative to using SSH to connect to 
+Jupyter Lab also allows us to open a terminal and type in commands that run either on our computer or the Jupyter server. This can be helpful alternative to using SSH to connect to
 a remote server as it requires no SSH client software to be installed.
 
 ## Connecting to a JupyterLab/notebooks service
 
-We will be using the Notebooks service on the JASMIN system for this workshop. This will open a Jupyter notebook in your web browser, 
-from this you can type in Python code and it will run on the JASMIN system. JASMIN is the UK's data analysis facility for environmental science 
-and co-locates both data storage and data processing facilities. It will also be possible to run much of the code in this workshop on your own 
+We will be using the Notebooks service on the JASMIN system for this workshop. This will open a Jupyter notebook in your web browser,
+from this you can type in Python code and it will run on the JASMIN system. JASMIN is the UK's data analysis facility for environmental science
+and co-locates both data storage and data processing facilities. It will also be possible to run much of the code in this workshop on your own
 computer, but some of the larger examples will probably exceed the memory and processing power of your computer.
 
 > ## Launching JupyterLab
@@ -193,7 +193,7 @@ This is defined by a YAML file that is downloaded alongside the course materials
 ## Testing package installations
 
 > ## Testing your package installs
-> Run the following code to check that you can import all the packages we'll be using and that they are the correct versions. 
+> Run the following code to check that you can import all the packages we'll be using and that they are the correct versions.
 > The !parallel runs the parallel command from the command line from within a Jupyter notebook cell. This will not work if you use stanard Python.
 > ~~~
 > import xarray
@@ -243,7 +243,7 @@ This is defined by a YAML file that is downloaded alongside the course materials
 
 ## About the example data
 
-There is a small example dataset included in the download above. This is a Surface Temperature Analysis from the [Goddard Institute for Space Studies at NASA](https://data.giss.nasa.gov/gistemp/). 
+There is a small example dataset included in the download above. This is a Surface Temperature Analysis from the [Goddard Institute for Space Studies at NASA](https://data.giss.nasa.gov/gistemp/).
 It contains a monthly surface temperatures on a 2x2 degree grid from across the earth from 1880 to 2023. The data is stored in a NetCDF file. We will be using a subset of the data that runs from 2000 to 2023.
 
 ### About NetCDF files
@@ -284,7 +284,7 @@ root group (NETCDF4 data model, file format HDF5):
     history: Created 2024-03-08 11:37:27 by SBBX_to_nc 2.0 - ILAND=1200, IOCEAN=NCDC/ER5, Base: 1951-1980
     dimensions(sizes): lat(90), lon(180), time(288), nv(2)
     variables(dimensions): float32 lat(lat), float32 lon(lon), int32 time(time), int32 time_bnds(time, nv), int16 tempanomaly(time, lat, lon)
-    groups: 
+    groups:
 ~~~
 {: .output}
 
@@ -323,14 +323,14 @@ print(dataset.dimensions)
 
 
 #### Read some data from out dataset
-The dataset values can be read from `dataset.variables['variablename']`, it will have a subarray that contains the data following the dimensions specified. 
-In our dataset we can see that the tempanomaly variable has the shape `int16 tempanomaly(time, lat, lon)`. 
+The dataset values can be read from `dataset.variables['variablename']`, it will have a subarray that contains the data following the dimensions specified.
+In our dataset we can see that the tempanomaly variable has the shape `int16 tempanomaly(time, lat, lon)`.
 This means that time will be the first index, latitude the second and longitude the third. We can get the first timestep for the upper left coordinate by using:
 ~~~
 print(dataset.variables['tempanomaly'][0,0,0])
 ~~~
 {: .language-python}
-One thing to note here is that our dataset's y coordinates are backwards to most maps (following a computer graphics convention where 0 is the upper left coordinate, not the lower left or centre). 
+One thing to note here is that our dataset's y coordinates are backwards to most maps (following a computer graphics convention where 0 is the upper left coordinate, not the lower left or centre).
 Therefore requesting `[0,0,0]` means the southern most and western most coordinate at the first timestep.
 
 
@@ -354,7 +354,7 @@ Therefore requesting `[0,0,0]` means the southern most and western most coordina
 > > longitude = 51
 > > latitude_index = int(((latitude) / 2) + 45)
 > > longitude_index = int((longitude / 2) + 90)
-> > time_index = 20 * 12   #we want jan 2020, dataset starts at jan 2000 and has monthly entries 
+> > time_index = 20 * 12   #we want jan 2020, dataset starts at jan 2000 and has monthly entries
 > > print(dataset.variables['tempanomaly'][time_index,latitude_index,longitude_index])
 > > ~~~
 > > {: .language-python}
