@@ -506,6 +506,7 @@ plt.bar(labels,counts['tempanomaly'].values)
 ~~~
 {: .language-python}
 
+![A bar chart showing the binned group by plot.](../fig/xarray_binned_groupby.png)
 
 ## Rolling Windows
 
@@ -523,6 +524,7 @@ plt.legend()
 ~~~
 {: .language-python}
 
+![A line graph comparing the mean and 12 month rolling mean temperature anomaly for Liverpool.](../fig/xarray_rolling_window.png)
 
 ## Coarsening
 
@@ -552,7 +554,7 @@ dataset['tempanomaly'].sel(lat=53,lon=-3).plot()
 ~~~
 {: .language-python}
 
-
+![A line graph comparing the temperature anomaly for Liverpool and the 12 month coarsened anomaly.](../fig/xarray_coarsening.png)
 
 # Writing Data
 
@@ -588,6 +590,7 @@ dataset_corrected.to_netcdf("corrected.nc")
 > > sst_global.to_netcdf("global-mean-sst.nc")
 > > ~~~
 > > {: .language-python}
+> > ![A line graph showing the global mean sea surface temperature each year from 1970 to 1999](../fig/xarray_sst_mean.png)
 > {: .solution}
 {: .challenge}
 
