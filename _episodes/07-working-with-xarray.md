@@ -257,6 +257,8 @@ dataset['tempanomaly'].sel(lat=53,lon=-3).hvplot()
 ~~~
 {: .language-python}
 
+![The Hvplot from the code above which plots temperature anomaly over time for Liverpool.](../fig/hvplot.png)
+
 
 > ## Challenge
 > Using a slice of the array, plot a transect of the surface temperature anomaly across the Atlantic ocean at 23 degrees North between 70 and 17 degrees West on January 15th 2000 and
@@ -409,6 +411,7 @@ dataset['tempanomaly'].where(dataset['tempanomaly'].lon > 0)
 > > dataset['tempanomaly'][0].plot()
 > > ~~~
 > > {: .language-python}
+> ![A plot of the solution showing a global map with only the lower 95th percentile of data multiplied by 0.9](../fig/xarray_filter_and_rescale_solution.png)
 > {: .solution}
 {: .challenge}
 
