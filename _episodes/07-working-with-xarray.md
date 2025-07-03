@@ -472,6 +472,8 @@ plt.bar(grouped_mean.season,grouped_mean)
 ~~~
 {: .language-python}
 
+![A bar chart showing the seasonal temperature anomalies](../fig/xarray_groupby.png)
+
 ### Binned Group By 
 
 There is another version of the `groupby` function called `groupby_bins` which allows us to group data into bins covering a range of values. 
