@@ -134,6 +134,15 @@ dataset['tempanomaly'].sel(time=slice("2000-01-15","2000-12-15"))
 One possible reason to using the sel method instead of the array based indexing is that sel supports variables with spaces in their names, while the dot notation doesn't.
 Although all these different styles can be used interchangbly, for the purpose of providing readable code it is helpful to be consistent and choose one style throughout our program.
 
+None of the examples we've shown so far have returned us the actual values of the data. For many of the Xarray operations we'll deal with later this isn't a problem.
+But if we do actually want the values of the data we've selected then we need to call `.values` on the end of the operation, for example:
+
+~~~
+dataset['tempanomaly'].sel(time=slice("2000-01-15","2000-12-15")).values
+~~~
+{: .language-python}
+
+
 > ## Slicing exercise
 > Write a slicing command to get every other month from the temperature anomaly dataset.
 >> ## Solution
@@ -192,6 +201,8 @@ dataset['tempanomaly'].sel(lat=53, lon=-3).plot()
 One thing to note is that Xarray has not only plotted the graph, but has also automatically labelled it based on the long names and units for the variables that were in the metadata 
 of the dataset. The dates on the X axis are also correctly labelled, whereas many plotting libraries require some extra steps to setup labelling dates correctly.
 
+![The plot of the time series data at 53 North, 3 West from the code above.](../fig/xarray_plot.png)
+
 ## Plotting Two Dimensional Data
 
 Xarray isn't just restricted to plotting line graphs, if we select some data that returns latitude and longitude dimensions then the plot function will show a map. 
@@ -204,11 +215,15 @@ dataset['tempanomaly'].sel(time="2000-01-15").plot()
 The plot function being called is actually part of the Matplotlib library and we can invoke Matplotlib if we need to modify some of the plotting parameters. For example we might
 want to change the colourmap to one which uses grayscale. This can be done by first importing `matplotlib.pyplot` and specifying the `cmap` parameter to `plot()`.
 
+![A colour 2D plot of the temperature anomaly for the whole world on January 15th 2000](../fig/xarray_plot_2d.png)
+
 ~~~
 import matplotlib.pyplot as plt
 dataset['tempanomaly'].sel(time="2000-01-15").plot(cmap=plt.cm.Grays)
 ~~~
 {: .language-python}
+
+![A grayscale 2D plot of the temperature anomaly for the whole world on January 15th 2000](../fig/xarray_plot_2d_gray.png)
 
 
 ## Plotting Histograms
@@ -221,7 +236,7 @@ dataset['tempanomaly'].sel(time="2010-09-15").plot.hist()
 ~~~
 {: .language-python}
 
-
+![A histogram showing the distribution of global temperature anomalies on September 15th 2010.](../fig_xarray_histogram.png)
 
 ## Interactive Plotting with Hvplot
 
