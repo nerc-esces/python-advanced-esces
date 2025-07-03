@@ -405,7 +405,8 @@ dataset['tempanomaly'].where(dataset['tempanomaly'].lon > 0)
 > > lower_95th = dataset['tempanomaly'].where(dataset['tempanomaly'] < threshold)
 > > lower_95th = lower_95th * 0.90
 > > lower_95th[0].plot()
-> > dataset['tempanomaly'].plot()
+> > # do this in a different Jupyter cell or you only get one plot
+> > dataset['tempanomaly'][0].plot()
 > > ~~~
 > > {: .language-python}
 > {: .solution}
