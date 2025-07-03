@@ -448,6 +448,7 @@ plt.legend()
 ~~~
 {: .language-python}
 
+![A line plot showing the global monthly mean temperature anomaly and the annual mean temperature anomaly.](../fig/xarray_resample.png)
 
 ## Group by
 
