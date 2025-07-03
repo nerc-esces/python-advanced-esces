@@ -47,6 +47,8 @@ dataset['tempanomaly'].sel(time="2000-01-15").plot(ax = axis)
 ~~~
 {: .language-python}
 
+![Output of the code above showing the temperature anomaly data plotted using Cartopy with the PlateCarree projection.](../fig/cartopy.png)
+
 We should now see a map of the world with the temperature anomaly data, if we look in the top left we can see North America appearing mostly in red and in the lower right Australia in blue,
 but much of the other continents are harder to make out. To make it easier we can add coastlines by calling `axis.coastlines()` after the plot. But to make this appear on the same map
 as the rest of the plot it needs to be in the same Jupyter cell and we'll have to rerun the whole cell. 
@@ -58,6 +60,8 @@ dataset.tempanomaly.sel(time="2000-01-15").plot(ax = axis)
 axis.coastlines()
 ~~~
 {: .language-python}
+
+![Cartopy plotting the temperature anomaly data with coastlines.](../fig/cartopy_coastlines.png)
 
 # Dealing with Projections
 
@@ -73,6 +77,8 @@ axis.coastlines()
 ~~~
 {: .language-python}
 
+![Cartopy plotting data with the rotate pole projection](../fig/cartopy/cartopy_polar_incorrect.png)
+
 The above example puts the map into a RotatedPole projection, but notice that the coastlines and coloured areas of the map don't match as they previously did. This is because
 we haven't told Cartopy how the data is structured and it has assumed it matches the projection. We didn't need to do this with the PlateCarree projection as the data matched the projection
 but now we need to specify an extra `transform` argument to `plot`.
@@ -84,6 +90,8 @@ dataset.tempanomaly.sel(time="2000-01-15").plot(ax = axis, transform=ccrs.PlateC
 axis.coastlines()
 ~~~
 {: .language-python}
+
+![Cartopy plotting data with the rotate pole projection and reprojecting the data.](../fig/cartopy/cartopy_polar_correct.png)
 
 The data should now match the coastlines.
 
@@ -123,6 +131,8 @@ axis.gridlines(draw_labels=True,xlocs=[-180,-90,0,90,180])
 ~~~
 {: .language-python}
 
+![Cartopy showing gridlines on the temperature anomaly map](../fig/cartopy_gridlines.png)
+
 A more concise way to do this is to use Numpy's `linspace` function which creates an array of evenly spaced elements, this takes a start, end and number of elements parameter for example:
 
 ~~~
@@ -148,6 +158,8 @@ axis.add_feature(cfeature.RIVERS)
 ~~~
 {: .language-python}
 
+![Cartopy showing the boundaires, rivers and lakes as well as the coastlines.](../fig/cartopy/cartopy_coastlines.png)
+
 The above code will add country boundaries, lakes and rivers to our map. The lakes and rivers might be a little hard to see in places where there is a blue being used to render the
 temperature anomaly. We could apply a different colourmap to avoid this problem, the plasma colourmap in Matplotlib goes from purple, to orange to yellow and shows the contrast with
  the rivers nicely.
@@ -165,6 +177,8 @@ axis.add_feature(cfeature.RIVERS)
 ~~~
 {: .language-python}
 
+![Cartopy showing the boundaries against plasma colourmap.](../fig/cartopy/cartopy_purple_yellow.png)
+
 > ## Downloading boundary data manually
 >
 > If you want to download the boundary data yourself (perhaps if you are going to be offline later and want to plot some maps) then you can do this from the Natural Earth website or
@@ -179,7 +193,20 @@ axis.add_feature(cfeature.RIVERS)
 >
 > Place the boundaries in `~/.local/share/cartopy/shapefiles/natural_earth/cultural`
 >
+> Cartopy also includes a script called 
+>
 > Here's the commands to do all of this:
+>
+> Using Cartopy's script:
+> ~~~
+> cartopy_feature_download physical --output  ~/.local/share/cartopy/shapefiles/natural_earth/physical
+> cartopy_feature_download gshhs --output  ~/.local/share/cartopy/shapefiles/natural_earth/physical
+> cartopy_feature_download cultural --output  ~/.local/share/cartopy/shapefiles/natural_earth/cultural
+> cartopy_feature_download cultural-extra --output  ~/.local/share/cartopy/shapefiles/natural_earth/cultural
+> ~~~
+> {: .language-bash}
+>
+> Manual method:
 > ~~~
 > wget https://naturalearth.s3.amazonaws.com/110m_physical/ne_110m_coastline.zip https://naturalearth.s3.amazonaws.com/110m_physical/ne_110m_lakes.zip https://naturalearth.s3.amazonaws.com/110m_physical/ne_110m_rivers_lake_centerlines.zip https://naturalearth.s3.amazonaws.com/110m_cultural/ne_110m_admin_0_boundary_lines_land.zip
 > mkdir -p ~/.local/share/cartopy/shapefiles/natural_earth/cultural
@@ -192,6 +219,7 @@ axis.add_feature(cfeature.RIVERS)
 > conda run -n esces unzip ~/ne_110m_rivers_lake_centerlines.zip
 > ~~~
 > {: .language-bash}
+>
 {: .callout}
 
 > ## Challenge
@@ -208,8 +236,8 @@ axis.add_feature(cfeature.RIVERS)
 > > axis.add_feature(states_provinces)
 > > ~~~
 > > {: .language-python}
+> > ![Cartopy showing the state boundaries in addition to other boundaries, coastlines, rivers etc.](../fig/cartopy_states_solution.png)
 > {: .solution}
 {: .challenge}
 
 {% include links.md %}
-g

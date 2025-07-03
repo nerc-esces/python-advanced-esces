@@ -210,5 +210,20 @@ Seq     Host    Starttime       JobRuntime      Send    Receive Exitval Signal  
 >
 {: .challenge}
 
+> ## Bonus Challenge: Make a Movie
+>
+> We now have 288 PNG images covering the time period of our dataset. A useful way to view these would be as a video.
+> There are a number of programs you can use to convert these into a video file. One such program is [FFmpeg](https://ffmpeg.org).
+> You might need to install FFmpeg via Conda/Mamba. Lookup in the [FFmpeg documentation](https://trac.ffmpeg.org/wiki/Slideshow) how to
+> make your images into a video. Create the video, download it to your computer (you can't play it in Jupyter Lab) and play it.
+>
+> >
+> > ~~~
+> > ffmpeg -framerate 25 -pattern_type glob -i "*.png" -c:v libx264 output.mp4
+> > ~~~
+> > {: .language-bash}
+> {: .solution}
+{: .challenge}
+
 
 {% include links.md %}

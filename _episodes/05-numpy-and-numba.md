@@ -13,7 +13,7 @@ objectives:
 - "Understand that Numba is using Just-in-time compilation and vectorisation extensions."
 - "Understand when to use ufuncs to write functions that are compatible with Numba."
 keypoints:
-- "We can measure how long a Jupyter cell takes to run with %%time or %%timeit magics."
+- "We can measure how long a Jupyter cell takes to run with %time or %timeit magics."
 - "We can use a profiler to measure how long each line of code in a function takes."
 - "We should measure performance before attemping to optimise code and target our optimisations at the things which take longest."
 - "Numpy can perform operations to whole arrays, this will perform faster than using for loops."
