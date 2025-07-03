@@ -524,7 +524,7 @@ plt.legend()
 ~~~
 {: .language-python}
 
-![A line graph comparing the mean and 12 month rolling mean temperature anomaly for Liverpool.](../fig/xarray_rolling_window.png)
+![A line graph comparing the mean and 12 month rolling mean temperature anomaly for Liverpool.](../fig/xarray_rolling_mean.png)
 
 ## Coarsening
 
