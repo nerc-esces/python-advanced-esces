@@ -307,7 +307,9 @@ gw = dask_gateway.Gateway("https://dask-gateway.jasmin.ac.uk", auth="jupyterhub"
 {: .language-python}
 
 The gateway can be given a set of options including how many worker cores to use, initially we can set this to one and scale it up later. We also need to allocate at least one core
-as to the scheduler which will manage our Dask cluster. Finally we need to tell Dask which Conda/Mamba environment to use and this needs to match the one we're running in our notebook.
+as to the scheduler which will manage our Dask cluster. JASMIN requires us to specify a project to associate the Dask jobs with. 
+You can find out which projects you are a member of by running the command `useraccounts` on a sci server. If you are not a member of any project then you can 
+use "no-project" here, but if you are a member of a project you must use a project name. Finally we need to tell Dask which Conda/Mamba environment to use and this needs to match the one we're running in our notebook.
 
 ~~~
 options = gw.cluster_options()
@@ -318,8 +320,9 @@ options.worker_setup='source /apps/jasmin/jaspy/miniforge_envs/jaspy3.11/mf3-23.
 ~~~
 {: .language-python}
 
-Finally we can check if we already had a cluster running and reuse that if we do and then get a `client` object from the cluster that will behave the same way as the local Dask client
-did.
+
+Finally we can check if we already had a cluster running and reuse that if we do and then get a `client` object from the cluster that will behave 
+the same way as the local Dask client did.
 ~~~
 clusters = gw.list_clusters()
 if not clusters:
@@ -340,10 +343,10 @@ cluster.adapt(minimum=1, maximum=15)
 ~~~
 {: .language-python}
 
-If we now connect to one of the JASMIN sci servers (sci1-8) we can see our jobs in the SLURM queue by running the `squeue` command.
+If we now connect to one of the JASMIN sci servers (sci-vm-01 to 05 or sci-ph-01 to 03) we can see our jobs in the SLURM queue by running the `squeue` command.
 
 ~~~
-ssh -J <jasminusername>@login-02.jasmin.ac.uk sci6
+ssh -J <jasminusername>@login-02.jasmin.ac.uk sci-vm-03
 squeue -p dask
 ~~~
 {: .language-bash}
@@ -370,6 +373,37 @@ dashboard for your cluster. Unfortunately this server is only accessible within 
 > - Changing the chunk sizes you use in Xarray
 > - Changing the number of worker cores
 > - Changing the number of workers (set in `cluster.adapt`)
+>
+> > ## Solution
+> > ~~~
+> > import dask_gateway
+> > import xarray as xr
+> > print(dask_gateway.__version__)
+> > # Create a connection to dask-gateway.
+> > gw = dask_gateway.Gateway("https://dask-gateway.jasmin.ac.uk", auth="jupyterhub")
+> > 
+> > options = gw.cluster_options()
+> > options.worker_cores = 2
+> > options.scheduler_cores = 1
+> > options.account = "no-project"
+> > options.worker_setup='source /apps/jasmin/jaspy/miniforge_envs/jaspy3.11/mf3-23.11.0-0/bin/activate ~/.conda/envs/esces'
+> > clusters = gw.list_clusters()
+> > if not clusters:
+> >     cluster = gw.new_cluster(options, shutdown_on_close=False)
+> > else:
+> >    cluster = gw.connect(clusters[0].name)
+> > client = cluster.get_client()
+> > cluster.adapt(minimum=1, maximum=4)
+> > ds = xr.open_dataset("gistemp1200-21c.nc", chunks={'lat':30, 'lon':30, 'time':-1})
+> > ds
+> > da = ds['tempanomaly']
+> > da
+> > dataset_corrected = ds['tempanomaly'] * 1.1 - 1.0
+> > print(dataset_corrected)
+> > cluster.shutdown()
+> > ~~~
+> > {: .language-python}
+> {: .solution}
 {: .challenge}
 
 
