@@ -10,7 +10,7 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta http-equiv="last-modified" content="2025-07-03 11:11:57 -0500">
+    <meta http-equiv="last-modified" content="2025-07-04 10:15:38 -0500">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- meta "search-domain" used for google site search function google_search() -->
     <meta name="search-domain" value="">
@@ -458,6 +458,12 @@ Numpy to treat an Xarray DataArray as a Numpy array and vice-versa. A Dataset ob
 <p>One possible reason to using the sel method instead of the array based indexing is that sel supports variables with spaces in their names, while the dot notation doesn’t.
 Although all these different styles can be used interchangbly, for the purpose of providing readable code it is helpful to be consistent and choose one style throughout our program.</p>
 
+<p>None of the examples we’ve shown so far have returned us the actual values of the data. For many of the Xarray operations we’ll deal with later this isn’t a problem.
+But if we do actually want the values of the data we’ve selected then we need to call <code class="language-plaintext highlighter-rouge">.values</code> on the end of the operation, for example:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">dataset</span><span class="p">[</span><span class="s">'tempanomaly'</span><span class="p">].</span><span class="n">sel</span><span class="p">(</span><span class="n">time</span><span class="o">=</span><span class="nb">slice</span><span class="p">(</span><span class="s">"2000-01-15"</span><span class="p">,</span><span class="s">"2000-12-15"</span><span class="p">)).</span><span class="n">values</span>
+</code></pre></div></div>
+
 <blockquote class="challenge">
   <h2 id="slicing-exercise">Slicing exercise</h2>
   <p>Write a slicing command to get every other month from the temperature anomaly dataset.</p>
@@ -504,6 +510,8 @@ we specify the tolerance with the suffix <code class="language-plaintext highlig
 <p>One thing to note is that Xarray has not only plotted the graph, but has also automatically labelled it based on the long names and units for the variables that were in the metadata 
 of the dataset. The dates on the X axis are also correctly labelled, whereas many plotting libraries require some extra steps to setup labelling dates correctly.</p>
 
+<p><img src="../fig/xarray_plot.png" alt="The plot of the time series data at 53 North, 3 West from the code above." /></p>
+
 <h2 id="plotting-two-dimensional-data">Plotting Two Dimensional Data</h2>
 
 <p>Xarray isn’t just restricted to plotting line graphs, if we select some data that returns latitude and longitude dimensions then the plot function will show a map.</p>
@@ -514,9 +522,13 @@ of the dataset. The dates on the X axis are also correctly labelled, whereas man
 <p>The plot function being called is actually part of the Matplotlib library and we can invoke Matplotlib if we need to modify some of the plotting parameters. For example we might
 want to change the colourmap to one which uses grayscale. This can be done by first importing <code class="language-plaintext highlighter-rouge">matplotlib.pyplot</code> and specifying the <code class="language-plaintext highlighter-rouge">cmap</code> parameter to <code class="language-plaintext highlighter-rouge">plot()</code>.</p>
 
+<p><img src="../fig/xarray_plot_2d.png" alt="A colour 2D plot of the temperature anomaly for the whole world on January 15th 2000" /></p>
+
 <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="n">plt</span>
 <span class="n">dataset</span><span class="p">[</span><span class="s">'tempanomaly'</span><span class="p">].</span><span class="n">sel</span><span class="p">(</span><span class="n">time</span><span class="o">=</span><span class="s">"2000-01-15"</span><span class="p">).</span><span class="n">plot</span><span class="p">(</span><span class="n">cmap</span><span class="o">=</span><span class="n">plt</span><span class="p">.</span><span class="n">cm</span><span class="p">.</span><span class="n">Grays</span><span class="p">)</span>
 </code></pre></div></div>
+
+<p><img src="../fig/xarray_plot_2d_gray.png" alt="A grayscale 2D plot of the temperature anomaly for the whole world on January 15th 2000" /></p>
 
 <h2 id="plotting-histograms">Plotting Histograms</h2>
 
@@ -525,6 +537,8 @@ To produce this we call the <code class="language-plaintext highlighter-rouge">p
 
 <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">dataset</span><span class="p">[</span><span class="s">'tempanomaly'</span><span class="p">].</span><span class="n">sel</span><span class="p">(</span><span class="n">time</span><span class="o">=</span><span class="s">"2010-09-15"</span><span class="p">).</span><span class="n">plot</span><span class="p">.</span><span class="n">hist</span><span class="p">()</span>
 </code></pre></div></div>
+
+<p><img src="../fig_xarray_histogram.png" alt="A histogram showing the distribution of global temperature anomalies on September 15th 2010." /></p>
 
 <h2 id="interactive-plotting-with-hvplot">Interactive Plotting with Hvplot</h2>
 
@@ -540,6 +554,8 @@ Another plotting library we can use is <a href="https://hvplot.holoviz.org/">Hvp
 
 <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">dataset</span><span class="p">[</span><span class="s">'tempanomaly'</span><span class="p">].</span><span class="n">sel</span><span class="p">(</span><span class="n">lat</span><span class="o">=</span><span class="mi">53</span><span class="p">,</span><span class="n">lon</span><span class="o">=-</span><span class="mi">3</span><span class="p">).</span><span class="n">hvplot</span><span class="p">()</span>
 </code></pre></div></div>
+
+<p><img src="../fig/hvplot.png" alt="The Hvplot from the code above which plots temperature anomaly over time for Liverpool." /></p>
 
 <blockquote class="challenge">
   <h2 id="challenge">Challenge</h2>
@@ -662,8 +678,10 @@ then we could use:</p>
 <span class="n">lower_95th</span> <span class="o">=</span> <span class="n">dataset</span><span class="p">[</span><span class="s">'tempanomaly'</span><span class="p">].</span><span class="n">where</span><span class="p">(</span><span class="n">dataset</span><span class="p">[</span><span class="s">'tempanomaly'</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">threshold</span><span class="p">)</span>
 <span class="n">lower_95th</span> <span class="o">=</span> <span class="n">lower_95th</span> <span class="o">*</span> <span class="mf">0.90</span>
 <span class="n">lower_95th</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="n">plot</span><span class="p">()</span>
-<span class="n">dataset</span><span class="p">[</span><span class="s">'tempanomaly'</span><span class="p">].</span><span class="n">plot</span><span class="p">()</span>
+<span class="c1"># do this in a different Jupyter cell or you only get one plot
+</span><span class="n">dataset</span><span class="p">[</span><span class="s">'tempanomaly'</span><span class="p">][</span><span class="mi">0</span><span class="p">].</span><span class="n">plot</span><span class="p">()</span>
 </code></pre></div>    </div>
+    <p><img src="../fig/xarray_filter_and_rescale_solution.png" alt="A plot of the solution showing a global map with only the lower 95th percentile of data multiplied by 0.9" /></p>
   </blockquote>
 </blockquote>
 
@@ -701,6 +719,8 @@ and call it’s <code class="language-plaintext highlighter-rouge">legend</code>
 <span class="n">plt</span><span class="p">.</span><span class="n">legend</span><span class="p">()</span>
 </code></pre></div></div>
 
+<p><img src="../fig/xarray_resample.png" alt="A line plot showing the global monthly mean temperature anomaly and the annual mean temperature anomaly." /></p>
+
 <h2 id="group-by">Group by</h2>
 
 <p>The group by pattern allows us to group related data together, a common example in environmental science is to group monthly data into seasonal groups of three months each.</p>
@@ -718,6 +738,8 @@ as a bar chart, we need to give the names of the groups and the values we’ll b
 <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">grouped_mean</span> <span class="o">=</span> <span class="n">grouped</span><span class="p">.</span><span class="n">mean</span><span class="p">()</span>
 <span class="n">plt</span><span class="p">.</span><span class="n">bar</span><span class="p">(</span><span class="n">grouped_mean</span><span class="p">.</span><span class="n">season</span><span class="p">,</span><span class="n">grouped_mean</span><span class="p">)</span>
 </code></pre></div></div>
+
+<p><img src="../fig/xarray_groupby.png" alt="A bar chart showing the seasonal temperature anomalies" /></p>
 
 <h3 id="binned-group-by">Binned Group By</h3>
 
@@ -744,6 +766,8 @@ Once this is done we can plot a bar graph showing the counts in each bin.</p>
 <span class="n">plt</span><span class="p">.</span><span class="n">bar</span><span class="p">(</span><span class="n">labels</span><span class="p">,</span><span class="n">counts</span><span class="p">[</span><span class="s">'tempanomaly'</span><span class="p">].</span><span class="n">values</span><span class="p">)</span>
 </code></pre></div></div>
 
+<p><img src="../fig/xarray_binned_groupby.png" alt="A bar chart showing the binned group by plot." /></p>
+
 <h2 id="rolling-windows">Rolling Windows</h2>
 
 <p>Xarray can work on a “rolling window” of data that covers a subset of the data. This can be useful for example to calculate a rolling mean of 12 months worth of data.
@@ -757,6 +781,8 @@ The following will graph both the monthly values and the rolling mean temperatur
 <span class="n">ds_rolling</span><span class="p">.</span><span class="n">sel</span><span class="p">(</span><span class="n">lon</span><span class="o">=-</span><span class="mi">3</span><span class="p">,</span><span class="n">lat</span><span class="o">=</span><span class="mi">53</span><span class="p">).</span><span class="n">plot</span><span class="p">(</span><span class="n">label</span><span class="o">=</span><span class="s">"12 month rolling mean"</span><span class="p">)</span>
 <span class="n">plt</span><span class="p">.</span><span class="n">legend</span><span class="p">()</span>
 </code></pre></div></div>
+
+<p><img src="../fig/xarray_rolling_mean.png" alt="A line graph comparing the mean and 12 month rolling mean temperature anomaly for Liverpool." /></p>
 
 <h2 id="coarsening">Coarsening</h2>
 
@@ -778,6 +804,8 @@ To do something useful with it we need to apply a function such as <code class="
 <span class="c1">#for comparison
 </span><span class="n">dataset</span><span class="p">[</span><span class="s">'tempanomaly'</span><span class="p">].</span><span class="n">sel</span><span class="p">(</span><span class="n">lat</span><span class="o">=</span><span class="mi">53</span><span class="p">,</span><span class="n">lon</span><span class="o">=-</span><span class="mi">3</span><span class="p">).</span><span class="n">plot</span><span class="p">()</span>
 </code></pre></div></div>
+
+<p><img src="../fig/xarray_coarsening.png" alt="A line graph comparing the temperature anomaly for Liverpool and the 12 month coarsened anomaly." /></p>
 
 <h1 id="writing-data">Writing Data</h1>
 
@@ -811,6 +839,7 @@ Sea Surface Temperature data from NOAA, known as “ersstv5”. Load this data w
 </span><span class="n">sst_global</span><span class="p">[</span><span class="s">'sst'</span><span class="p">].</span><span class="n">plot</span><span class="p">()</span>
 <span class="n">sst_global</span><span class="p">.</span><span class="n">to_netcdf</span><span class="p">(</span><span class="s">"global-mean-sst.nc"</span><span class="p">)</span>
 </code></pre></div>    </div>
+    <p><img src="../fig/xarray_sst_mean.png" alt="A line graph showing the global mean sea surface temperature each year from 1970 to 1999" /></p>
   </blockquote>
 </blockquote>
 

@@ -10,7 +10,7 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta http-equiv="last-modified" content="2025-07-03 11:11:57 -0500">
+    <meta http-equiv="last-modified" content="2025-07-04 10:15:38 -0500">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- meta "search-domain" used for google site search function google_search() -->
     <meta name="search-domain" value="">
@@ -761,7 +761,7 @@ Write some code to get the temperature anomaly for January 2020 in Astana, Kazak
 
 <h1 id="dataset-parallelism-with-gnu-parallel">Dataset Parallelism with GNU Parallel</h1>
 
-<p>GNU Parallel is a very powerful command that lets us execute any command in parallel. To do this effectively we need what is often called an “embarrasingly parallel” problem. 
+<p>GNU Parallel is a very powerful command that lets us execute any command in parallel. To do this effectively we need what is often called an “embarrasingly parallel” problem.
 These are problems where a dataset can be split into several parts and each can be processed independently and simultaneously. Such problems often occur when a dataset is
 split across multiple files or there are multiple parameters to process.</p>
 
@@ -785,7 +785,7 @@ The <code class="language-plaintext highlighter-rouge">{1}</code> after the echo
 <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>parallel <span class="nb">echo</span> <span class="o">{</span>1<span class="o">}</span> ::: 1 2 3 4 5 6 7 8
 </code></pre></div></div>
 
-<p>Just running echo commands isn’t very useful, but we could use parallel to invoke a Python script too. 
+<p>Just running echo commands isn’t very useful, but we could use parallel to invoke a Python script too.
 The serial example to process a series of NetCDF files would be:</p>
 
 <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">for </span>file <span class="k">in</span> <span class="si">$(</span><span class="nb">ls</span> <span class="k">*</span>.nc<span class="si">)</span> <span class="p">;</span> <span class="k">do
@@ -800,7 +800,7 @@ The serial example to process a series of NetCDF files would be:</p>
 
 <h2 id="citing-software">Citing Software</h2>
 
-<p>It is good practice to cite the software we use in research. GNU Parallel is particularly vocal about this and it will remind you to cite it. 
+<p>It is good practice to cite the software we use in research. GNU Parallel is particularly vocal about this and it will remind you to cite it.
 Running <code class="language-plaintext highlighter-rouge">parallel --citation</code> will show us all of the information we’ll need if we are going to cite it in a publication, it will also prevent further reminders about it.</p>
 
 <h2 id="working-with-multiple-arguments">Working with multiple arguments</h2>
@@ -858,7 +858,7 @@ We can tell Parallel to limit how many cores it is running on with the <code cla
 
 <h2 id="logging">Logging</h2>
 
-<p>In more complex jobs it can be useful to have a log of which jobs ran, when they started and how long they took. 
+<p>In more complex jobs it can be useful to have a log of which jobs ran, when they started and how long they took.
 This is set with the <code class="language-plaintext highlighter-rouge">--joblog</code> option to Parallel and is followed by a file name. For example:</p>
 
 <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>parallel <span class="nt">--joblog</span><span class="o">=</span>jobs.log <span class="nb">echo</span> <span class="o">{</span>1<span class="o">}</span> ::: 1 2 3 4 5 6 7 8 9 10
@@ -881,7 +881,7 @@ This is set with the <code class="language-plaintext highlighter-rouge">--joblog
 
 <blockquote class="challenge">
   <h2 id="timing-the-speed-up-with-parallel">Timing the speed up with Parallel</h2>
-  <p>There is a script included with the example dataset called plot_tempanomaly.py. 
+  <p>There is a script included with the example dataset called plot_tempanomaly.py.
 This script will plot a map of the temperature anomaly data from our GISS dataset. It takes three arguments, the name of the NetCDF file to use, a start year (specified with –start)
 and an end year (specified with –end). It will create a PNG file for each month that it processes.</p>
 
@@ -920,6 +920,21 @@ Try adding the joblog option and examining how many jobs launched at once.
 How many jobs did Parallel launch simultaneously? How much faster was the parallel version than the serial version?
 Try adding the –max-procs option and setting this to 2,4 or 8 and compare the run time.</p>
 
+</blockquote>
+
+<blockquote class="challenge">
+  <h2 id="bonus-challenge-make-a-movie">Bonus Challenge: Make a Movie</h2>
+
+  <p>We now have 288 PNG images covering the time period of our dataset. A useful way to view these would be as a video.
+There are a number of programs you can use to convert these into a video file. One such program is <a href="https://ffmpeg.org">FFmpeg</a>.
+You might need to install FFmpeg via Conda/Mamba. Lookup in the <a href="https://trac.ffmpeg.org/wiki/Slideshow">FFmpeg documentation</a> how to
+make your images into a video. Create the video, download it to your computer (you can’t play it in Jupyter Lab) and play it.</p>
+
+  <blockquote class="solution">
+    <h2 id="solution">Solution</h2>
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ffmpeg <span class="nt">-framerate</span> 25 <span class="nt">-pattern_type</span> glob <span class="nt">-i</span> <span class="s2">"*.png"</span> <span class="nt">-c</span>:v libx264 output.mp4
+</code></pre></div>    </div>
+  </blockquote>
 </blockquote>
 
 <blockquote class="keypoints">
@@ -1490,7 +1505,7 @@ For small computations the overhead of parallelization can outweigh the benefits
   <h2>Key Points</h2>
   <ul>
     
-    <li><p>We can measure how long a Jupyter cell takes to run with %%time or %%timeit magics.</p>
+    <li><p>We can measure how long a Jupyter cell takes to run with %time or %timeit magics.</p>
 </li>
     
     <li><p>We can use a profiler to measure how long each line of code in a function takes.</p>
@@ -1713,6 +1728,12 @@ Numpy to treat an Xarray DataArray as a Numpy array and vice-versa. A Dataset ob
 <p>One possible reason to using the sel method instead of the array based indexing is that sel supports variables with spaces in their names, while the dot notation doesn’t.
 Although all these different styles can be used interchangbly, for the purpose of providing readable code it is helpful to be consistent and choose one style throughout our program.</p>
 
+<p>None of the examples we’ve shown so far have returned us the actual values of the data. For many of the Xarray operations we’ll deal with later this isn’t a problem.
+But if we do actually want the values of the data we’ve selected then we need to call <code class="language-plaintext highlighter-rouge">.values</code> on the end of the operation, for example:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">dataset</span><span class="p">[</span><span class="s">'tempanomaly'</span><span class="p">].</span><span class="n">sel</span><span class="p">(</span><span class="n">time</span><span class="o">=</span><span class="nb">slice</span><span class="p">(</span><span class="s">"2000-01-15"</span><span class="p">,</span><span class="s">"2000-12-15"</span><span class="p">)).</span><span class="n">values</span>
+</code></pre></div></div>
+
 <blockquote class="challenge">
   <h2 id="slicing-exercise">Slicing exercise</h2>
   <p>Write a slicing command to get every other month from the temperature anomaly dataset.</p>
@@ -1759,6 +1780,8 @@ we specify the tolerance with the suffix <code class="language-plaintext highlig
 <p>One thing to note is that Xarray has not only plotted the graph, but has also automatically labelled it based on the long names and units for the variables that were in the metadata 
 of the dataset. The dates on the X axis are also correctly labelled, whereas many plotting libraries require some extra steps to setup labelling dates correctly.</p>
 
+<p><img src="../fig/xarray_plot.png" alt="The plot of the time series data at 53 North, 3 West from the code above." /></p>
+
 <h2 id="plotting-two-dimensional-data">Plotting Two Dimensional Data</h2>
 
 <p>Xarray isn’t just restricted to plotting line graphs, if we select some data that returns latitude and longitude dimensions then the plot function will show a map.</p>
@@ -1769,9 +1792,13 @@ of the dataset. The dates on the X axis are also correctly labelled, whereas man
 <p>The plot function being called is actually part of the Matplotlib library and we can invoke Matplotlib if we need to modify some of the plotting parameters. For example we might
 want to change the colourmap to one which uses grayscale. This can be done by first importing <code class="language-plaintext highlighter-rouge">matplotlib.pyplot</code> and specifying the <code class="language-plaintext highlighter-rouge">cmap</code> parameter to <code class="language-plaintext highlighter-rouge">plot()</code>.</p>
 
+<p><img src="../fig/xarray_plot_2d.png" alt="A colour 2D plot of the temperature anomaly for the whole world on January 15th 2000" /></p>
+
 <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="n">plt</span>
 <span class="n">dataset</span><span class="p">[</span><span class="s">'tempanomaly'</span><span class="p">].</span><span class="n">sel</span><span class="p">(</span><span class="n">time</span><span class="o">=</span><span class="s">"2000-01-15"</span><span class="p">).</span><span class="n">plot</span><span class="p">(</span><span class="n">cmap</span><span class="o">=</span><span class="n">plt</span><span class="p">.</span><span class="n">cm</span><span class="p">.</span><span class="n">Grays</span><span class="p">)</span>
 </code></pre></div></div>
+
+<p><img src="../fig/xarray_plot_2d_gray.png" alt="A grayscale 2D plot of the temperature anomaly for the whole world on January 15th 2000" /></p>
 
 <h2 id="plotting-histograms">Plotting Histograms</h2>
 
@@ -1780,6 +1807,8 @@ To produce this we call the <code class="language-plaintext highlighter-rouge">p
 
 <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">dataset</span><span class="p">[</span><span class="s">'tempanomaly'</span><span class="p">].</span><span class="n">sel</span><span class="p">(</span><span class="n">time</span><span class="o">=</span><span class="s">"2010-09-15"</span><span class="p">).</span><span class="n">plot</span><span class="p">.</span><span class="n">hist</span><span class="p">()</span>
 </code></pre></div></div>
+
+<p><img src="../fig_xarray_histogram.png" alt="A histogram showing the distribution of global temperature anomalies on September 15th 2010." /></p>
 
 <h2 id="interactive-plotting-with-hvplot">Interactive Plotting with Hvplot</h2>
 
@@ -1795,6 +1824,8 @@ Another plotting library we can use is <a href="https://hvplot.holoviz.org/">Hvp
 
 <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">dataset</span><span class="p">[</span><span class="s">'tempanomaly'</span><span class="p">].</span><span class="n">sel</span><span class="p">(</span><span class="n">lat</span><span class="o">=</span><span class="mi">53</span><span class="p">,</span><span class="n">lon</span><span class="o">=-</span><span class="mi">3</span><span class="p">).</span><span class="n">hvplot</span><span class="p">()</span>
 </code></pre></div></div>
+
+<p><img src="../fig/hvplot.png" alt="The Hvplot from the code above which plots temperature anomaly over time for Liverpool." /></p>
 
 <blockquote class="challenge">
   <h2 id="challenge">Challenge</h2>
@@ -1917,8 +1948,10 @@ then we could use:</p>
 <span class="n">lower_95th</span> <span class="o">=</span> <span class="n">dataset</span><span class="p">[</span><span class="s">'tempanomaly'</span><span class="p">].</span><span class="n">where</span><span class="p">(</span><span class="n">dataset</span><span class="p">[</span><span class="s">'tempanomaly'</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">threshold</span><span class="p">)</span>
 <span class="n">lower_95th</span> <span class="o">=</span> <span class="n">lower_95th</span> <span class="o">*</span> <span class="mf">0.90</span>
 <span class="n">lower_95th</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="n">plot</span><span class="p">()</span>
-<span class="n">dataset</span><span class="p">[</span><span class="s">'tempanomaly'</span><span class="p">].</span><span class="n">plot</span><span class="p">()</span>
+<span class="c1"># do this in a different Jupyter cell or you only get one plot
+</span><span class="n">dataset</span><span class="p">[</span><span class="s">'tempanomaly'</span><span class="p">][</span><span class="mi">0</span><span class="p">].</span><span class="n">plot</span><span class="p">()</span>
 </code></pre></div>    </div>
+    <p><img src="../fig/xarray_filter_and_rescale_solution.png" alt="A plot of the solution showing a global map with only the lower 95th percentile of data multiplied by 0.9" /></p>
   </blockquote>
 </blockquote>
 
@@ -1956,6 +1989,8 @@ and call it’s <code class="language-plaintext highlighter-rouge">legend</code>
 <span class="n">plt</span><span class="p">.</span><span class="n">legend</span><span class="p">()</span>
 </code></pre></div></div>
 
+<p><img src="../fig/xarray_resample.png" alt="A line plot showing the global monthly mean temperature anomaly and the annual mean temperature anomaly." /></p>
+
 <h2 id="group-by">Group by</h2>
 
 <p>The group by pattern allows us to group related data together, a common example in environmental science is to group monthly data into seasonal groups of three months each.</p>
@@ -1973,6 +2008,8 @@ as a bar chart, we need to give the names of the groups and the values we’ll b
 <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">grouped_mean</span> <span class="o">=</span> <span class="n">grouped</span><span class="p">.</span><span class="n">mean</span><span class="p">()</span>
 <span class="n">plt</span><span class="p">.</span><span class="n">bar</span><span class="p">(</span><span class="n">grouped_mean</span><span class="p">.</span><span class="n">season</span><span class="p">,</span><span class="n">grouped_mean</span><span class="p">)</span>
 </code></pre></div></div>
+
+<p><img src="../fig/xarray_groupby.png" alt="A bar chart showing the seasonal temperature anomalies" /></p>
 
 <h3 id="binned-group-by">Binned Group By</h3>
 
@@ -1999,6 +2036,8 @@ Once this is done we can plot a bar graph showing the counts in each bin.</p>
 <span class="n">plt</span><span class="p">.</span><span class="n">bar</span><span class="p">(</span><span class="n">labels</span><span class="p">,</span><span class="n">counts</span><span class="p">[</span><span class="s">'tempanomaly'</span><span class="p">].</span><span class="n">values</span><span class="p">)</span>
 </code></pre></div></div>
 
+<p><img src="../fig/xarray_binned_groupby.png" alt="A bar chart showing the binned group by plot." /></p>
+
 <h2 id="rolling-windows">Rolling Windows</h2>
 
 <p>Xarray can work on a “rolling window” of data that covers a subset of the data. This can be useful for example to calculate a rolling mean of 12 months worth of data.
@@ -2012,6 +2051,8 @@ The following will graph both the monthly values and the rolling mean temperatur
 <span class="n">ds_rolling</span><span class="p">.</span><span class="n">sel</span><span class="p">(</span><span class="n">lon</span><span class="o">=-</span><span class="mi">3</span><span class="p">,</span><span class="n">lat</span><span class="o">=</span><span class="mi">53</span><span class="p">).</span><span class="n">plot</span><span class="p">(</span><span class="n">label</span><span class="o">=</span><span class="s">"12 month rolling mean"</span><span class="p">)</span>
 <span class="n">plt</span><span class="p">.</span><span class="n">legend</span><span class="p">()</span>
 </code></pre></div></div>
+
+<p><img src="../fig/xarray_rolling_mean.png" alt="A line graph comparing the mean and 12 month rolling mean temperature anomaly for Liverpool." /></p>
 
 <h2 id="coarsening">Coarsening</h2>
 
@@ -2033,6 +2074,8 @@ To do something useful with it we need to apply a function such as <code class="
 <span class="c1">#for comparison
 </span><span class="n">dataset</span><span class="p">[</span><span class="s">'tempanomaly'</span><span class="p">].</span><span class="n">sel</span><span class="p">(</span><span class="n">lat</span><span class="o">=</span><span class="mi">53</span><span class="p">,</span><span class="n">lon</span><span class="o">=-</span><span class="mi">3</span><span class="p">).</span><span class="n">plot</span><span class="p">()</span>
 </code></pre></div></div>
+
+<p><img src="../fig/xarray_coarsening.png" alt="A line graph comparing the temperature anomaly for Liverpool and the 12 month coarsened anomaly." /></p>
 
 <h1 id="writing-data">Writing Data</h1>
 
@@ -2066,6 +2109,7 @@ Sea Surface Temperature data from NOAA, known as “ersstv5”. Load this data w
 </span><span class="n">sst_global</span><span class="p">[</span><span class="s">'sst'</span><span class="p">].</span><span class="n">plot</span><span class="p">()</span>
 <span class="n">sst_global</span><span class="p">.</span><span class="n">to_netcdf</span><span class="p">(</span><span class="s">"global-mean-sst.nc"</span><span class="p">)</span>
 </code></pre></div>    </div>
+    <p><img src="../fig/xarray_sst_mean.png" alt="A line graph showing the global mean sea surface temperature each year from 1970 to 1999" /></p>
   </blockquote>
 </blockquote>
 
@@ -2171,6 +2215,8 @@ To extract some data from our datset we’ll use <code class="language-plaintext
 <span class="n">dataset</span><span class="p">[</span><span class="s">'tempanomaly'</span><span class="p">].</span><span class="n">sel</span><span class="p">(</span><span class="n">time</span><span class="o">=</span><span class="s">"2000-01-15"</span><span class="p">).</span><span class="n">plot</span><span class="p">(</span><span class="n">ax</span> <span class="o">=</span> <span class="n">axis</span><span class="p">)</span>
 </code></pre></div></div>
 
+<p><img src="../fig/cartopy.png" alt="Output of the code above showing the temperature anomaly data plotted using Cartopy with the PlateCarree projection." /></p>
+
 <p>We should now see a map of the world with the temperature anomaly data, if we look in the top left we can see North America appearing mostly in red and in the lower right Australia in blue,
 but much of the other continents are harder to make out. To make it easier we can add coastlines by calling <code class="language-plaintext highlighter-rouge">axis.coastlines()</code> after the plot. But to make this appear on the same map
 as the rest of the plot it needs to be in the same Jupyter cell and we’ll have to rerun the whole cell.</p>
@@ -2180,6 +2226,8 @@ as the rest of the plot it needs to be in the same Jupyter cell and we’ll have
 <span class="n">dataset</span><span class="p">.</span><span class="n">tempanomaly</span><span class="p">.</span><span class="n">sel</span><span class="p">(</span><span class="n">time</span><span class="o">=</span><span class="s">"2000-01-15"</span><span class="p">).</span><span class="n">plot</span><span class="p">(</span><span class="n">ax</span> <span class="o">=</span> <span class="n">axis</span><span class="p">)</span>
 <span class="n">axis</span><span class="p">.</span><span class="n">coastlines</span><span class="p">()</span>
 </code></pre></div></div>
+
+<p><img src="../fig/cartopy_coastlines.png" alt="Cartopy plotting the temperature anomaly data with coastlines." /></p>
 
 <h1 id="dealing-with-projections">Dealing with Projections</h1>
 
@@ -2193,6 +2241,8 @@ which define the point at which we want to centre the map on.</p>
 <span class="n">axis</span><span class="p">.</span><span class="n">coastlines</span><span class="p">()</span>
 </code></pre></div></div>
 
+<p><img src="../fig/cartopy/cartopy_polar_incorrect.png" alt="Cartopy plotting data with the rotate pole projection" /></p>
+
 <p>The above example puts the map into a RotatedPole projection, but notice that the coastlines and coloured areas of the map don’t match as they previously did. This is because
 we haven’t told Cartopy how the data is structured and it has assumed it matches the projection. We didn’t need to do this with the PlateCarree projection as the data matched the projection
 but now we need to specify an extra <code class="language-plaintext highlighter-rouge">transform</code> argument to <code class="language-plaintext highlighter-rouge">plot</code>.</p>
@@ -2202,6 +2252,8 @@ but now we need to specify an extra <code class="language-plaintext highlighter-
 <span class="n">dataset</span><span class="p">.</span><span class="n">tempanomaly</span><span class="p">.</span><span class="n">sel</span><span class="p">(</span><span class="n">time</span><span class="o">=</span><span class="s">"2000-01-15"</span><span class="p">).</span><span class="n">plot</span><span class="p">(</span><span class="n">ax</span> <span class="o">=</span> <span class="n">axis</span><span class="p">,</span> <span class="n">transform</span><span class="o">=</span><span class="n">ccrs</span><span class="p">.</span><span class="n">PlateCarree</span><span class="p">())</span>
 <span class="n">axis</span><span class="p">.</span><span class="n">coastlines</span><span class="p">()</span>
 </code></pre></div></div>
+
+<p><img src="../fig/cartopy/cartopy_polar_correct.png" alt="Cartopy plotting data with the rotate pole projection and reprojecting the data." /></p>
 
 <p>The data should now match the coastlines.</p>
 
@@ -2239,6 +2291,8 @@ Which do you like the most? Discuss what is the most useful aspects for showing 
 <span class="n">axis</span><span class="p">.</span><span class="n">gridlines</span><span class="p">(</span><span class="n">draw_labels</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span><span class="n">xlocs</span><span class="o">=</span><span class="p">[</span><span class="o">-</span><span class="mi">180</span><span class="p">,</span><span class="o">-</span><span class="mi">90</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">90</span><span class="p">,</span><span class="mi">180</span><span class="p">])</span>
 </code></pre></div></div>
 
+<p><img src="../fig/cartopy_gridlines.png" alt="Cartopy showing gridlines on the temperature anomaly map" /></p>
+
 <p>A more concise way to do this is to use Numpy’s <code class="language-plaintext highlighter-rouge">linspace</code> function which creates an array of evenly spaced elements, this takes a start, end and number of elements parameter for example:</p>
 
 <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">axis</span><span class="p">.</span><span class="n">gridlines</span><span class="p">(</span><span class="n">draw_labels</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span><span class="n">xlocs</span><span class="o">=</span><span class="n">np</span><span class="p">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="mi">180</span><span class="p">,</span><span class="mi">180</span><span class="p">,</span><span class="mi">5</span><span class="p">))</span>
@@ -2260,6 +2314,8 @@ library and can be added using the <code class="language-plaintext highlighter-r
 <span class="n">axis</span><span class="p">.</span><span class="n">add_feature</span><span class="p">(</span><span class="n">cfeature</span><span class="p">.</span><span class="n">RIVERS</span><span class="p">)</span>
 </code></pre></div></div>
 
+<p><img src="../fig/cartopy/cartopy_coastlines.png" alt="Cartopy showing the boundaires, rivers and lakes as well as the coastlines." /></p>
+
 <p>The above code will add country boundaries, lakes and rivers to our map. The lakes and rivers might be a little hard to see in places where there is a blue being used to render the
 temperature anomaly. We could apply a different colourmap to avoid this problem, the plasma colourmap in Matplotlib goes from purple, to orange to yellow and shows the contrast with
  the rivers nicely.</p>
@@ -2274,6 +2330,8 @@ temperature anomaly. We could apply a different colourmap to avoid this problem,
 <span class="n">axis</span><span class="p">.</span><span class="n">add_feature</span><span class="p">(</span><span class="n">cfeature</span><span class="p">.</span><span class="n">LAKES</span><span class="p">)</span>
 <span class="n">axis</span><span class="p">.</span><span class="n">add_feature</span><span class="p">(</span><span class="n">cfeature</span><span class="p">.</span><span class="n">RIVERS</span><span class="p">)</span>
 </code></pre></div></div>
+
+<p><img src="../fig/cartopy/cartopy_purple_yellow.png" alt="Cartopy showing the boundaries against plasma colourmap." /></p>
 
 <blockquote class="callout">
   <h2 id="downloading-boundary-data-manually">Downloading boundary data manually</h2>
@@ -2292,7 +2350,18 @@ by using a wget or curl command from your terminal. Download the following files
 
   <p>Place the boundaries in <code class="language-plaintext highlighter-rouge">~/.local/share/cartopy/shapefiles/natural_earth/cultural</code></p>
 
+  <p>Cartopy also includes a script called</p>
+
   <p>Here’s the commands to do all of this:</p>
+
+  <p>Using Cartopy’s script:</p>
+  <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>cartopy_feature_download physical <span class="nt">--output</span>  ~/.local/share/cartopy/shapefiles/natural_earth/physical
+cartopy_feature_download gshhs <span class="nt">--output</span>  ~/.local/share/cartopy/shapefiles/natural_earth/physical
+cartopy_feature_download cultural <span class="nt">--output</span>  ~/.local/share/cartopy/shapefiles/natural_earth/cultural
+cartopy_feature_download cultural-extra <span class="nt">--output</span>  ~/.local/share/cartopy/shapefiles/natural_earth/cultural
+</code></pre></div>  </div>
+
+  <p>Manual method:</p>
   <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>wget https://naturalearth.s3.amazonaws.com/110m_physical/ne_110m_coastline.zip https://naturalearth.s3.amazonaws.com/110m_physical/ne_110m_lakes.zip https://naturalearth.s3.amazonaws.com/110m_physical/ne_110m_rivers_lake_centerlines.zip https://naturalearth.s3.amazonaws.com/110m_cultural/ne_110m_admin_0_boundary_lines_land.zip
 <span class="nb">mkdir</span> <span class="nt">-p</span> ~/.local/share/cartopy/shapefiles/natural_earth/cultural
 <span class="nb">mkdir</span> <span class="nt">-p</span> ~/.local/share/cartopy/shapefiles/natural_earth/physical
@@ -2303,6 +2372,7 @@ conda run <span class="nt">-n</span> esces unzip ~/ne_110m_coastline.zip
 conda run <span class="nt">-n</span> esces unzip ~/ne_110m_lakes.zip
 conda run <span class="nt">-n</span> esces unzip ~/ne_110m_rivers_lake_centerlines.zip
 </code></pre></div>  </div>
+
 </blockquote>
 
 <blockquote class="challenge">
@@ -2319,10 +2389,9 @@ of boundary features from the shapefiles supplied by the website Natural Earth. 
        <span class="n">facecolor</span><span class="o">=</span><span class="s">'none'</span><span class="p">)</span>
 <span class="n">axis</span><span class="p">.</span><span class="n">add_feature</span><span class="p">(</span><span class="n">states_provinces</span><span class="p">)</span>
 </code></pre></div>    </div>
+    <p><img src="../fig/cartopy_states_solution.png" alt="Cartopy showing the state boundaries in addition to other boundaries, coastlines, rivers etc." /></p>
   </blockquote>
 </blockquote>
-
-<p>g</p>
 
 <blockquote class="keypoints">
   <h2>Key Points</h2>
@@ -2990,7 +3059,7 @@ allow native Python operations on Zarr. There is support for Zarr in other langu
 
 <h2 id="zarr-and-xarray">Zarr and Xarray</h2>
 
-<p>Xarray can open Zarr files using the <code class="language-plaintext highlighter-rouge">open_zarr</code> function that is similar to the <code class="language-plaintext highlighter-rouge">open_datset</code> function we’ve been using to open NetCDF data. We will be using the outputs of the <a href="https://noc-msm.github.io/NOC_Near_Present_Day/">Near-Present-Day simulations developed by the National Oceanography Centre</a>, specifically related to the eORCA025 model and covers the ocean globally. Each dataset can have more than 200GB, DO NOT DOWNLOAD IT!</p>
+<p>Xarray can open Zarr files using the <code class="language-plaintext highlighter-rouge">open_zarr</code> function that is similar to the <code class="language-plaintext highlighter-rouge">open_dataset</code> function we’ve been using to open NetCDF data. We will be using the outputs of the <a href="https://noc-msm.github.io/NOC_Near_Present_Day/">NEMO Near-Present-Day simulations developed by the National Oceanography Centre</a>, specifically related to the eORCA025 model and covers the ocean globally. Each dataset can have more than 200GB, DO NOT DOWNLOAD IT!</p>
 
 <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">xarray</span> <span class="k">as</span> <span class="n">xr</span>
 
@@ -2999,7 +3068,7 @@ allow native Python operations on Zarr. There is support for Zarr in other langu
 </code></pre></div></div>
 
 <p>We can now see the metadata for the Zarr file. It includes 75 depth levels, 577 time steps and a 1206x1440
-spatial resolution. In this case, there is only one variable, <code class="language-plaintext highlighter-rouge">so_abs</code>, which is the absolute salinity of the ocean. To access other variables, you can take a look on the <a href="https://noc-msm.github.io/NOC_Near_Present_Day/">NOC Near-Present-Day documentation</a>. For example:</p>
+spatial resolution. In this case, there is only one variable, <code class="language-plaintext highlighter-rouge">so_abs</code>, which is the absolute salinity of the ocean. To access other variables, you can take a look on the <a href="https://noc-msm.github.io/NOC_Near_Present_Day/outputs">NOC Near-Present-Day documentation</a>. For example:</p>
 
 <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">xarray</span> <span class="k">as</span> <span class="n">xr</span>
 
@@ -3016,7 +3085,7 @@ so far none of the actual data has been transferred, we have done what is known 
 <span class="n">ssh</span>
 </code></pre></div></div>
 
-<p>We can see that ds_sub is now a 200x200x1 array that only takes up 156.25kB from the original 3.73GB file. Even at this point no data will have been transferred.
+<p>We can see that <code class="language-plaintext highlighter-rouge">ssh</code> is now a 200x200x1 array that only takes up 156.25kB from the original 3.73GB file. Even at this point no data will have been transferred.
 If we explore further and print the <code class="language-plaintext highlighter-rouge">ssh</code> array we’ll see that it is actually using a Dask array underneath.</p>
 
 <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">print</span><span class="p">(</span><span class="n">ssh</span><span class="p">)</span>
@@ -3040,13 +3109,53 @@ If we explore further and print the <code class="language-plaintext highlighter-
 
 <blockquote class="challenge">
   <h2 id="plot-sea-surface-temperature">Plot Sea Surface Temperature</h2>
-  <p>Extract and plot the sea surface temperature (sst variable) for the nearest date to January 1st 1965 that is in the dataset.</p>
+  <p>Extract and plot the sea surface temperature (<code class="language-plaintext highlighter-rouge">tos_con</code> variable from the <code class="language-plaintext highlighter-rouge">https://noc-msm-o.s3-ext.jc.rl.ac.uk/npd-eorca025-jra55v1/T1m/tos_con</code> file) for the nearest date to January 1st 1965 that is in the dataset.</p>
   <blockquote class="solution">
-    <h2 id="solution">Solution</h2>
+    <h2 id="solution-1">Solution 1</h2>
     <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">xarray</span> <span class="k">as</span> <span class="n">xr</span>
 <span class="n">ds</span> <span class="o">=</span> <span class="n">xr</span><span class="p">.</span><span class="n">open_zarr</span><span class="p">(</span><span class="s">"https://noc-msm-o.s3-ext.jc.rl.ac.uk/npd-eorca025-jra55v1/T1m/tos_con"</span><span class="p">)</span>
 <span class="n">sst</span> <span class="o">=</span> <span class="n">ds</span><span class="p">[</span><span class="s">'tos_con'</span><span class="p">].</span><span class="n">sel</span><span class="p">(</span><span class="n">time_counter</span><span class="o">=</span><span class="s">"1965-01-01"</span><span class="p">,</span><span class="n">method</span><span class="o">=</span><span class="s">"nearest"</span><span class="p">)</span>
 <span class="n">sst</span><span class="p">.</span><span class="n">plot</span><span class="p">()</span>
+</code></pre></div>    </div>
+  </blockquote>
+
+  <blockquote class="solution">
+    <h2 id="solution-2-optional-reprojecting-and-plotting-with-cartopy">Solution 2: (OPTIONAL) reprojecting and plotting with Cartopy</h2>
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># you will need to install xESMF to run this solution
+# conda install -c conda-forge "esmpy=8.6.1" "esmf=8.6.1"
+</span><span class="kn">import</span> <span class="nn">xesmf</span> <span class="k">as</span> <span class="n">xe</span>
+<span class="kn">import</span> <span class="nn">xarray</span> <span class="k">as</span> <span class="n">xr</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="n">plt</span>
+<span class="kn">import</span> <span class="nn">cartopy.crs</span> <span class="k">as</span> <span class="n">ccrs</span>
+<span class="n">ds</span> <span class="o">=</span> <span class="n">xr</span><span class="p">.</span><span class="n">open_zarr</span><span class="p">(</span><span class="s">"https://noc-msm-o.s3-ext.jc.rl.ac.uk/npd-eorca025-jra55v1/T1m/tos_con"</span><span class="p">)</span>
+<span class="n">sst</span> <span class="o">=</span> <span class="n">ds</span><span class="p">[</span><span class="s">'tos_con'</span><span class="p">].</span><span class="n">sel</span><span class="p">(</span><span class="n">time_counter</span><span class="o">=</span><span class="s">"1965-01-01"</span><span class="p">,</span><span class="n">method</span><span class="o">=</span><span class="s">"nearest"</span><span class="p">)</span>
+<span class="n">sst</span> <span class="o">=</span> <span class="n">sst</span><span class="p">.</span><span class="n">rename</span><span class="p">({</span><span class="s">'nav_lon'</span><span class="p">:</span> <span class="s">'lon'</span><span class="p">,</span> <span class="s">'nav_lat'</span><span class="p">:</span> <span class="s">'lat'</span><span class="p">})</span>
+<span class="c1"># Create source and target grids
+</span><span class="n">ds</span> <span class="o">=</span> <span class="n">sst</span><span class="p">.</span><span class="n">to_dataset</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s">"tos_con"</span><span class="p">)</span>
+<span class="c1"># Define target regular grid (e.g., 1°)
+</span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="n">np</span>
+<span class="n">lon_target</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="mi">180</span><span class="p">,</span> <span class="mi">180</span><span class="p">,</span> <span class="mi">360</span><span class="p">)</span>
+<span class="n">lat_target</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="mi">90</span><span class="p">,</span> <span class="mi">90</span><span class="p">,</span> <span class="mi">180</span><span class="p">)</span>
+<span class="n">target_grid</span> <span class="o">=</span> <span class="n">xr</span><span class="p">.</span><span class="n">Dataset</span><span class="p">({</span>
+    <span class="s">"lon"</span><span class="p">:</span> <span class="p">([</span><span class="s">"lon"</span><span class="p">],</span> <span class="n">lon_target</span><span class="p">),</span>
+    <span class="s">"lat"</span><span class="p">:</span> <span class="p">([</span><span class="s">"lat"</span><span class="p">],</span> <span class="n">lat_target</span><span class="p">),</span>
+<span class="p">})</span>
+<span class="c1"># Regrid
+</span><span class="n">regridder</span> <span class="o">=</span> <span class="n">xe</span><span class="p">.</span><span class="n">Regridder</span><span class="p">(</span><span class="n">ds</span><span class="p">,</span> <span class="n">target_grid</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s">"bilinear"</span><span class="p">,</span> <span class="n">periodic</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="n">tos_regridded</span> <span class="o">=</span> <span class="n">regridder</span><span class="p">(</span><span class="n">ds</span><span class="p">)[</span><span class="s">"tos_con"</span><span class="p">]</span>
+
+<span class="c1"># Plotting the regridded data
+</span><span class="n">plt</span><span class="p">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+<span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="p">.</span><span class="n">axes</span><span class="p">(</span><span class="n">projection</span><span class="o">=</span><span class="n">ccrs</span><span class="p">.</span><span class="n">PlateCarree</span><span class="p">())</span>
+<span class="n">pcm</span> <span class="o">=</span> <span class="n">ax</span><span class="p">.</span><span class="n">pcolormesh</span><span class="p">(</span>
+    <span class="n">tos_regridded</span><span class="p">[</span><span class="s">"lon"</span><span class="p">],</span> <span class="n">tos_regridded</span><span class="p">[</span><span class="s">"lat"</span><span class="p">],</span>
+    <span class="n">tos_regridded</span><span class="p">,</span> <span class="n">transform</span><span class="o">=</span><span class="n">ccrs</span><span class="p">.</span><span class="n">PlateCarree</span><span class="p">(),</span>
+    <span class="n">cmap</span><span class="o">=</span><span class="s">"viridis"</span>
+<span class="p">)</span>
+<span class="n">ax</span><span class="p">.</span><span class="n">coastlines</span><span class="p">()</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">title</span><span class="p">(</span><span class="s">"Regridded Sea Surface Temperature"</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">colorbar</span><span class="p">(</span><span class="n">pcm</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="n">sst</span><span class="p">.</span><span class="n">attrs</span><span class="p">.</span><span class="n">get</span><span class="p">(</span><span class="s">"units"</span><span class="p">,</span> <span class="s">""</span><span class="p">))</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">tight_layout</span><span class="p">()</span>
 </code></pre></div>    </div>
   </blockquote>
 </blockquote>
@@ -3055,7 +3164,7 @@ If we explore further and print the <code class="language-plaintext highlighter-
   <h2 id="calculate-the-mean-sea-surface-temperature-for-two-years">Calculate the mean sea surface temperature for two years</h2>
   <p>Calculate the mean sea surface temperature for the years between 1990 and 1991 using the same dataset as above.</p>
   <blockquote class="solution">
-    <h2 id="solution-1">Solution</h2>
+    <h2 id="solution">Solution</h2>
     <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">xarray</span> <span class="k">as</span> <span class="n">xr</span>
 <span class="n">ds</span> <span class="o">=</span> <span class="n">xr</span><span class="p">.</span><span class="n">open_zarr</span><span class="p">(</span><span class="s">"https://noc-msm-o.s3-ext.jc.rl.ac.uk/npd-eorca025-jra55v1/T1m/tos_con"</span><span class="p">)</span>
 <span class="n">sst</span> <span class="o">=</span> <span class="n">ds</span><span class="p">[</span><span class="s">'tos_con'</span><span class="p">].</span><span class="n">sel</span><span class="p">(</span><span class="n">time_counter</span><span class="o">=</span><span class="nb">slice</span><span class="p">(</span><span class="s">"1990"</span><span class="p">,</span> <span class="s">"1991"</span><span class="p">))</span>
@@ -3073,7 +3182,7 @@ If we explore further and print the <code class="language-plaintext highlighter-
 time_counter chunk size to 10 when opening the zarr file. Measure how long it takes to compute the result, try changing the number of workers up and down to see
 what the optimal number is.</p>
   <blockquote class="solution">
-    <h2 id="solution-2">Solution</h2>
+    <h2 id="solution-1">Solution</h2>
     <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">xarray</span> <span class="k">as</span> <span class="n">xr</span>
 <span class="kn">import</span> <span class="nn">dask_gateway</span>
 
@@ -3095,7 +3204,7 @@ what the optimal number is.</p>
 <span class="n">client</span>
 
 <span class="n">ds</span> <span class="o">=</span> <span class="n">xr</span><span class="p">.</span><span class="n">open_zarr</span><span class="p">(</span><span class="s">"https://noc-msm-o.s3-ext.jc.rl.ac.uk/npd-eorca025-jra55v1/T1m/tos_con"</span><span class="p">)</span>
-<span class="n">sst</span> <span class="o">=</span> <span class="n">ds</span><span class="p">[</span><span class="s">'sst'</span><span class="p">].</span><span class="n">sel</span><span class="p">(</span><span class="n">time_counter</span><span class="o">=</span><span class="nb">slice</span><span class="p">(</span><span class="s">"1990"</span><span class="p">,</span><span class="s">"1999"</span><span class="p">))</span>
+<span class="n">sst</span> <span class="o">=</span> <span class="n">ds</span><span class="p">[</span><span class="s">'tos_con'</span><span class="p">].</span><span class="n">sel</span><span class="p">(</span><span class="n">time_counter</span><span class="o">=</span><span class="nb">slice</span><span class="p">(</span><span class="s">"1990"</span><span class="p">,</span><span class="s">"1999"</span><span class="p">))</span>
 <span class="c1"># mean_sst = dataset.mean(dim=['lat','lon']) #better way to do this
 </span><span class="n">grouped_mean</span> <span class="o">=</span> <span class="n">sst</span><span class="p">.</span><span class="n">groupby</span><span class="p">(</span><span class="s">"time_counter.year"</span><span class="p">).</span><span class="n">mean</span><span class="p">()</span>
 <span class="n">mean_sst</span> <span class="o">=</span> <span class="n">grouped_mean</span><span class="p">.</span><span class="n">mean</span><span class="p">(</span><span class="n">dim</span><span class="o">=</span><span class="p">[</span><span class="s">'y'</span><span class="p">,</span><span class="s">'x'</span><span class="p">])</span>
@@ -3125,14 +3234,11 @@ xcat = intake.open_catalog('https://raw.githubusercontent.com/intake/intake-xarr
 list(xcat)
 </code></pre></div></div>
 
-<p>Let’s open the image example and use the skimage library to plot it. First you will need to install the skimage library with the following command in the terminal:</p>
+<p>Let’s open the image example and use the skimage library to plot it</p>
 
-<div class="language-plaintext langauge-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>mamba install -n esces scikit-image
-</code></pre></div></div>
-
-<div class="language-plaintext langauge-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>from skimage.io import imshow
+<div class="language-plaintext langauge-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>import matplotlib.pyplot as plt
 image = xcat.image.read()
-imshow(image)
+plt.imshow(image)
 </code></pre></div></div>
 
 <blockquote class="keypoints">

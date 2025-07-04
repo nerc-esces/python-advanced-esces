@@ -102,7 +102,7 @@ allow native Python operations on Zarr. There is support for Zarr in other langu
 
 ## Zarr and Xarray
 
-Xarray can open Zarr files using the `open_zarr` function that is similar to the `open_datset` function we've been using to open NetCDF data. We will be using the outputs of the [Near-Present-Day simulations developed by the National Oceanography Centre](https://noc-msm.github.io/NOC_Near_Present_Day/), specifically related to the eORCA025 model and covers the ocean globally. Each dataset can have more than 200GB, DO NOT DOWNLOAD IT!
+Xarray can open Zarr files using the `open_zarr` function that is similar to the `open_dataset` function we've been using to open NetCDF data. We will be using the outputs of the [NEMO Near-Present-Day simulations developed by the National Oceanography Centre](https://noc-msm.github.io/NOC_Near_Present_Day/), specifically related to the eORCA025 model and covers the ocean globally. Each dataset can have more than 200GB, DO NOT DOWNLOAD IT!
 
 ~~~
 import xarray as xr
@@ -113,7 +113,7 @@ ds
 {: .language-python}
 
 We can now see the metadata for the Zarr file. It includes 75 depth levels, 577 time steps and a 1206x1440
-spatial resolution. In this case, there is only one variable, `so_abs`, which is the absolute salinity of the ocean. To access other variables, you can take a look on the [NOC Near-Present-Day documentation](https://noc-msm.github.io/NOC_Near_Present_Day/). For example:
+spatial resolution. In this case, there is only one variable, `so_abs`, which is the absolute salinity of the ocean. To access other variables, you can take a look on the [NOC Near-Present-Day documentation](https://noc-msm.github.io/NOC_Near_Present_Day/outputs). For example:
 
 ~~~
 import xarray as xr
@@ -134,7 +134,7 @@ ssh
 ~~~
 {: .language-python}
 
-We can see that ds_sub is now a 200x200x1 array that only takes up 156.25kB from the original 3.73GB file. Even at this point no data will have been transferred.
+We can see that `ssh` is now a 200x200x1 array that only takes up 156.25kB from the original 3.73GB file. Even at this point no data will have been transferred.
 If we explore further and print the `ssh` array we'll see that it is actually using a Dask array underneath.
 
 ~~~
@@ -166,13 +166,54 @@ It is important to note that this data is not on a regular grid. Therefore, slic
 
 
 > ## Plot Sea Surface Temperature
-> Extract and plot the sea surface temperature (sst variable) for the nearest date to January 1st 1965 that is in the dataset.
->> ## Solution
+> Extract and plot the sea surface temperature (`tos_con` variable from the `https://noc-msm-o.s3-ext.jc.rl.ac.uk/npd-eorca025-jra55v1/T1m/tos_con` file) for the nearest date to January 1st 1965 that is in the dataset.
+>> ## Solution 1
 >> ~~~
 >> import xarray as xr
 >> ds = xr.open_zarr("https://noc-msm-o.s3-ext.jc.rl.ac.uk/npd-eorca025-jra55v1/T1m/tos_con")
 >> sst = ds['tos_con'].sel(time_counter="1965-01-01",method="nearest")
 >> sst.plot()
+>> ~~~
+>> {: .language-python}
+> {: .solution}
+>
+>> ## Solution 2: (OPTIONAL) reprojecting and plotting with Cartopy
+>> ~~~
+>> # you will need to install xESMF to run this solution
+>> # conda install -c conda-forge "esmpy=8.6.1" "esmf=8.6.1"
+>> import xesmf as xe
+>> import xarray as xr
+>> import matplotlib.pyplot as plt
+>> import cartopy.crs as ccrs
+>> ds = xr.open_zarr("https://noc-msm-o.s3-ext.jc.rl.ac.uk/npd-eorca025-jra55v1/T1m/tos_con")
+>> sst = ds['tos_con'].sel(time_counter="1965-01-01",method="nearest")
+>> sst = sst.rename({'nav_lon': 'lon', 'nav_lat': 'lat'})
+>> # Create source and target grids
+>> ds = sst.to_dataset(name="tos_con")
+>> # Define target regular grid (e.g., 1°)
+>> import numpy as np
+>> lon_target = np.linspace(-180, 180, 360)
+>> lat_target = np.linspace(-90, 90, 180)
+>> target_grid = xr.Dataset({
+>>     "lon": (["lon"], lon_target),
+>>     "lat": (["lat"], lat_target),
+>> })
+>> # Regrid
+>> regridder = xe.Regridder(ds, target_grid, method="bilinear", periodic=True)
+>> tos_regridded = regridder(ds)["tos_con"]
+>>
+>> # Plotting the regridded data
+>> plt.figure(figsize=(12, 6))
+>> ax = plt.axes(projection=ccrs.PlateCarree())
+>> pcm = ax.pcolormesh(
+>>     tos_regridded["lon"], tos_regridded["lat"],
+>>     tos_regridded, transform=ccrs.PlateCarree(),
+>>     cmap="viridis"
+>> )
+>> ax.coastlines()
+>> plt.title("Regridded Sea Surface Temperature")
+>> plt.colorbar(pcm, label=sst.attrs.get("units", ""))
+>> plt.tight_layout()
 >> ~~~
 >> {: .language-python}
 > {: .solution}
@@ -223,7 +264,7 @@ It is important to note that this data is not on a regular grid. Therefore, slic
 >> client
 >>
 >> ds = xr.open_zarr("https://noc-msm-o.s3-ext.jc.rl.ac.uk/npd-eorca025-jra55v1/T1m/tos_con")
->> sst = ds['sst'].sel(time_counter=slice("1990","1999"))
+>> sst = ds['tos_con'].sel(time_counter=slice("1990","1999"))
 >> # mean_sst = dataset.mean(dim=['lat','lon']) #better way to do this
 >> grouped_mean = sst.groupby("time_counter.year").mean()
 >> mean_sst = grouped_mean.mean(dim=['y','x'])
@@ -257,17 +298,12 @@ list(xcat)
 ~~~
 {: .langauge-python}
 
-Let's open the image example and use the skimage library to plot it. First you will need to install the skimage library with the following command in the terminal:
+Let's open the image example and use the skimage library to plot it
 
 ~~~
-mamba install -n esces scikit-image
-~~~
-{: .langauge-bash}
-
-~~~
-from skimage.io import imshow
+import matplotlib.pyplot as plt
 image = xcat.image.read()
-imshow(image)
+plt.imshow(image)
 ~~~
 {: .langauge-python}
 
