@@ -1,0 +1,836 @@
+
+
+
+
+
+
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta http-equiv="last-modified" content="2025-07-03 11:11:57 -0500">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- meta "search-domain" used for google site search function google_search() -->
+    <meta name="search-domain" value="">
+    <link rel="stylesheet" type="text/css" href="/assets/css/bootstrap.css" />
+    <link rel="stylesheet" type="text/css" href="/assets/css/bootstrap-theme.css" />
+    <link rel="stylesheet" type="text/css" href="/assets/css/lesson.css" />
+    <link rel="stylesheet" type="text/css" href="/assets/css/syntax.css" />
+    
+    <link rel="license" href="#license-info" />
+
+    
+
+
+
+    <!-- Favicons for everyone -->
+    <link rel="apple-touch-icon-precomposed" sizes="57x57" href="/assets/favicons/cp/apple-touch-icon-57x57.png" />
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="/assets/favicons/cp/apple-touch-icon-114x114.png" />
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="/assets/favicons/cp/apple-touch-icon-72x72.png" />
+    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/assets/favicons/cp/apple-touch-icon-144x144.png" />
+    <link rel="apple-touch-icon-precomposed" sizes="60x60" href="/assets/favicons/cp/apple-touch-icon-60x60.png" />
+    <link rel="apple-touch-icon-precomposed" sizes="120x120" href="/assets/favicons/cp/apple-touch-icon-120x120.png" />
+    <link rel="apple-touch-icon-precomposed" sizes="76x76" href="/assets/favicons/cp/apple-touch-icon-76x76.png" />
+    <link rel="apple-touch-icon-precomposed" sizes="152x152" href="/assets/favicons/cp/apple-touch-icon-152x152.png" />
+    <link rel="icon" type="image/png" href="/assets/favicons/cp/favicon-196x196.png" sizes="196x196" />
+    <link rel="icon" type="image/png" href="/assets/favicons/cp/favicon-96x96.png" sizes="96x96" />
+    <link rel="icon" type="image/png" href="/assets/favicons/cp/favicon-32x32.png" sizes="32x32" />
+    <link rel="icon" type="image/png" href="/assets/favicons/cp/favicon-16x16.png" sizes="16x16" />
+    <link rel="icon" type="image/png" href="/assets/favicons/cp/favicon-128.png" sizes="128x128" />
+    <meta name="application-name" content="The Carpentries - Advanced Python for Environmental Scientists"/>
+    <meta name="msapplication-TileColor" content="#FFFFFF" />
+    <meta name="msapplication-TileImage" content="/assets/favicons/cp/mstile-144x144.png" />
+    <meta name="msapplication-square70x70logo" content="/assets/favicons/cp/mstile-70x70.png" />
+    <meta name="msapplication-square150x150logo" content="/assets/favicons/cp/mstile-150x150.png" />
+    <meta name="msapplication-wide310x150logo" content="/assets/favicons/cp/mstile-310x150.png" />
+    <meta name="msapplication-square310x310logo" content="/assets/favicons/cp/mstile-310x310.png" />
+
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+	<script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+	<script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+	<![endif]-->
+
+  <title>
+  Parallelising with Dask &ndash; Advanced Python for Environmental Scientists
+  </title>
+
+  </head>
+  <body>
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div class="container">
+      
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+
+<nav class="navbar navbar-default">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+
+      
+      
+      <a href="https://carpentries.org/" class="pull-left">
+        <img class="navbar-logo" src="/assets/img/cp-logo-blue.svg" alt="The Carpentries logo" />
+      </a>
+      
+
+      
+      <a class="navbar-brand" href="/index.html">Home</a>
+
+    </div>
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+      <ul class="nav navbar-nav">
+
+	
+        <li><a href="/CODE_OF_CONDUCT.html">Code of Conduct</a></li>
+
+        
+	
+        <li><a href="/setup.html">Setup</a></li>
+
+        
+        
+        <li class="dropdown">
+          <a href="/" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Episodes <span class="caret"></span></a>
+          <ul class="dropdown-menu">
+            
+            
+            <li><a href="/01-intro/index.html">Introduction</a></li>
+            
+            
+            <li><a href="/02-coffee/index.html">Coffee Break</a></li>
+            
+            
+            <li><a href="/03-dataset-parallelism/index.html">Dataset Parallelism</a></li>
+            
+            
+            <li><a href="/04-lunch/index.html">Lunch Break</a></li>
+            
+            
+            <li><a href="/05-numpy-and-numba/index.html">Parallelisation with Numpy and Numba</a></li>
+            
+            
+            <li><a href="/06-coffee/index.html">Coffee Break</a></li>
+            
+            
+            <li><a href="/07-working-with-xarray/index.html">Working with data in Xarray</a></li>
+            
+            
+            <li><a href="/08-cartopy/index.html">Plotting Geospatial Data with Cartopy</a></li>
+            
+            
+            <li><a href="/09-coffee/index.html">Coffee Break</a></li>
+            
+            
+            <li><a href="/10-dask/index.html">Parallelising with Dask</a></li>
+            
+            
+            <li><a href="/11-lunch/index.html">Lunch Break</a></li>
+            
+            
+            <li><a href="/12-parallelism-friendly-data-formats/index.html">Storing and Accessing Data in Parallelism Friendly Formats</a></li>
+            
+            
+            <li><a href="/13-coffee/index.html">Coffee Break</a></li>
+            
+            
+            <li><a href="/14-gpus/index.html">GPUs</a></li>
+            
+	    <li role="separator" class="divider"></li>
+            <li><a href="/aio/index.html">All in one page (Beta)</a></li>
+          </ul>
+        </li>
+        
+	
+
+	
+	
+        <li class="dropdown">
+          <a href="/" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Extras <span class="caret"></span></a>
+          <ul class="dropdown-menu">
+            <li><a href="/reference.html">Reference</a></li>
+            
+            
+            
+              <li><a href="/about/index.html">About</a></li>
+            
+            
+            
+            
+              <li><a href="/discuss/index.html">Discussion</a></li>
+            
+            
+            
+            
+              <li><a href="/figures/index.html">Figures</a></li>
+            
+            
+            
+            
+              <li><a href="/guide/index.html">Instructor Notes</a></li>
+            
+            
+          </ul>
+        </li>
+	
+
+	
+        <li><a href="/LICENSE.html">License</a></li>
+        
+
+        
+	<li><a href="/edit//_episodes/10-dask.md" data-checker-ignore>Improve this page <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span></a></li>
+	
+      </ul>
+      <form class="navbar-form navbar-right" role="search" id="search" onsubmit="google_search(); return false;">
+        <div class="form-group">
+          <input type="text" id="google-search" placeholder="Search..." aria-label="Google site search">
+        </div>
+      </form>
+    </div>
+  </div>
+</nav>
+
+<script type="text/javascript" id="MathJax-script" async
+  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+<div class="row">
+  <div class="col-xs-1">
+    <h3 class="text-left">
+      
+      <a href="/09-coffee/index.html"><span class="glyphicon glyphicon-menu-left" aria-hidden="true"></span><span class="sr-only">previous episode</span></a>
+      
+    </h3>
+  </div>
+  <div class="col-xs-10">
+    
+    <h3 class="maintitle"><a href="/">Advanced Python for Environmental Scientists</a></h3>
+    
+  </div>
+  <div class="col-xs-1">
+    <h3 class="text-right">
+      
+      <a href="/11-lunch/index.html"><span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span><span class="sr-only">next episode</span></a>
+      
+    </h3>
+  </div>
+</div>
+
+<article>
+<div class="row">
+  <div class="col-md-1">
+  </div>
+  <div class="col-md-10">
+    <h1 class="maintitle">Parallelising with Dask</h1>
+  </div>
+  <div class="col-md-1">
+  </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+<blockquote class="objectives">
+  <h2>Overview</h2>
+
+  <div class="row">
+    <div class="col-md-3">
+      <strong>Teaching:</strong> 50 min
+      <br/>
+      <strong>Exercises:</strong> 30 min
+    </div>
+    <div class="col-md-9">
+      <strong>Questions</strong>
+      <ul>
+	
+	<li><p>How do we setup and monitor a Dask cluster?</p>
+</li>
+	
+	<li><p>How do we parallelise Python code with Dask?</p>
+</li>
+	
+	<li><p>How do we use Dask with Xarray?</p>
+</li>
+	
+      </ul>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-3">
+    </div>
+    <div class="col-md-9">
+      <strong>Objectives</strong>
+      <ul>
+	
+	<li><p>Understand how to setup a Dask cluster</p>
+</li>
+	
+	<li><p>Recall how to monitor Dask’s performance</p>
+</li>
+	
+	<li><p>Apply Dask to work with Xarray</p>
+</li>
+	
+	<li><p>Apply Dask futures and delayed tasks</p>
+</li>
+	
+      </ul>
+    </div>
+  </div>
+
+</blockquote>
+
+<h1 id="what-is-dask">What is Dask?</h1>
+
+<p>Dask is a Distributed processing library for Python. It enables parallel processing of Python code across multiple cores on the same computer or across multiple computers. It can be
+used behind the scenes by Xarray with minimal modification to code. JASMIN users can make use of a Dask gateway that allows their Dask code submitted from the Jupyter notebook interface
+to run on the Lotus HPC cluster. Dask has two broad categories of features, high level data structures which behave in a similar way to common Python data structures but with the
+ability to perform operations in parallel and low level task scheduling to run any Python code in parallel.</p>
+
+<h1 id="setting-up-dask-on-your-computer">Setting up Dask on your computer</h1>
+
+<p>Dask should already be installed in your Conda/Mamba environment. Dask refers to the system it runs the computation on as a Dask “cluster”, although the “cluster” can just be running
+on your local computer (or the JASMIN notebook server). Later on we’ll look at using a remote cluster running on a different computer, but for now let’s create one on our own computer.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">dask.distributed</span> <span class="kn">import</span> <span class="n">Client</span><span class="p">,</span> <span class="n">progress</span>
+<span class="n">client</span> <span class="o">=</span> <span class="n">Client</span><span class="p">(</span><span class="n">processes</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">threads_per_worker</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span>
+                <span class="n">n_workers</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">memory_limit</span><span class="o">=</span><span class="s">'2GB'</span><span class="p">)</span>
+<span class="n">client</span>
+</code></pre></div></div>
+
+<p>The code above will create a local Dask cluster with one worker and 4 threads for each worker and a limit of 2GB of memory. Displaying the <code class="language-plaintext highlighter-rouge">client</code> object will tell us all about the
+cluster.</p>
+
+<h2 id="using-the-dask-dashboard">Using the Dask dashboard</h2>
+
+<p>In the information about the Dask cluster is a link to a Dashboard webpage. From the Dashboard we can monitor our Dask cluster and see how busy it is, view a graph of task dependencies,
+ memory usage and the status of the Dask workers. This can be really useful when checking if our Dask cluster is behaving correctly and working out how optimially our code is making
+use of Dask’s parallelism.</p>
+
+<p><img src="../fig/Dask-Task-Graph.png" alt="Dask dashboard graph view" /></p>
+
+<p><img src="../fig/Dask-Status.png" alt="Dask dashboard task view" /></p>
+
+<h3 id="using-the-dask-dashboard-on-jasmin">Using the Dask dashboard on JASMIN</h3>
+
+<p>Note that if you are using the JASMIN notebook service, the link to the dashboard won’t work as the port it runs on isn’t open to connections from the internet.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ssh-keygen <span class="c">#MAKE SURE YOU SET A PASSPHRASE</span>
+<span class="nb">cat</span> ~/.ssh/id_rsa.pub <span class="o">&gt;&gt;</span> ~/.ssh/authorized_keys
+ssh <span class="nt">-R</span> 8787:localhost:8787 login-02.jasmin.ac.uk
+</code></pre></div></div>
+
+<p>Port 8787 might not be the port your Dask cluster is using, make sure the first 8787 is the number your Dask cluster is running on.
+If anybody else is doing this then port 8787 on login-02 might be in use, change the second 8787 to something else to match. Now connect an SSH tunnel from your computer
+to Jasmin login-02 and forward port 8787 back to your computer, if you changed 8787 to something else in the previous step then use the same number here in both cases.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ssh <span class="nt">-L</span> 8787:localhost:8787 login-02.jasmin.ac.uk
+</code></pre></div></div>
+
+<p>Open your web browser to http://127.0.0.1:8787 and you will see your Dask cluster page. Note that you have just exposed this to anybody else with JASMIN access and there is no password
+on it.</p>
+
+<h1 id="dask-arrays">Dask Arrays</h1>
+
+<p>Dask has its own type of arrays, these behave much like Numpy (and Xarray) arrays, but they can be split into a number of chunks. Any processing operations can work in parallel across
+these chunks. Data can also be loaded “lazily” into Dask Arrays, this means it is only loaded from disk when it is accessed. This can give us the illusion of loading a dataset that
+is larger than our memory.</p>
+
+<h2 id="creating-a-dask-array">Creating a Dask Array</h2>
+
+<p>Dask arrays can be created from existing from other array formats including NumPy arrays, Python lists and PandasDataFrames.
+We can also initalise a new array as a Dask Array from the start, Dask copies the <code class="language-plaintext highlighter-rouge">zeros</code>, <code class="language-plaintext highlighter-rouge">ones</code> and <code class="language-plaintext highlighter-rouge">random</code> functions from NumPy which initalise an array as all zeros, ones or as
+random numbers. For example to create a 10000x10000 array of random numbers we can use:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">dask.array</span> <span class="k">as</span> <span class="n">da</span>
+<span class="n">x</span> <span class="o">=</span> <span class="n">da</span><span class="p">.</span><span class="n">random</span><span class="p">.</span><span class="n">random</span><span class="p">((</span><span class="mi">10000</span><span class="p">,</span> <span class="mi">10000</span><span class="p">),</span> <span class="n">chunks</span><span class="o">=</span><span class="p">(</span><span class="mi">1000</span><span class="p">,</span> <span class="mi">1000</span><span class="p">))</span>
+<span class="n">x</span>
+</code></pre></div></div>
+
+<p>Dask arrays support common Numpy operations including slicing, arithmetic whole array operations, reduction functions such as <code class="language-plaintext highlighter-rouge">mean</code> and <code class="language-plaintext highlighter-rouge">sum</code>, transposing and reshaping.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">y</span> <span class="o">=</span> <span class="n">da</span><span class="p">.</span><span class="n">ones</span><span class="p">((</span><span class="mi">10000</span><span class="p">,</span><span class="mi">10000</span><span class="p">),</span> <span class="n">chunks</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1000</span><span class="p">,</span> <span class="mi">1000</span><span class="p">))</span>
+<span class="n">z</span> <span class="o">=</span> <span class="n">x</span> <span class="o">+</span> <span class="n">y</span>
+<span class="n">z</span>
+</code></pre></div></div>
+
+<p>In the above example we added the x and y arrays together, but when we display the result we just get an array getitem in response instead of an actual value. This is because Dask
+hasn’t actually computed the result yet. Dask works by building up a dependency graph of all the operations we’re performing, but doesn’t compute anything until we call the <code class="language-plaintext highlighter-rouge">compute</code>
+function on the final result. Let’s go ahead and call <code class="language-plaintext highlighter-rouge">compute</code> on the <code class="language-plaintext highlighter-rouge">z</code> object, if we monitor the Dask Dashboard we should see some activity.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">result</span> <span class="o">=</span> <span class="n">z</span><span class="p">.</span><span class="n">compute</span><span class="p">()</span>
+<span class="n">result</span>
+</code></pre></div></div>
+
+<p>The new variable result will now contain the result of the computation and will be of the type <code class="language-plaintext highlighter-rouge">numpy.ndarray</code>.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">type</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+</code></pre></div></div>
+
+<blockquote class="challenge">
+  <h2 id="compare-dask-and-numpy-performance">Compare Dask and Numpy Performance</h2>
+  <p>Compare the performance of the following code using Numpy and Dask functions. Use the %%time magic in the cells to find out the execution time. Ensure you only time the core computation
+and not the Dask cluster setup or library imports, this means you’ll have to write this code into multiple cells.
+Dask version (note you’ll need to do the Dask client setup first):</p>
+  <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">dask.array</span> <span class="k">as</span> <span class="n">da</span>
+<span class="n">x</span> <span class="o">=</span> <span class="n">da</span><span class="p">.</span><span class="n">random</span><span class="p">.</span><span class="n">random</span><span class="p">((</span><span class="mi">20000</span><span class="p">,</span><span class="mi">20000</span><span class="p">),</span> <span class="n">chunks</span><span class="o">=</span><span class="p">(</span><span class="mi">1000</span><span class="p">,</span><span class="mi">1000</span><span class="p">))</span>
+<span class="n">x_mean</span> <span class="o">=</span> <span class="n">x</span><span class="p">.</span><span class="n">mean</span><span class="p">()</span>
+<span class="n">x_mean</span><span class="p">.</span><span class="n">compute</span><span class="p">()</span>
+</code></pre></div>  </div>
+  <p>Numpy version:</p>
+  <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="n">np</span>
+<span class="n">npx</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">random</span><span class="p">.</span><span class="n">random</span><span class="p">((</span><span class="mi">20000</span><span class="p">,</span><span class="mi">20000</span><span class="p">))</span>
+<span class="n">npx_mean</span> <span class="o">=</span> <span class="n">npx</span><span class="p">.</span><span class="n">mean</span><span class="p">()</span>
+</code></pre></div>  </div>
+  <p>Which went faster overall? Why do you think you got the result you did? Try making the dataset a little larger, going much beyond 25000x25000 might use too much memory.
+Try running the <code class="language-plaintext highlighter-rouge">top</code> command in a terminal while your notebook is running, look at the CPU % when running the Numpy and Dask versions and compare them. Try changing the
+number of Dask threads and see what effect this has on the CPU %.</p>
+</blockquote>
+
+<h3 id="troubleshooting-dask">Troubleshooting Dask</h3>
+
+<p>Sometimes Dask can jam up and stop executing tasks. If this happens try the following:</p>
+
+<ul>
+  <li>Shutdown the client and restart it.</li>
+  <li>Shutdown the kernel of your notebook and rerun the notebook.</li>
+</ul>
+
+<h2 id="using-dask-with-xarray">Using Dask with Xarray</h2>
+
+<p>We previously used Xarray to load our temperature anomaly dataset from the Goddard Institute for Space Studies and performed some computational operations against it using Xarray.
+Let’s go and load it again, but this time we’ll give an extra option to <code class="language-plaintext highlighter-rouge">open_dataset</code>, the <code class="language-plaintext highlighter-rouge">chunk</code> option which allows us to chunk the Xarray data to prepare it for computing with Dask.
+The <code class="language-plaintext highlighter-rouge">chunk</code> option expects a Python dictionary defining the chunk size for each of the dimensions, any dimension we don’t want to chunk should be set to -1. For example:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">xarray</span> <span class="k">as</span> <span class="n">xr</span>
+<span class="kn">from</span> <span class="nn">dask.distributed</span> <span class="kn">import</span> <span class="n">Client</span>
+<span class="n">client</span> <span class="o">=</span> <span class="n">Client</span><span class="p">(</span><span class="n">n_workers</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">threads_per_worker</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">memory_limit</span><span class="o">=</span><span class="s">'1GB'</span><span class="p">)</span>
+<span class="n">client</span>
+<span class="n">ds</span> <span class="o">=</span> <span class="n">xr</span><span class="p">.</span><span class="n">open_dataset</span><span class="p">(</span><span class="s">"gistemp1200-21c.nc"</span><span class="p">,</span> <span class="n">chunks</span><span class="o">=</span><span class="p">{</span><span class="s">'lat'</span><span class="p">:</span><span class="mi">30</span><span class="p">,</span> <span class="s">'lon'</span><span class="p">:</span><span class="mi">30</span><span class="p">,</span> <span class="s">'time'</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">})</span>
+<span class="n">ds</span>
+<span class="n">da</span> <span class="o">=</span> <span class="n">ds</span><span class="p">[</span><span class="s">'tempanomaly'</span><span class="p">]</span>
+<span class="n">da</span>
+</code></pre></div></div>
+
+<p>Here we see that the Dask DataArray <code class="language-plaintext highlighter-rouge">da</code> is now chunked every 30 degrees of Latitude and Longitude. We can also specify automatic chunking by using <code class="language-plaintext highlighter-rouge">chunks={}</code>, but with such a small
+dataset there won’t be any chunking applied automatically.</p>
+
+<p>Any Xarray operations we now apply to the array will now use Dask. Let’s repeat some of our earlier Xarray examples and compute a correction factor to the dataset, if we watch the
+Dask dashboard we’ll see some signs of activity.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">dataset_corrected</span> <span class="o">=</span> <span class="n">ds</span><span class="p">[</span><span class="s">'tempanomaly'</span><span class="p">]</span> <span class="o">*</span> <span class="mf">1.1</span> <span class="o">-</span> <span class="mf">1.0</span>
+</code></pre></div></div>
+
+<p>If we print <code class="language-plaintext highlighter-rouge">dataset_corrected</code> we’ll see that it actually contains a Dask array.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">print</span><span class="p">(</span><span class="n">dataset_corrected</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>Dask is “lazy” and doesn’t compute anything until we tell it to. To get Dask to trigger computing the result we need to call <code class="language-plaintext highlighter-rouge">.compute</code> on <code class="language-plaintext highlighter-rouge">dataset_corrected</code>.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">result</span> <span class="o">=</span> <span class="n">dataset_corrected</span><span class="p">.</span><span class="n">compute</span><span class="p">()</span>
+<span class="n">result</span>
+</code></pre></div></div>
+
+<h1 id="low-level-computation-with-dask">Low Level computation with Dask</h1>
+
+<p>When higher level Dask functions are not sufficient for our needs we can write our own functions and request Dask executes these in parallel. Dask has two different strategies we can use
+for this, Delayed functions and Futures. Delayed functions will delay starting until we call <code class="language-plaintext highlighter-rouge">.compute</code> at which point all the dependencies of the operation we request are executed.
+With futures tasks begin as soon as possible and immediately return a future object that is eventually populated with the result when the operation completes.</p>
+
+<h2 id="delayed-tasks">Delayed Tasks</h2>
+
+<p>To execute a function as a delayed task we must tag it with a <code class="language-plaintext highlighter-rouge">dask.delayed</code> decorator. Here is a simple example:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">dask</span>
+<span class="o">@</span><span class="n">dask</span><span class="p">.</span><span class="n">delayed</span>
+<span class="k">def</span> <span class="nf">apply_correction</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+   <span class="k">return</span> <span class="n">x</span> <span class="o">*</span> <span class="mf">1.01</span> <span class="o">+</span> <span class="mf">0.1</span>
+
+<span class="kn">import</span> <span class="nn">dask.array</span> <span class="k">as</span> <span class="n">da</span>
+<span class="n">x</span> <span class="o">=</span> <span class="n">da</span><span class="p">.</span><span class="n">random</span><span class="p">.</span><span class="n">random</span><span class="p">(</span><span class="mi">1_000_000</span><span class="p">,</span> <span class="n">chunks</span><span class="o">=</span><span class="mi">1000</span><span class="p">)</span>
+<span class="n">corrected</span> <span class="o">=</span> <span class="n">apply_correction</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+
+<span class="n">squared</span> <span class="o">=</span> <span class="n">corrected</span> <span class="o">**</span> <span class="mi">2</span>
+
+<span class="n">result</span> <span class="o">=</span> <span class="n">squared</span><span class="p">.</span><span class="n">compute</span><span class="p">()</span>
+</code></pre></div></div>
+
+<p>This will call the apply_correction function on each of the 1000 chunks that make up the array <code class="language-plaintext highlighter-rouge">x</code> and then square the result. But nothing will execute until we call the <code class="language-plaintext highlighter-rouge">compute</code>
+function on the last line. Both squared and corrected will have the type of <code class="language-plaintext highlighter-rouge">dask.delayed.Delayed</code> until they have been computed.</p>
+
+<h3 id="visualising-the-task-graph">Visualising the Task Graph</h3>
+
+<p>We have already seen that we can visualise the Dask task graph in the dashboard as it is executing. But we can also visualise it inside a Jupyter notebook by calling the <code class="language-plaintext highlighter-rouge">visualize</code>
+function on a Dask datastructure. We can render this before we call <code class="language-plaintext highlighter-rouge">compute</code> if we want to see what is going to happen. This may not always work with larger datasets, our example above
+with 1,000,000 elements and 1000 chunks is going to be too big, but if we reduce the size of the array <code class="language-plaintext highlighter-rouge">x</code> to 10,000 items instead of 1,000,000 then it will be possible.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">@</span><span class="n">dask</span><span class="p">.</span><span class="n">delayed</span>
+<span class="k">def</span> <span class="nf">apply_correction</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+   <span class="k">return</span> <span class="n">x</span> <span class="o">*</span> <span class="mf">1.01</span> <span class="o">+</span> <span class="mf">0.1</span>
+
+<span class="kn">import</span> <span class="nn">dask.array</span> <span class="k">as</span> <span class="n">da</span>
+<span class="n">x</span> <span class="o">=</span> <span class="n">da</span><span class="p">.</span><span class="n">random</span><span class="p">.</span><span class="n">random</span><span class="p">(</span><span class="mi">10_000</span><span class="p">,</span> <span class="n">chunks</span><span class="o">=</span><span class="mi">1000</span><span class="p">)</span>
+<span class="n">corrected</span> <span class="o">=</span> <span class="n">apply_correction</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+
+<span class="n">squared</span> <span class="o">=</span> <span class="n">corrected</span> <span class="o">**</span> <span class="mi">2</span>
+
+<span class="n">squared</span><span class="p">.</span><span class="n">visualize</span><span class="p">()</span>
+
+<span class="n">result</span> <span class="o">=</span> <span class="n">squared</span><span class="p">.</span><span class="n">compute</span><span class="p">()</span>
+</code></pre></div></div>
+
+<h2 id="futures">Futures</h2>
+
+<p>An alternative approach to using any function with Dask is to use Dask Futures. These begin execution immediately, but are non-blocking so execution (appears to) proceeds to the next
+statement while the processing is done in the background. Any objects which are returned by a function will have a Dask future type until the exectuion has completed.</p>
+
+<p>If we want to block until a result is available then we can call the <code class="language-plaintext highlighter-rouge">result</code> function. For example taking the code from the last section we can do the following:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">dask.array</span> <span class="k">as</span> <span class="n">da</span>
+
+<span class="k">def</span> <span class="nf">apply_correction</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+   <span class="k">return</span> <span class="n">x</span> <span class="o">*</span> <span class="mf">1.01</span> <span class="o">+</span> <span class="mf">0.1</span>
+
+<span class="k">def</span> <span class="nf">square</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+   <span class="k">return</span> <span class="n">x</span> <span class="o">**</span> <span class="mi">2</span>
+
+<span class="n">x</span> <span class="o">=</span> <span class="n">da</span><span class="p">.</span><span class="n">random</span><span class="p">.</span><span class="n">random</span><span class="p">(</span><span class="mi">10_000</span><span class="p">,</span> <span class="n">chunks</span><span class="o">=</span><span class="mi">1000</span><span class="p">)</span>
+<span class="n">corrected</span> <span class="o">=</span> <span class="n">client</span><span class="p">.</span><span class="n">submit</span><span class="p">(</span><span class="n">apply_correction</span><span class="p">,</span> <span class="n">x</span><span class="p">)</span>
+
+<span class="n">corrected</span>
+
+<span class="n">squared</span> <span class="o">=</span> <span class="n">client</span><span class="p">.</span><span class="n">submit</span><span class="p">(</span><span class="n">square</span><span class="p">,</span> <span class="n">corrected</span><span class="p">)</span>
+
+<span class="n">squared</span>
+
+<span class="n">squared</span> <span class="o">=</span> <span class="n">squared</span><span class="p">.</span><span class="n">result</span><span class="p">()</span>
+<span class="n">squared</span>
+</code></pre></div></div>
+
+<p>If we watch the task activity in the Dask dashboard then we should see activity start as soon as the <code class="language-plaintext highlighter-rouge">client.submit</code> calls are made. The <code class="language-plaintext highlighter-rouge">squared</code> and <code class="language-plaintext highlighter-rouge">corrected</code> variables
+will be Dask future objects, if we display them we will see their status as to whether they are finished or not.</p>
+
+<h3 id="when-to-use-futures-or-delayed">When to use Futures or Delayed</h3>
+
+<p>The Dask documentation does not have much advice on when it is more appropriate to use Futures or Delayed functions. Some <a href="https://dask.discourse.group/t/documentation-on-the-interplay-between-graphs-and-futures/269">general advice</a>
+from the forums is to use Delayed functions and task graphs first, but to switch to futures for more complicated problems.</p>
+
+<h1 id="using-the-jasmin-dask-gateway">Using the JASMIN Dask gateway</h1>
+
+<p>JASMIN offers a Dask Gateway service which can submit Dask jobs to a special queue on the Lotus cluster. To use this we need to do a bit of extra setup. We will need to import
+the <code class="language-plaintext highlighter-rouge">dask_gateway</code> library and configure the gateway.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">dask_gateway</span>
+<span class="kn">import</span> <span class="nn">dask</span>
+<span class="n">gw</span> <span class="o">=</span> <span class="n">dask_gateway</span><span class="p">.</span><span class="n">Gateway</span><span class="p">(</span><span class="s">"https://dask-gateway.jasmin.ac.uk"</span><span class="p">,</span> <span class="n">auth</span><span class="o">=</span><span class="s">"jupyterhub"</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>The gateway can be given a set of options including how many worker cores to use, initially we can set this to one and scale it up later. We also need to allocate at least one core
+as to the scheduler which will manage our Dask cluster. Finally we need to tell Dask which Conda/Mamba environment to use and this needs to match the one we’re running in our notebook.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">options</span> <span class="o">=</span> <span class="n">gw</span><span class="p">.</span><span class="n">cluster_options</span><span class="p">()</span>
+<span class="n">options</span><span class="p">.</span><span class="n">worker_cores</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="n">options</span><span class="p">.</span><span class="n">scheduler_cores</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="n">options</span><span class="p">.</span><span class="n">worker_setup</span><span class="o">=</span><span class="s">'source /apps/jasmin/jaspy/mambaforge_envs/jaspy3.10/mf-22.11.1-4/bin/activate ~/.conda/envs/esces'</span>
+</code></pre></div></div>
+
+<p>Finally we can check if we already had a cluster running and reuse that if we do and then get a <code class="language-plaintext highlighter-rouge">client</code> object from the cluster that will behave the same way as the local Dask client
+did.</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">clusters</span> <span class="o">=</span> <span class="n">gw</span><span class="p">.</span><span class="n">list_clusters</span><span class="p">()</span>
+<span class="k">if</span> <span class="ow">not</span> <span class="n">clusters</span><span class="p">:</span>
+    <span class="n">cluster</span> <span class="o">=</span> <span class="n">gw</span><span class="p">.</span><span class="n">new_cluster</span><span class="p">(</span><span class="n">options</span><span class="p">,</span> <span class="n">shutdown_on_close</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="n">cluster</span> <span class="o">=</span> <span class="n">gw</span><span class="p">.</span><span class="n">connect</span><span class="p">(</span><span class="n">clusters</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="n">name</span><span class="p">)</span>
+
+<span class="n">client</span> <span class="o">=</span> <span class="n">cluster</span><span class="p">.</span><span class="n">get_client</span><span class="p">()</span>
+</code></pre></div></div>
+
+<p>Now that we have a running cluster we can allow it to adapt and scale up and down as we demand it. This will translate to Slurm jobs being launched on the JASMIN cluster itself.
+JASMIN allows users to spawn up to 16 jobs in the Dask queue, but one of these will be taken by the scheduler so the we can only launch a maximum of 15 workers.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">cluster</span><span class="p">.</span><span class="n">adapt</span><span class="p">(</span><span class="n">minimum</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">maximum</span><span class="o">=</span><span class="mi">15</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>If we now connect to one of the JASMIN sci servers (sci1-8) we can see our jobs in the SLURM queue by running the <code class="language-plaintext highlighter-rouge">squeue</code> command.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ssh <span class="nt">-J</span> &lt;jasminusername&gt;@login-02.jasmin.ac.uk sci6
+squeue <span class="nt">-p</span> dask
+</code></pre></div></div>
+
+<p>Once we are done with Dask we can shutdown the cluster by calling its <code class="language-plaintext highlighter-rouge">shutdown</code> function. This should cause the jobs in the SLURM queue to finish.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">cluster</span><span class="p">.</span><span class="n">shutdown</span><span class="p">()</span>
+</code></pre></div></div>
+
+<h3 id="jasmin-dask-dashboard">JASMIN Dask Dashboard</h3>
+
+<p>If you display the contents of the <code class="language-plaintext highlighter-rouge">client</code> or <code class="language-plaintext highlighter-rouge">cluster</code> variable then you will be given an address beginning https://dask-gateway.jasmin.ac.uk that will take you to a Dask
+dashboard for your cluster. Unfortunately this server is only accessible within the JASMIN network, to access it you will have to use a web browser running inside an
+<a href="https://help.jasmin.ac.uk/docs/interactive-computing/graphical-linux-desktop-access-using-nx/">NoMachine</a> session or port forward via the JASMIN login server.</p>
+
+<blockquote class="challenge">
+  <h2 id="challenge">Challenge</h2>
+  <p>Setup Dask a Dask cluster on JASMIN. Load the GIS temperature anomaly dataset with Xarray and run the correction algorithm on it.
+Time how long the compute operation takes by using the %%time magic.
+Experiment with:</p>
+  <ul>
+    <li>Changing the chunk sizes you use in Xarray</li>
+    <li>Changing the number of worker cores</li>
+    <li>Changing the number of workers (set in <code class="language-plaintext highlighter-rouge">cluster.adapt</code>)</li>
+  </ul>
+</blockquote>
+
+
+
+
+
+
+<blockquote class="keypoints">
+  <h2>Key Points</h2>
+  <ul>
+    
+    <li><p>Dask is a parallel computing framework for Python</p>
+</li>
+    
+    <li><p>Dask creates a task graph of all the steps in the operation we request</p>
+</li>
+    
+    <li><p>Dask can use your local computer, an HPC cluster, Kubernetes cluster or a remote system over SSH</p>
+</li>
+    
+    <li><p>We can monitor Dask’s processing with its dashboard</p>
+</li>
+    
+    <li><p>Xarray can use Dask to parallelise some of its operations</p>
+</li>
+    
+    <li><p>Delayed tasks let us lazily evaluate functions, only causing them to execute when the final result is requested</p>
+</li>
+    
+    <li><p>Futures start a task immediately but return a futures object until computation is completed</p>
+</li>
+    
+  </ul>
+</blockquote>
+
+</article>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+<div class="row">
+  <div class="col-xs-1">
+    <h3 class="text-left">
+      
+      <a href="/09-coffee/index.html"><span class="glyphicon glyphicon-menu-left" aria-hidden="true"></span><span class="sr-only">previous episode</span></a>
+      
+    </h3>
+  </div>
+  <div class="col-xs-10">
+    
+  </div>
+  <div class="col-xs-1">
+    <h3 class="text-right">
+      
+      <a href="/11-lunch/index.html"><span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span><span class="sr-only">next episode</span></a>
+      
+    </h3>
+  </div>
+</div>
+
+
+      
+      
+
+
+
+
+
+
+<footer>
+  <div class="row">
+    <div class="col-md-6 license" id="license-info" align="left">
+	
+	Licensed under <a href="https://creativecommons.org/licenses/by/4.0/">CC-BY 4.0</a> 2018–2025
+	by <a href="https://carpentries.org/">The Carpentries</a>
+	
+    </div>
+    <div class="col-md-6 help-links" align="right">
+    
+    
+    <a href="/edit//_episodes/10-dask.md" data-checker-ignore>Edit on GitHub</a>
+    
+	/
+	<a href="/blob//CONTRIBUTING.md" data-checker-ignore>Contributing</a>
+	/
+	<a href="/">Source</a>
+	/
+	<a href="/blob//CITATION" data-checker-ignore>Cite</a>
+	/
+	<a href="mailto:team@carpentries.org">Contact</a>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-12" align="center">
+      Using <a href="https://github.com/carpentries/styles/">The Carpentries style</a>
+      version <a href="https://github.com/carpentries/styles/releases/tag/v9.5.3">9.5.3</a>.
+    </div>
+  </div>
+</footer>
+
+      
+    </div>
+    
+<script src="/assets/js/jquery.min.js"></script>
+<script src="/assets/js/bootstrap.min.js"></script>
+<script src="/assets/js/lesson.js"></script>
+
+
+<!-- Matomo -->
+<script>
+  var _paq = window._paq = window._paq || [];
+  /* tracker methods like "setCustomDimension" should be called before "trackPageView" */
+  _paq.push(["setDocumentTitle", document.domain + "/" + document.title]);
+  _paq.push(["setDomains", ["*.lessons.carpentries.org","*.datacarpentry.github.io","*.datacarpentry.org","*.librarycarpentry.github.io","*.librarycarpentry.org","*.swcarpentry.github.io"]]);
+  _paq.push(["setDoNotTrack", true]);
+  _paq.push(["disableCookies"]);
+  _paq.push(['trackPageView']);
+  _paq.push(['enableLinkTracking']);
+  (function() {
+    var u="https://carpentries.matomo.cloud/";
+    _paq.push(['setTrackerUrl', u+'matomo.php']);
+    _paq.push(['setSiteId', '1']);
+    var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
+    g.async=true; g.src='//cdn.matomo.cloud/carpentries.matomo.cloud/matomo.js'; s.parentNode.insertBefore(g,s);
+  })();
+</script>
+<!-- End Matomo Code -->
+
+
+<script src="/assets/js/anchor.min.js"></script>
+<script>
+    anchors.add();
+</script>
+
+  </body>
+</html>

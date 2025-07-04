@@ -1,0 +1,694 @@
+
+
+
+
+
+
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta http-equiv="last-modified" content="2025-07-03 11:11:57 -0500">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- meta "search-domain" used for google site search function google_search() -->
+    <meta name="search-domain" value="">
+    <link rel="stylesheet" type="text/css" href="/assets/css/bootstrap.css" />
+    <link rel="stylesheet" type="text/css" href="/assets/css/bootstrap-theme.css" />
+    <link rel="stylesheet" type="text/css" href="/assets/css/lesson.css" />
+    <link rel="stylesheet" type="text/css" href="/assets/css/syntax.css" />
+    
+    <link rel="license" href="#license-info" />
+
+    
+
+
+
+    <!-- Favicons for everyone -->
+    <link rel="apple-touch-icon-precomposed" sizes="57x57" href="/assets/favicons/cp/apple-touch-icon-57x57.png" />
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="/assets/favicons/cp/apple-touch-icon-114x114.png" />
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="/assets/favicons/cp/apple-touch-icon-72x72.png" />
+    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/assets/favicons/cp/apple-touch-icon-144x144.png" />
+    <link rel="apple-touch-icon-precomposed" sizes="60x60" href="/assets/favicons/cp/apple-touch-icon-60x60.png" />
+    <link rel="apple-touch-icon-precomposed" sizes="120x120" href="/assets/favicons/cp/apple-touch-icon-120x120.png" />
+    <link rel="apple-touch-icon-precomposed" sizes="76x76" href="/assets/favicons/cp/apple-touch-icon-76x76.png" />
+    <link rel="apple-touch-icon-precomposed" sizes="152x152" href="/assets/favicons/cp/apple-touch-icon-152x152.png" />
+    <link rel="icon" type="image/png" href="/assets/favicons/cp/favicon-196x196.png" sizes="196x196" />
+    <link rel="icon" type="image/png" href="/assets/favicons/cp/favicon-96x96.png" sizes="96x96" />
+    <link rel="icon" type="image/png" href="/assets/favicons/cp/favicon-32x32.png" sizes="32x32" />
+    <link rel="icon" type="image/png" href="/assets/favicons/cp/favicon-16x16.png" sizes="16x16" />
+    <link rel="icon" type="image/png" href="/assets/favicons/cp/favicon-128.png" sizes="128x128" />
+    <meta name="application-name" content="The Carpentries - Advanced Python for Environmental Scientists"/>
+    <meta name="msapplication-TileColor" content="#FFFFFF" />
+    <meta name="msapplication-TileImage" content="/assets/favicons/cp/mstile-144x144.png" />
+    <meta name="msapplication-square70x70logo" content="/assets/favicons/cp/mstile-70x70.png" />
+    <meta name="msapplication-square150x150logo" content="/assets/favicons/cp/mstile-150x150.png" />
+    <meta name="msapplication-wide310x150logo" content="/assets/favicons/cp/mstile-310x150.png" />
+    <meta name="msapplication-square310x310logo" content="/assets/favicons/cp/mstile-310x310.png" />
+
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+	<script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+	<script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+	<![endif]-->
+
+  <title>
+  Plotting Geospatial Data with Cartopy &ndash; Advanced Python for Environmental Scientists
+  </title>
+
+  </head>
+  <body>
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div class="container">
+      
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+
+<nav class="navbar navbar-default">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+
+      
+      
+      <a href="https://carpentries.org/" class="pull-left">
+        <img class="navbar-logo" src="/assets/img/cp-logo-blue.svg" alt="The Carpentries logo" />
+      </a>
+      
+
+      
+      <a class="navbar-brand" href="/index.html">Home</a>
+
+    </div>
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+      <ul class="nav navbar-nav">
+
+	
+        <li><a href="/CODE_OF_CONDUCT.html">Code of Conduct</a></li>
+
+        
+	
+        <li><a href="/setup.html">Setup</a></li>
+
+        
+        
+        <li class="dropdown">
+          <a href="/" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Episodes <span class="caret"></span></a>
+          <ul class="dropdown-menu">
+            
+            
+            <li><a href="/01-intro/index.html">Introduction</a></li>
+            
+            
+            <li><a href="/02-coffee/index.html">Coffee Break</a></li>
+            
+            
+            <li><a href="/03-dataset-parallelism/index.html">Dataset Parallelism</a></li>
+            
+            
+            <li><a href="/04-lunch/index.html">Lunch Break</a></li>
+            
+            
+            <li><a href="/05-numpy-and-numba/index.html">Parallelisation with Numpy and Numba</a></li>
+            
+            
+            <li><a href="/06-coffee/index.html">Coffee Break</a></li>
+            
+            
+            <li><a href="/07-working-with-xarray/index.html">Working with data in Xarray</a></li>
+            
+            
+            <li><a href="/08-cartopy/index.html">Plotting Geospatial Data with Cartopy</a></li>
+            
+            
+            <li><a href="/09-coffee/index.html">Coffee Break</a></li>
+            
+            
+            <li><a href="/10-dask/index.html">Parallelising with Dask</a></li>
+            
+            
+            <li><a href="/11-lunch/index.html">Lunch Break</a></li>
+            
+            
+            <li><a href="/12-parallelism-friendly-data-formats/index.html">Storing and Accessing Data in Parallelism Friendly Formats</a></li>
+            
+            
+            <li><a href="/13-coffee/index.html">Coffee Break</a></li>
+            
+            
+            <li><a href="/14-gpus/index.html">GPUs</a></li>
+            
+	    <li role="separator" class="divider"></li>
+            <li><a href="/aio/index.html">All in one page (Beta)</a></li>
+          </ul>
+        </li>
+        
+	
+
+	
+	
+        <li class="dropdown">
+          <a href="/" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Extras <span class="caret"></span></a>
+          <ul class="dropdown-menu">
+            <li><a href="/reference.html">Reference</a></li>
+            
+            
+            
+              <li><a href="/about/index.html">About</a></li>
+            
+            
+            
+            
+              <li><a href="/discuss/index.html">Discussion</a></li>
+            
+            
+            
+            
+              <li><a href="/figures/index.html">Figures</a></li>
+            
+            
+            
+            
+              <li><a href="/guide/index.html">Instructor Notes</a></li>
+            
+            
+          </ul>
+        </li>
+	
+
+	
+        <li><a href="/LICENSE.html">License</a></li>
+        
+
+        
+	<li><a href="/edit//_episodes/08-cartopy.md" data-checker-ignore>Improve this page <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span></a></li>
+	
+      </ul>
+      <form class="navbar-form navbar-right" role="search" id="search" onsubmit="google_search(); return false;">
+        <div class="form-group">
+          <input type="text" id="google-search" placeholder="Search..." aria-label="Google site search">
+        </div>
+      </form>
+    </div>
+  </div>
+</nav>
+
+<script type="text/javascript" id="MathJax-script" async
+  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+<div class="row">
+  <div class="col-xs-1">
+    <h3 class="text-left">
+      
+      <a href="/07-working-with-xarray/index.html"><span class="glyphicon glyphicon-menu-left" aria-hidden="true"></span><span class="sr-only">previous episode</span></a>
+      
+    </h3>
+  </div>
+  <div class="col-xs-10">
+    
+    <h3 class="maintitle"><a href="/">Advanced Python for Environmental Scientists</a></h3>
+    
+  </div>
+  <div class="col-xs-1">
+    <h3 class="text-right">
+      
+      <a href="/09-coffee/index.html"><span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span><span class="sr-only">next episode</span></a>
+      
+    </h3>
+  </div>
+</div>
+
+<article>
+<div class="row">
+  <div class="col-md-1">
+  </div>
+  <div class="col-md-10">
+    <h1 class="maintitle">Plotting Geospatial Data with Cartopy</h1>
+  </div>
+  <div class="col-md-1">
+  </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+<blockquote class="objectives">
+  <h2>Overview</h2>
+
+  <div class="row">
+    <div class="col-md-3">
+      <strong>Teaching:</strong> 30 min
+      <br/>
+      <strong>Exercises:</strong> 20 min
+    </div>
+    <div class="col-md-9">
+      <strong>Questions</strong>
+      <ul>
+	
+	<li><p>How do I plot data on a map using Cartopy?</p>
+</li>
+	
+      </ul>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-3">
+    </div>
+    <div class="col-md-9">
+      <strong>Objectives</strong>
+      <ul>
+	
+	<li><p>Understand the need to choose appropriate map projections</p>
+</li>
+	
+	<li><p>Apply cartopy to plot some data on a map</p>
+</li>
+	
+      </ul>
+    </div>
+  </div>
+
+</blockquote>
+
+<h1 id="plotting-data-with-cartopy">Plotting Data with Cartopy</h1>
+
+<p>We have seen some basic plots created with Xarray and Matplotlib, but when plotting data on a map this was restricted to quite a simple 2D map without any labels or outlines of coastlines or countries.
+The <a href="https://scitools.org.uk/cartopy/docs/latest/">Cartopy</a> library allows us to create high quality map images, with a variety of different projections, map styles and showing the outlines
+of coasts and country boundaries.</p>
+
+<h2 id="using-xarray-data-with-cartopy">Using Xarray data with Cartopy</h2>
+
+<p>To plot some Xarray data from our example dataset we’ll need to select a single day (or combine multiple days together). As Cartopy can work with array types such as Numpy arrays it will
+also work with Xarray arrays.</p>
+
+<p>Let’s start a new notebook and do some initial setup to import xarray, cartopy and we’ll also need matplotlib since Cartopy uses it.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">xarray</span> <span class="k">as</span> <span class="n">xr</span>
+<span class="kn">import</span> <span class="nn">cartopy.crs</span> <span class="k">as</span> <span class="n">ccrs</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="n">plt</span>
+<span class="n">dataset</span> <span class="o">=</span> <span class="n">xr</span><span class="p">.</span><span class="n">open_dataset</span><span class="p">(</span><span class="s">"gistemp1200-21c.nc"</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>To setup a Cartopy plot we’ll need to create a matplotlib figure and add a subplot to it. Cartopy also requires us to specify a map projection, for this example we’ll use the PlateCarree
+projection. Note that due to how Matplotlib interacts with Jupyter notebooks, the following must all appear in the same cell.
+To extract some data from our datset we’ll use <code class="language-plaintext highlighter-rouge">dataset['tempanomaly'].sel(time="2000-01-15")</code> to get the temperature anomaly data for January 15th 2000.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="p">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span> <span class="o">=</span> <span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
+<span class="n">axis</span> <span class="o">=</span> <span class="n">fig</span><span class="p">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">projection</span> <span class="o">=</span> <span class="n">ccrs</span><span class="p">.</span><span class="n">PlateCarree</span><span class="p">())</span>
+<span class="n">dataset</span><span class="p">[</span><span class="s">'tempanomaly'</span><span class="p">].</span><span class="n">sel</span><span class="p">(</span><span class="n">time</span><span class="o">=</span><span class="s">"2000-01-15"</span><span class="p">).</span><span class="n">plot</span><span class="p">(</span><span class="n">ax</span> <span class="o">=</span> <span class="n">axis</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>We should now see a map of the world with the temperature anomaly data, if we look in the top left we can see North America appearing mostly in red and in the lower right Australia in blue,
+but much of the other continents are harder to make out. To make it easier we can add coastlines by calling <code class="language-plaintext highlighter-rouge">axis.coastlines()</code> after the plot. But to make this appear on the same map
+as the rest of the plot it needs to be in the same Jupyter cell and we’ll have to rerun the whole cell.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="p">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span> <span class="o">=</span> <span class="p">(</span><span class="mi">10</span><span class="p">,</span><span class="mi">5</span><span class="p">))</span>
+<span class="n">axis</span> <span class="o">=</span> <span class="n">fig</span><span class="p">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">projection</span> <span class="o">=</span> <span class="n">ccrs</span><span class="p">.</span><span class="n">PlateCarree</span><span class="p">())</span>
+<span class="n">dataset</span><span class="p">.</span><span class="n">tempanomaly</span><span class="p">.</span><span class="n">sel</span><span class="p">(</span><span class="n">time</span><span class="o">=</span><span class="s">"2000-01-15"</span><span class="p">).</span><span class="n">plot</span><span class="p">(</span><span class="n">ax</span> <span class="o">=</span> <span class="n">axis</span><span class="p">)</span>
+<span class="n">axis</span><span class="p">.</span><span class="n">coastlines</span><span class="p">()</span>
+</code></pre></div></div>
+
+<h1 id="dealing-with-projections">Dealing with Projections</h1>
+
+<p>Cartopy supports many different map projections which change how the globe is mapped onto a two dimensional surface. This is controlled by the <code class="language-plaintext highlighter-rouge">projection</code> parameter to <code class="language-plaintext highlighter-rouge">fig.add_subplot</code>.
+One alternative projection we can use is the RotatedPole projection which will project the pole at the centre of the map, this takes two parameters <code class="language-plaintext highlighter-rouge">pole_latitude</code> and <code class="language-plaintext highlighter-rouge">pole_longitude</code>
+which define the point at which we want to centre the map on.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="p">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span><span class="mi">5</span><span class="p">))</span>
+<span class="n">axis</span> <span class="o">=</span> <span class="n">fig</span><span class="p">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">projection</span><span class="o">=</span><span class="n">ccrs</span><span class="p">.</span><span class="n">RotatedPole</span><span class="p">(</span><span class="n">pole_longitude</span><span class="o">=-</span><span class="mi">90</span><span class="p">,</span> <span class="n">pole_latitude</span><span class="o">=</span><span class="mi">0</span><span class="p">))</span>
+<span class="n">dataset</span><span class="p">.</span><span class="n">tempanomaly</span><span class="p">.</span><span class="n">sel</span><span class="p">(</span><span class="n">time</span><span class="o">=</span><span class="s">"2000-01-15"</span><span class="p">).</span><span class="n">plot</span><span class="p">(</span><span class="n">ax</span> <span class="o">=</span> <span class="n">axis</span><span class="p">)</span>
+<span class="n">axis</span><span class="p">.</span><span class="n">coastlines</span><span class="p">()</span>
+</code></pre></div></div>
+
+<p>The above example puts the map into a RotatedPole projection, but notice that the coastlines and coloured areas of the map don’t match as they previously did. This is because
+we haven’t told Cartopy how the data is structured and it has assumed it matches the projection. We didn’t need to do this with the PlateCarree projection as the data matched the projection
+but now we need to specify an extra <code class="language-plaintext highlighter-rouge">transform</code> argument to <code class="language-plaintext highlighter-rouge">plot</code>.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="p">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span><span class="mi">5</span><span class="p">))</span>
+<span class="n">axis</span> <span class="o">=</span> <span class="n">fig</span><span class="p">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">projection</span><span class="o">=</span><span class="n">ccrs</span><span class="p">.</span><span class="n">RotatedPole</span><span class="p">(</span><span class="n">pole_longitude</span><span class="o">=-</span><span class="mi">90</span><span class="p">,</span> <span class="n">pole_latitude</span><span class="o">=</span><span class="mi">0</span><span class="p">))</span>
+<span class="n">dataset</span><span class="p">.</span><span class="n">tempanomaly</span><span class="p">.</span><span class="n">sel</span><span class="p">(</span><span class="n">time</span><span class="o">=</span><span class="s">"2000-01-15"</span><span class="p">).</span><span class="n">plot</span><span class="p">(</span><span class="n">ax</span> <span class="o">=</span> <span class="n">axis</span><span class="p">,</span> <span class="n">transform</span><span class="o">=</span><span class="n">ccrs</span><span class="p">.</span><span class="n">PlateCarree</span><span class="p">())</span>
+<span class="n">axis</span><span class="p">.</span><span class="n">coastlines</span><span class="p">()</span>
+</code></pre></div></div>
+
+<p>The data should now match the coastlines.</p>
+
+<blockquote class="challenge">
+  <h2 id="challenge">Challenge</h2>
+  <p>Experiment with the following map projections</p>
+  <ul>
+    <li>Mollweide</li>
+    <li>InterruptedGoodeHomolosine</li>
+    <li>Robinson</li>
+    <li>Orthographic (requires latitude and longitue parameters)
+See <a href="https://scitools.org.uk/cartopy/docs/v0.13/crs/projections.html">https://scitools.org.uk/cartopy/docs/v0.13/crs/projections.html</a> for more options.
+Which do you like the most? Discuss what is the most useful aspects for showing data with the group.</li>
+  </ul>
+</blockquote>
+
+<h1 id="adding-gridlines">Adding gridlines</h1>
+
+<p>Like we added coastlines with <code class="language-plaintext highlighter-rouge">axis.coastlines()</code> we can add gridlines of latitude and longitude with <code class="language-plaintext highlighter-rouge">axis.gridlines()</code>. By default these will appear every 60 degrees of longitude and
+ every 30 degrees of latitude. We can add labels with the parameter <code class="language-plaintext highlighter-rouge">draw_labels=True</code>.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="p">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span><span class="mi">5</span><span class="p">))</span>
+<span class="n">axis</span> <span class="o">=</span> <span class="n">fig</span><span class="p">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">projection</span><span class="o">=</span><span class="n">ccrs</span><span class="p">.</span><span class="n">PlateCarree</span><span class="p">())</span>
+<span class="n">dataset</span><span class="p">.</span><span class="n">tempanomaly</span><span class="p">.</span><span class="n">sel</span><span class="p">(</span><span class="n">time</span><span class="o">=</span><span class="s">"2000-01-15"</span><span class="p">).</span><span class="n">plot</span><span class="p">(</span><span class="n">ax</span> <span class="o">=</span> <span class="n">axis</span><span class="p">,</span> <span class="n">transform</span><span class="o">=</span><span class="n">ccrs</span><span class="p">.</span><span class="n">PlateCarree</span><span class="p">())</span>
+<span class="n">axis</span><span class="p">.</span><span class="n">coastlines</span><span class="p">()</span>
+<span class="n">axis</span><span class="p">.</span><span class="n">gridlines</span><span class="p">(</span><span class="n">draw_labels</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>If we’d like the gridlines at a different position we can specify these with Python lists in the <code class="language-plaintext highlighter-rouge">xlocs</code> and <code class="language-plaintext highlighter-rouge">ylocs</code> parameters. For example</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="p">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span><span class="mi">5</span><span class="p">))</span>
+<span class="n">axis</span> <span class="o">=</span> <span class="n">fig</span><span class="p">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">projection</span><span class="o">=</span><span class="n">ccrs</span><span class="p">.</span><span class="n">PlateCarree</span><span class="p">())</span>
+<span class="n">dataset</span><span class="p">.</span><span class="n">tempanomaly</span><span class="p">.</span><span class="n">sel</span><span class="p">(</span><span class="n">time</span><span class="o">=</span><span class="s">"2000-01-15"</span><span class="p">).</span><span class="n">plot</span><span class="p">(</span><span class="n">ax</span> <span class="o">=</span> <span class="n">axis</span><span class="p">,</span> <span class="n">transform</span><span class="o">=</span><span class="n">ccrs</span><span class="p">.</span><span class="n">PlateCarree</span><span class="p">())</span>
+<span class="n">axis</span><span class="p">.</span><span class="n">coastlines</span><span class="p">()</span>
+<span class="n">axis</span><span class="p">.</span><span class="n">gridlines</span><span class="p">(</span><span class="n">draw_labels</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span><span class="n">xlocs</span><span class="o">=</span><span class="p">[</span><span class="o">-</span><span class="mi">180</span><span class="p">,</span><span class="o">-</span><span class="mi">90</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">90</span><span class="p">,</span><span class="mi">180</span><span class="p">])</span>
+</code></pre></div></div>
+
+<p>A more concise way to do this is to use Numpy’s <code class="language-plaintext highlighter-rouge">linspace</code> function which creates an array of evenly spaced elements, this takes a start, end and number of elements parameter for example:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">axis</span><span class="p">.</span><span class="n">gridlines</span><span class="p">(</span><span class="n">draw_labels</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span><span class="n">xlocs</span><span class="o">=</span><span class="n">np</span><span class="p">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="mi">180</span><span class="p">,</span><span class="mi">180</span><span class="p">,</span><span class="mi">5</span><span class="p">))</span>
+</code></pre></div></div>
+
+<h1 id="adding-countryregion-boundaries">Adding Country/Region boundaries</h1>
+
+<p>Cartopy has many common map features including coastlines, lakes, rivers, country boundaries and state/region boundaries that it can draw. These are all available in the <code class="language-plaintext highlighter-rouge">cartopy.feature</code>
+library and can be added using the <code class="language-plaintext highlighter-rouge">add_features</code> function on a subplot axis.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">cartopy.feature</span> <span class="k">as</span> <span class="n">cfeature</span>
+<span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="p">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span><span class="mi">5</span><span class="p">))</span>
+<span class="n">axis</span> <span class="o">=</span> <span class="n">fig</span><span class="p">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">projection</span><span class="o">=</span><span class="n">ccrs</span><span class="p">.</span><span class="n">PlateCarree</span><span class="p">())</span>
+<span class="n">dataset</span><span class="p">.</span><span class="n">tempanomaly</span><span class="p">.</span><span class="n">sel</span><span class="p">(</span><span class="n">time</span><span class="o">=</span><span class="s">"2000-01-15"</span><span class="p">).</span><span class="n">plot</span><span class="p">(</span><span class="n">ax</span> <span class="o">=</span> <span class="n">axis</span><span class="p">,</span> <span class="n">transform</span><span class="o">=</span><span class="n">ccrs</span><span class="p">.</span><span class="n">PlateCarree</span><span class="p">())</span>
+<span class="n">axis</span><span class="p">.</span><span class="n">coastlines</span><span class="p">()</span>
+<span class="n">axis</span><span class="p">.</span><span class="n">gridlines</span><span class="p">(</span><span class="n">draw_labels</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="n">axis</span><span class="p">.</span><span class="n">add_feature</span><span class="p">(</span><span class="n">cfeature</span><span class="p">.</span><span class="n">BORDERS</span><span class="p">)</span>
+<span class="n">axis</span><span class="p">.</span><span class="n">add_feature</span><span class="p">(</span><span class="n">cfeature</span><span class="p">.</span><span class="n">LAKES</span><span class="p">)</span>
+<span class="n">axis</span><span class="p">.</span><span class="n">add_feature</span><span class="p">(</span><span class="n">cfeature</span><span class="p">.</span><span class="n">RIVERS</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>The above code will add country boundaries, lakes and rivers to our map. The lakes and rivers might be a little hard to see in places where there is a blue being used to render the
+temperature anomaly. We could apply a different colourmap to avoid this problem, the plasma colourmap in Matplotlib goes from purple, to orange to yellow and shows the contrast with
+ the rivers nicely.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">matplotlib</span> <span class="kn">import</span> <span class="n">colormaps</span>
+<span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="p">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span><span class="mi">5</span><span class="p">))</span>
+<span class="n">axis</span> <span class="o">=</span> <span class="n">fig</span><span class="p">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">projection</span><span class="o">=</span><span class="n">ccrs</span><span class="p">.</span><span class="n">PlateCarree</span><span class="p">())</span>
+<span class="n">dataset</span><span class="p">.</span><span class="n">tempanomaly</span><span class="p">.</span><span class="n">sel</span><span class="p">(</span><span class="n">time</span><span class="o">=</span><span class="s">"2000-01-15"</span><span class="p">).</span><span class="n">plot</span><span class="p">(</span><span class="n">ax</span> <span class="o">=</span> <span class="n">axis</span><span class="p">,</span> <span class="n">transform</span><span class="o">=</span><span class="n">ccrs</span><span class="p">.</span><span class="n">PlateCarree</span><span class="p">(),</span> <span class="n">cmap</span><span class="o">=</span><span class="n">colormaps</span><span class="p">.</span><span class="n">get_cmap</span><span class="p">(</span><span class="s">'plasma'</span><span class="p">))</span>
+<span class="n">axis</span><span class="p">.</span><span class="n">coastlines</span><span class="p">()</span>
+<span class="n">axis</span><span class="p">.</span><span class="n">gridlines</span><span class="p">(</span><span class="n">draw_labels</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="n">axis</span><span class="p">.</span><span class="n">add_feature</span><span class="p">(</span><span class="n">cfeature</span><span class="p">.</span><span class="n">BORDERS</span><span class="p">)</span>
+<span class="n">axis</span><span class="p">.</span><span class="n">add_feature</span><span class="p">(</span><span class="n">cfeature</span><span class="p">.</span><span class="n">LAKES</span><span class="p">)</span>
+<span class="n">axis</span><span class="p">.</span><span class="n">add_feature</span><span class="p">(</span><span class="n">cfeature</span><span class="p">.</span><span class="n">RIVERS</span><span class="p">)</span>
+</code></pre></div></div>
+
+<blockquote class="callout">
+  <h2 id="downloading-boundary-data-manually">Downloading boundary data manually</h2>
+
+  <p>If you want to download the boundary data yourself (perhaps if you are going to be offline later and want to plot some maps) then you can do this from the Natural Earth website or
+by using a wget or curl command from your terminal. Download the following files:</p>
+
+  <ul>
+    <li><a href="https://naturalearth.s3.amazonaws.com/110m_physical/ne_110m_coastline.zip">https://naturalearth.s3.amazonaws.com/110m_physical/ne_110m_coastline.zip</a></li>
+    <li><a href="https://naturalearth.s3.amazonaws.com/110m_physical/ne_110m_lakes.zip">https://naturalearth.s3.amazonaws.com/110m_physical/ne_110m_lakes.zip</a></li>
+    <li><a href="https://naturalearth.s3.amazonaws.com/110m_physical/ne_110m_rivers_lake_centerlines.zip">https://naturalearth.s3.amazonaws.com/110m_physical/ne_110m_rivers_lake_centerlines.zip</a></li>
+    <li><a href="https://naturalearth.s3.amazonaws.com/110m_cultural/ne_110m_admin_0_boundary_lines_land.zip">https://naturalearth.s3.amazonaws.com/110m_cultural/ne_110m_admin_0_boundary_lines_land.zip</a></li>
+  </ul>
+
+  <p>Unzip these and place the coastlines, lakes and rivers files in <code class="language-plaintext highlighter-rouge">~/.local/share/cartopy/shapefiles/natural_earth/physical</code>.</p>
+
+  <p>Place the boundaries in <code class="language-plaintext highlighter-rouge">~/.local/share/cartopy/shapefiles/natural_earth/cultural</code></p>
+
+  <p>Here’s the commands to do all of this:</p>
+  <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>wget https://naturalearth.s3.amazonaws.com/110m_physical/ne_110m_coastline.zip https://naturalearth.s3.amazonaws.com/110m_physical/ne_110m_lakes.zip https://naturalearth.s3.amazonaws.com/110m_physical/ne_110m_rivers_lake_centerlines.zip https://naturalearth.s3.amazonaws.com/110m_cultural/ne_110m_admin_0_boundary_lines_land.zip
+<span class="nb">mkdir</span> <span class="nt">-p</span> ~/.local/share/cartopy/shapefiles/natural_earth/cultural
+<span class="nb">mkdir</span> <span class="nt">-p</span> ~/.local/share/cartopy/shapefiles/natural_earth/physical
+<span class="nb">cd</span> ~/.local/share/cartopy/shapefiles/natural_earth/cultural
+conda run <span class="nt">-n</span> esces unzip ~/ne_110m_admin_0_boundary_lines_land.zip
+<span class="nb">cd</span> ../physical
+conda run <span class="nt">-n</span> esces unzip ~/ne_110m_coastline.zip
+conda run <span class="nt">-n</span> esces unzip ~/ne_110m_lakes.zip
+conda run <span class="nt">-n</span> esces unzip ~/ne_110m_rivers_lake_centerlines.zip
+</code></pre></div>  </div>
+</blockquote>
+
+<blockquote class="challenge">
+  <h2 id="challenge-1">Challenge</h2>
+  <p>The <a href="https://scitools.org.uk/cartopy/docs/latest/reference/generated/cartopy.feature.NaturalEarthFeature.html"><code class="language-plaintext highlighter-rouge">cartopy.feature.NaturalEarthFeature</code></a> library allows access to a number
+of boundary features from the shapefiles supplied by the website Natural Earth. One of these has administrative and state boundaries for many countries. Add this feature using the
+“admin_1_states_provinces_lines” dataset. Use the 50m (1:50 million) scale for this.</p>
+  <blockquote class="solution">
+    <h2 id="solution">Solution</h2>
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">states_provinces</span> <span class="o">=</span> <span class="n">cfeature</span><span class="p">.</span><span class="n">NaturalEarthFeature</span><span class="p">(</span>
+       <span class="n">category</span><span class="o">=</span><span class="s">'cultural'</span><span class="p">,</span>
+       <span class="n">name</span><span class="o">=</span><span class="s">'admin_1_states_provinces_lines'</span><span class="p">,</span>
+       <span class="n">scale</span><span class="o">=</span><span class="s">'50m'</span><span class="p">,</span>
+       <span class="n">facecolor</span><span class="o">=</span><span class="s">'none'</span><span class="p">)</span>
+<span class="n">axis</span><span class="p">.</span><span class="n">add_feature</span><span class="p">(</span><span class="n">states_provinces</span><span class="p">)</span>
+</code></pre></div>    </div>
+  </blockquote>
+</blockquote>
+
+<p>g</p>
+
+
+
+
+
+<blockquote class="keypoints">
+  <h2>Key Points</h2>
+  <ul>
+    
+    <li><p>Cartopy can plot data on maps</p>
+</li>
+    
+    <li><p>Cartopy can use Xarray DataArrays</p>
+</li>
+    
+    <li><p>We can apply different projections to the map</p>
+</li>
+    
+    <li><p>We can add gridlines and country/region boundaries</p>
+</li>
+    
+  </ul>
+</blockquote>
+
+</article>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+<div class="row">
+  <div class="col-xs-1">
+    <h3 class="text-left">
+      
+      <a href="/07-working-with-xarray/index.html"><span class="glyphicon glyphicon-menu-left" aria-hidden="true"></span><span class="sr-only">previous episode</span></a>
+      
+    </h3>
+  </div>
+  <div class="col-xs-10">
+    
+  </div>
+  <div class="col-xs-1">
+    <h3 class="text-right">
+      
+      <a href="/09-coffee/index.html"><span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span><span class="sr-only">next episode</span></a>
+      
+    </h3>
+  </div>
+</div>
+
+
+      
+      
+
+
+
+
+
+
+<footer>
+  <div class="row">
+    <div class="col-md-6 license" id="license-info" align="left">
+	
+	Licensed under <a href="https://creativecommons.org/licenses/by/4.0/">CC-BY 4.0</a> 2018–2025
+	by <a href="https://carpentries.org/">The Carpentries</a>
+	
+    </div>
+    <div class="col-md-6 help-links" align="right">
+    
+    
+    <a href="/edit//_episodes/08-cartopy.md" data-checker-ignore>Edit on GitHub</a>
+    
+	/
+	<a href="/blob//CONTRIBUTING.md" data-checker-ignore>Contributing</a>
+	/
+	<a href="/">Source</a>
+	/
+	<a href="/blob//CITATION" data-checker-ignore>Cite</a>
+	/
+	<a href="mailto:team@carpentries.org">Contact</a>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-12" align="center">
+      Using <a href="https://github.com/carpentries/styles/">The Carpentries style</a>
+      version <a href="https://github.com/carpentries/styles/releases/tag/v9.5.3">9.5.3</a>.
+    </div>
+  </div>
+</footer>
+
+      
+    </div>
+    
+<script src="/assets/js/jquery.min.js"></script>
+<script src="/assets/js/bootstrap.min.js"></script>
+<script src="/assets/js/lesson.js"></script>
+
+
+<!-- Matomo -->
+<script>
+  var _paq = window._paq = window._paq || [];
+  /* tracker methods like "setCustomDimension" should be called before "trackPageView" */
+  _paq.push(["setDocumentTitle", document.domain + "/" + document.title]);
+  _paq.push(["setDomains", ["*.lessons.carpentries.org","*.datacarpentry.github.io","*.datacarpentry.org","*.librarycarpentry.github.io","*.librarycarpentry.org","*.swcarpentry.github.io"]]);
+  _paq.push(["setDoNotTrack", true]);
+  _paq.push(["disableCookies"]);
+  _paq.push(['trackPageView']);
+  _paq.push(['enableLinkTracking']);
+  (function() {
+    var u="https://carpentries.matomo.cloud/";
+    _paq.push(['setTrackerUrl', u+'matomo.php']);
+    _paq.push(['setSiteId', '1']);
+    var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
+    g.async=true; g.src='//cdn.matomo.cloud/carpentries.matomo.cloud/matomo.js'; s.parentNode.insertBefore(g,s);
+  })();
+</script>
+<!-- End Matomo Code -->
+
+
+<script src="/assets/js/anchor.min.js"></script>
+<script>
+    anchors.add();
+</script>
+
+  </body>
+</html>
