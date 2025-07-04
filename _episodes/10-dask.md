@@ -44,6 +44,8 @@ client
 The code above will create a local Dask cluster with one worker and 4 threads for each worker and a limit of 2GB of memory. Displaying the `client` object will tell us all about the
 cluster.
 
+![A screenshot of the Dask client information](../fig/dask-setup.png)
+
 
 ## Using the Dask dashboard
 
@@ -62,21 +64,22 @@ Note that if you are using the JASMIN notebook service, the link to the dashboar
 ~~~
 ssh-keygen #MAKE SURE YOU SET A PASSPHRASE
 cat ~/.ssh/id_rsa.pub >> ~/.ssh/authorized_keys
-ssh -R 8787:localhost:8787 login-02.jasmin.ac.uk
+ssh -R 8788:localhost:8787 login-02.jasmin.ac.uk
 ~~~
 {: .language-bash}
 
 Port 8787 might not be the port your Dask cluster is using, make sure the first 8787 is the number your Dask cluster is running on.
-If anybody else is doing this then port 8787 on login-02 might be in use, change the second 8787 to something else to match. Now connect an SSH tunnel from your computer
-to Jasmin login-02 and forward port 8787 back to your computer, if you changed 8787 to something else in the previous step then use the same number here in both cases.
+If anybody else is doing this then port 8788 on login-02 might be in use, change the second 8788 to something else to match. Now connect an SSH tunnel from your computer
+to Jasmin login-02 and forward port 8788 back to your computer where it will be presented as port 8789.
 
 ~~~
-ssh -L 8787:localhost:8787 login-02.jasmin.ac.uk
+ssh -L 8789:localhost:8788 login-02.jasmin.ac.uk
 ~~~
 {: .language-bash}
 
-Open your web browser to http://127.0.0.1:8787 and you will see your Dask cluster page. Note that you have just exposed this to anybody else with JASMIN access and there is no password
+Open your web browser to http://127.0.0.1:8789 and you will see your Dask cluster page. Note that you have just exposed this to anybody else with JASMIN access and there is no password
 on it.
+
 
 # Dask Arrays
 
@@ -299,7 +302,6 @@ the `dask_gateway` library and configure the gateway.
 
 ~~~
 import dask_gateway
-import dask
 gw = dask_gateway.Gateway("https://dask-gateway.jasmin.ac.uk", auth="jupyterhub")
 ~~~
 {: .language-python}
@@ -311,7 +313,8 @@ as to the scheduler which will manage our Dask cluster. Finally we need to tell 
 options = gw.cluster_options()
 options.worker_cores = 1
 options.scheduler_cores = 1
-options.worker_setup='source /apps/jasmin/jaspy/mambaforge_envs/jaspy3.10/mf-22.11.1-4/bin/activate ~/.conda/envs/esces'
+options.account = "no-project"
+options.worker_setup='source /apps/jasmin/jaspy/miniforge_envs/jaspy3.11/mf3-23.11.0-0/bin/activate ~/.conda/envs/esces'
 ~~~
 {: .language-python}
 
