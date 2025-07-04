@@ -10,7 +10,7 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta http-equiv="last-modified" content="2025-07-03 11:11:57 -0500">
+    <meta http-equiv="last-modified" content="2025-07-04 10:15:38 -0500">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- meta "search-domain" used for google site search function google_search() -->
     <meta name="search-domain" value="">
@@ -464,7 +464,7 @@ allow native Python operations on Zarr. There is support for Zarr in other langu
 
 <h2 id="zarr-and-xarray">Zarr and Xarray</h2>
 
-<p>Xarray can open Zarr files using the <code class="language-plaintext highlighter-rouge">open_zarr</code> function that is similar to the <code class="language-plaintext highlighter-rouge">open_datset</code> function we’ve been using to open NetCDF data. We will be using the outputs of the <a href="https://noc-msm.github.io/NOC_Near_Present_Day/">Near-Present-Day simulations developed by the National Oceanography Centre</a>, specifically related to the eORCA025 model and covers the ocean globally. Each dataset can have more than 200GB, DO NOT DOWNLOAD IT!</p>
+<p>Xarray can open Zarr files using the <code class="language-plaintext highlighter-rouge">open_zarr</code> function that is similar to the <code class="language-plaintext highlighter-rouge">open_dataset</code> function we’ve been using to open NetCDF data. We will be using the outputs of the <a href="https://noc-msm.github.io/NOC_Near_Present_Day/">NEMO Near-Present-Day simulations developed by the National Oceanography Centre</a>, specifically related to the eORCA025 model and covers the ocean globally. Each dataset can have more than 200GB, DO NOT DOWNLOAD IT!</p>
 
 <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">xarray</span> <span class="k">as</span> <span class="n">xr</span>
 
@@ -473,7 +473,7 @@ allow native Python operations on Zarr. There is support for Zarr in other langu
 </code></pre></div></div>
 
 <p>We can now see the metadata for the Zarr file. It includes 75 depth levels, 577 time steps and a 1206x1440
-spatial resolution. In this case, there is only one variable, <code class="language-plaintext highlighter-rouge">so_abs</code>, which is the absolute salinity of the ocean. To access other variables, you can take a look on the <a href="https://noc-msm.github.io/NOC_Near_Present_Day/">NOC Near-Present-Day documentation</a>. For example:</p>
+spatial resolution. In this case, there is only one variable, <code class="language-plaintext highlighter-rouge">so_abs</code>, which is the absolute salinity of the ocean. To access other variables, you can take a look on the <a href="https://noc-msm.github.io/NOC_Near_Present_Day/outputs">NOC Near-Present-Day documentation</a>. For example:</p>
 
 <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">xarray</span> <span class="k">as</span> <span class="n">xr</span>
 
@@ -490,7 +490,7 @@ so far none of the actual data has been transferred, we have done what is known 
 <span class="n">ssh</span>
 </code></pre></div></div>
 
-<p>We can see that ds_sub is now a 200x200x1 array that only takes up 156.25kB from the original 3.73GB file. Even at this point no data will have been transferred.
+<p>We can see that <code class="language-plaintext highlighter-rouge">ssh</code> is now a 200x200x1 array that only takes up 156.25kB from the original 3.73GB file. Even at this point no data will have been transferred.
 If we explore further and print the <code class="language-plaintext highlighter-rouge">ssh</code> array we’ll see that it is actually using a Dask array underneath.</p>
 
 <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">print</span><span class="p">(</span><span class="n">ssh</span><span class="p">)</span>
@@ -514,13 +514,53 @@ If we explore further and print the <code class="language-plaintext highlighter-
 
 <blockquote class="challenge">
   <h2 id="plot-sea-surface-temperature">Plot Sea Surface Temperature</h2>
-  <p>Extract and plot the sea surface temperature (sst variable) for the nearest date to January 1st 1965 that is in the dataset.</p>
+  <p>Extract and plot the sea surface temperature (<code class="language-plaintext highlighter-rouge">tos_con</code> variable from the <code class="language-plaintext highlighter-rouge">https://noc-msm-o.s3-ext.jc.rl.ac.uk/npd-eorca025-jra55v1/T1m/tos_con</code> file) for the nearest date to January 1st 1965 that is in the dataset.</p>
   <blockquote class="solution">
-    <h2 id="solution">Solution</h2>
+    <h2 id="solution-1">Solution 1</h2>
     <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">xarray</span> <span class="k">as</span> <span class="n">xr</span>
 <span class="n">ds</span> <span class="o">=</span> <span class="n">xr</span><span class="p">.</span><span class="n">open_zarr</span><span class="p">(</span><span class="s">"https://noc-msm-o.s3-ext.jc.rl.ac.uk/npd-eorca025-jra55v1/T1m/tos_con"</span><span class="p">)</span>
 <span class="n">sst</span> <span class="o">=</span> <span class="n">ds</span><span class="p">[</span><span class="s">'tos_con'</span><span class="p">].</span><span class="n">sel</span><span class="p">(</span><span class="n">time_counter</span><span class="o">=</span><span class="s">"1965-01-01"</span><span class="p">,</span><span class="n">method</span><span class="o">=</span><span class="s">"nearest"</span><span class="p">)</span>
 <span class="n">sst</span><span class="p">.</span><span class="n">plot</span><span class="p">()</span>
+</code></pre></div>    </div>
+  </blockquote>
+
+  <blockquote class="solution">
+    <h2 id="solution-2-optional-reprojecting-and-plotting-with-cartopy">Solution 2: (OPTIONAL) reprojecting and plotting with Cartopy</h2>
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># you will need to install xESMF to run this solution
+# conda install -c conda-forge "esmpy=8.6.1" "esmf=8.6.1"
+</span><span class="kn">import</span> <span class="nn">xesmf</span> <span class="k">as</span> <span class="n">xe</span>
+<span class="kn">import</span> <span class="nn">xarray</span> <span class="k">as</span> <span class="n">xr</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="n">plt</span>
+<span class="kn">import</span> <span class="nn">cartopy.crs</span> <span class="k">as</span> <span class="n">ccrs</span>
+<span class="n">ds</span> <span class="o">=</span> <span class="n">xr</span><span class="p">.</span><span class="n">open_zarr</span><span class="p">(</span><span class="s">"https://noc-msm-o.s3-ext.jc.rl.ac.uk/npd-eorca025-jra55v1/T1m/tos_con"</span><span class="p">)</span>
+<span class="n">sst</span> <span class="o">=</span> <span class="n">ds</span><span class="p">[</span><span class="s">'tos_con'</span><span class="p">].</span><span class="n">sel</span><span class="p">(</span><span class="n">time_counter</span><span class="o">=</span><span class="s">"1965-01-01"</span><span class="p">,</span><span class="n">method</span><span class="o">=</span><span class="s">"nearest"</span><span class="p">)</span>
+<span class="n">sst</span> <span class="o">=</span> <span class="n">sst</span><span class="p">.</span><span class="n">rename</span><span class="p">({</span><span class="s">'nav_lon'</span><span class="p">:</span> <span class="s">'lon'</span><span class="p">,</span> <span class="s">'nav_lat'</span><span class="p">:</span> <span class="s">'lat'</span><span class="p">})</span>
+<span class="c1"># Create source and target grids
+</span><span class="n">ds</span> <span class="o">=</span> <span class="n">sst</span><span class="p">.</span><span class="n">to_dataset</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s">"tos_con"</span><span class="p">)</span>
+<span class="c1"># Define target regular grid (e.g., 1°)
+</span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="n">np</span>
+<span class="n">lon_target</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="mi">180</span><span class="p">,</span> <span class="mi">180</span><span class="p">,</span> <span class="mi">360</span><span class="p">)</span>
+<span class="n">lat_target</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="mi">90</span><span class="p">,</span> <span class="mi">90</span><span class="p">,</span> <span class="mi">180</span><span class="p">)</span>
+<span class="n">target_grid</span> <span class="o">=</span> <span class="n">xr</span><span class="p">.</span><span class="n">Dataset</span><span class="p">({</span>
+    <span class="s">"lon"</span><span class="p">:</span> <span class="p">([</span><span class="s">"lon"</span><span class="p">],</span> <span class="n">lon_target</span><span class="p">),</span>
+    <span class="s">"lat"</span><span class="p">:</span> <span class="p">([</span><span class="s">"lat"</span><span class="p">],</span> <span class="n">lat_target</span><span class="p">),</span>
+<span class="p">})</span>
+<span class="c1"># Regrid
+</span><span class="n">regridder</span> <span class="o">=</span> <span class="n">xe</span><span class="p">.</span><span class="n">Regridder</span><span class="p">(</span><span class="n">ds</span><span class="p">,</span> <span class="n">target_grid</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s">"bilinear"</span><span class="p">,</span> <span class="n">periodic</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="n">tos_regridded</span> <span class="o">=</span> <span class="n">regridder</span><span class="p">(</span><span class="n">ds</span><span class="p">)[</span><span class="s">"tos_con"</span><span class="p">]</span>
+
+<span class="c1"># Plotting the regridded data
+</span><span class="n">plt</span><span class="p">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+<span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="p">.</span><span class="n">axes</span><span class="p">(</span><span class="n">projection</span><span class="o">=</span><span class="n">ccrs</span><span class="p">.</span><span class="n">PlateCarree</span><span class="p">())</span>
+<span class="n">pcm</span> <span class="o">=</span> <span class="n">ax</span><span class="p">.</span><span class="n">pcolormesh</span><span class="p">(</span>
+    <span class="n">tos_regridded</span><span class="p">[</span><span class="s">"lon"</span><span class="p">],</span> <span class="n">tos_regridded</span><span class="p">[</span><span class="s">"lat"</span><span class="p">],</span>
+    <span class="n">tos_regridded</span><span class="p">,</span> <span class="n">transform</span><span class="o">=</span><span class="n">ccrs</span><span class="p">.</span><span class="n">PlateCarree</span><span class="p">(),</span>
+    <span class="n">cmap</span><span class="o">=</span><span class="s">"viridis"</span>
+<span class="p">)</span>
+<span class="n">ax</span><span class="p">.</span><span class="n">coastlines</span><span class="p">()</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">title</span><span class="p">(</span><span class="s">"Regridded Sea Surface Temperature"</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">colorbar</span><span class="p">(</span><span class="n">pcm</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="n">sst</span><span class="p">.</span><span class="n">attrs</span><span class="p">.</span><span class="n">get</span><span class="p">(</span><span class="s">"units"</span><span class="p">,</span> <span class="s">""</span><span class="p">))</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">tight_layout</span><span class="p">()</span>
 </code></pre></div>    </div>
   </blockquote>
 </blockquote>
@@ -529,7 +569,7 @@ If we explore further and print the <code class="language-plaintext highlighter-
   <h2 id="calculate-the-mean-sea-surface-temperature-for-two-years">Calculate the mean sea surface temperature for two years</h2>
   <p>Calculate the mean sea surface temperature for the years between 1990 and 1991 using the same dataset as above.</p>
   <blockquote class="solution">
-    <h2 id="solution-1">Solution</h2>
+    <h2 id="solution">Solution</h2>
     <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">xarray</span> <span class="k">as</span> <span class="n">xr</span>
 <span class="n">ds</span> <span class="o">=</span> <span class="n">xr</span><span class="p">.</span><span class="n">open_zarr</span><span class="p">(</span><span class="s">"https://noc-msm-o.s3-ext.jc.rl.ac.uk/npd-eorca025-jra55v1/T1m/tos_con"</span><span class="p">)</span>
 <span class="n">sst</span> <span class="o">=</span> <span class="n">ds</span><span class="p">[</span><span class="s">'tos_con'</span><span class="p">].</span><span class="n">sel</span><span class="p">(</span><span class="n">time_counter</span><span class="o">=</span><span class="nb">slice</span><span class="p">(</span><span class="s">"1990"</span><span class="p">,</span> <span class="s">"1991"</span><span class="p">))</span>
@@ -547,7 +587,7 @@ If we explore further and print the <code class="language-plaintext highlighter-
 time_counter chunk size to 10 when opening the zarr file. Measure how long it takes to compute the result, try changing the number of workers up and down to see
 what the optimal number is.</p>
   <blockquote class="solution">
-    <h2 id="solution-2">Solution</h2>
+    <h2 id="solution-1">Solution</h2>
     <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">xarray</span> <span class="k">as</span> <span class="n">xr</span>
 <span class="kn">import</span> <span class="nn">dask_gateway</span>
 
@@ -569,7 +609,7 @@ what the optimal number is.</p>
 <span class="n">client</span>
 
 <span class="n">ds</span> <span class="o">=</span> <span class="n">xr</span><span class="p">.</span><span class="n">open_zarr</span><span class="p">(</span><span class="s">"https://noc-msm-o.s3-ext.jc.rl.ac.uk/npd-eorca025-jra55v1/T1m/tos_con"</span><span class="p">)</span>
-<span class="n">sst</span> <span class="o">=</span> <span class="n">ds</span><span class="p">[</span><span class="s">'sst'</span><span class="p">].</span><span class="n">sel</span><span class="p">(</span><span class="n">time_counter</span><span class="o">=</span><span class="nb">slice</span><span class="p">(</span><span class="s">"1990"</span><span class="p">,</span><span class="s">"1999"</span><span class="p">))</span>
+<span class="n">sst</span> <span class="o">=</span> <span class="n">ds</span><span class="p">[</span><span class="s">'tos_con'</span><span class="p">].</span><span class="n">sel</span><span class="p">(</span><span class="n">time_counter</span><span class="o">=</span><span class="nb">slice</span><span class="p">(</span><span class="s">"1990"</span><span class="p">,</span><span class="s">"1999"</span><span class="p">))</span>
 <span class="c1"># mean_sst = dataset.mean(dim=['lat','lon']) #better way to do this
 </span><span class="n">grouped_mean</span> <span class="o">=</span> <span class="n">sst</span><span class="p">.</span><span class="n">groupby</span><span class="p">(</span><span class="s">"time_counter.year"</span><span class="p">).</span><span class="n">mean</span><span class="p">()</span>
 <span class="n">mean_sst</span> <span class="o">=</span> <span class="n">grouped_mean</span><span class="p">.</span><span class="n">mean</span><span class="p">(</span><span class="n">dim</span><span class="o">=</span><span class="p">[</span><span class="s">'y'</span><span class="p">,</span><span class="s">'x'</span><span class="p">])</span>
@@ -599,14 +639,11 @@ xcat = intake.open_catalog('https://raw.githubusercontent.com/intake/intake-xarr
 list(xcat)
 </code></pre></div></div>
 
-<p>Let’s open the image example and use the skimage library to plot it. First you will need to install the skimage library with the following command in the terminal:</p>
+<p>Let’s open the image example and use the skimage library to plot it</p>
 
-<div class="language-plaintext langauge-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>mamba install -n esces scikit-image
-</code></pre></div></div>
-
-<div class="language-plaintext langauge-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>from skimage.io import imshow
+<div class="language-plaintext langauge-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>import matplotlib.pyplot as plt
 image = xcat.image.read()
-imshow(image)
+plt.imshow(image)
 </code></pre></div></div>
 
 

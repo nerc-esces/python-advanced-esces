@@ -10,7 +10,7 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta http-equiv="last-modified" content="2025-07-03 11:11:57 -0500">
+    <meta http-equiv="last-modified" content="2025-07-04 10:15:38 -0500">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- meta "search-domain" used for google site search function google_search() -->
     <meta name="search-domain" value="">
@@ -388,6 +388,8 @@ To extract some data from our datset we’ll use <code class="language-plaintext
 <span class="n">dataset</span><span class="p">[</span><span class="s">'tempanomaly'</span><span class="p">].</span><span class="n">sel</span><span class="p">(</span><span class="n">time</span><span class="o">=</span><span class="s">"2000-01-15"</span><span class="p">).</span><span class="n">plot</span><span class="p">(</span><span class="n">ax</span> <span class="o">=</span> <span class="n">axis</span><span class="p">)</span>
 </code></pre></div></div>
 
+<p><img src="../fig/cartopy.png" alt="Output of the code above showing the temperature anomaly data plotted using Cartopy with the PlateCarree projection." /></p>
+
 <p>We should now see a map of the world with the temperature anomaly data, if we look in the top left we can see North America appearing mostly in red and in the lower right Australia in blue,
 but much of the other continents are harder to make out. To make it easier we can add coastlines by calling <code class="language-plaintext highlighter-rouge">axis.coastlines()</code> after the plot. But to make this appear on the same map
 as the rest of the plot it needs to be in the same Jupyter cell and we’ll have to rerun the whole cell.</p>
@@ -397,6 +399,8 @@ as the rest of the plot it needs to be in the same Jupyter cell and we’ll have
 <span class="n">dataset</span><span class="p">.</span><span class="n">tempanomaly</span><span class="p">.</span><span class="n">sel</span><span class="p">(</span><span class="n">time</span><span class="o">=</span><span class="s">"2000-01-15"</span><span class="p">).</span><span class="n">plot</span><span class="p">(</span><span class="n">ax</span> <span class="o">=</span> <span class="n">axis</span><span class="p">)</span>
 <span class="n">axis</span><span class="p">.</span><span class="n">coastlines</span><span class="p">()</span>
 </code></pre></div></div>
+
+<p><img src="../fig/cartopy_coastlines.png" alt="Cartopy plotting the temperature anomaly data with coastlines." /></p>
 
 <h1 id="dealing-with-projections">Dealing with Projections</h1>
 
@@ -410,6 +414,8 @@ which define the point at which we want to centre the map on.</p>
 <span class="n">axis</span><span class="p">.</span><span class="n">coastlines</span><span class="p">()</span>
 </code></pre></div></div>
 
+<p><img src="../fig/cartopy/cartopy_polar_incorrect.png" alt="Cartopy plotting data with the rotate pole projection" /></p>
+
 <p>The above example puts the map into a RotatedPole projection, but notice that the coastlines and coloured areas of the map don’t match as they previously did. This is because
 we haven’t told Cartopy how the data is structured and it has assumed it matches the projection. We didn’t need to do this with the PlateCarree projection as the data matched the projection
 but now we need to specify an extra <code class="language-plaintext highlighter-rouge">transform</code> argument to <code class="language-plaintext highlighter-rouge">plot</code>.</p>
@@ -419,6 +425,8 @@ but now we need to specify an extra <code class="language-plaintext highlighter-
 <span class="n">dataset</span><span class="p">.</span><span class="n">tempanomaly</span><span class="p">.</span><span class="n">sel</span><span class="p">(</span><span class="n">time</span><span class="o">=</span><span class="s">"2000-01-15"</span><span class="p">).</span><span class="n">plot</span><span class="p">(</span><span class="n">ax</span> <span class="o">=</span> <span class="n">axis</span><span class="p">,</span> <span class="n">transform</span><span class="o">=</span><span class="n">ccrs</span><span class="p">.</span><span class="n">PlateCarree</span><span class="p">())</span>
 <span class="n">axis</span><span class="p">.</span><span class="n">coastlines</span><span class="p">()</span>
 </code></pre></div></div>
+
+<p><img src="../fig/cartopy/cartopy_polar_correct.png" alt="Cartopy plotting data with the rotate pole projection and reprojecting the data." /></p>
 
 <p>The data should now match the coastlines.</p>
 
@@ -456,6 +464,8 @@ Which do you like the most? Discuss what is the most useful aspects for showing 
 <span class="n">axis</span><span class="p">.</span><span class="n">gridlines</span><span class="p">(</span><span class="n">draw_labels</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span><span class="n">xlocs</span><span class="o">=</span><span class="p">[</span><span class="o">-</span><span class="mi">180</span><span class="p">,</span><span class="o">-</span><span class="mi">90</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">90</span><span class="p">,</span><span class="mi">180</span><span class="p">])</span>
 </code></pre></div></div>
 
+<p><img src="../fig/cartopy_gridlines.png" alt="Cartopy showing gridlines on the temperature anomaly map" /></p>
+
 <p>A more concise way to do this is to use Numpy’s <code class="language-plaintext highlighter-rouge">linspace</code> function which creates an array of evenly spaced elements, this takes a start, end and number of elements parameter for example:</p>
 
 <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">axis</span><span class="p">.</span><span class="n">gridlines</span><span class="p">(</span><span class="n">draw_labels</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span><span class="n">xlocs</span><span class="o">=</span><span class="n">np</span><span class="p">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="mi">180</span><span class="p">,</span><span class="mi">180</span><span class="p">,</span><span class="mi">5</span><span class="p">))</span>
@@ -477,6 +487,8 @@ library and can be added using the <code class="language-plaintext highlighter-r
 <span class="n">axis</span><span class="p">.</span><span class="n">add_feature</span><span class="p">(</span><span class="n">cfeature</span><span class="p">.</span><span class="n">RIVERS</span><span class="p">)</span>
 </code></pre></div></div>
 
+<p><img src="../fig/cartopy/cartopy_coastlines.png" alt="Cartopy showing the boundaires, rivers and lakes as well as the coastlines." /></p>
+
 <p>The above code will add country boundaries, lakes and rivers to our map. The lakes and rivers might be a little hard to see in places where there is a blue being used to render the
 temperature anomaly. We could apply a different colourmap to avoid this problem, the plasma colourmap in Matplotlib goes from purple, to orange to yellow and shows the contrast with
  the rivers nicely.</p>
@@ -491,6 +503,8 @@ temperature anomaly. We could apply a different colourmap to avoid this problem,
 <span class="n">axis</span><span class="p">.</span><span class="n">add_feature</span><span class="p">(</span><span class="n">cfeature</span><span class="p">.</span><span class="n">LAKES</span><span class="p">)</span>
 <span class="n">axis</span><span class="p">.</span><span class="n">add_feature</span><span class="p">(</span><span class="n">cfeature</span><span class="p">.</span><span class="n">RIVERS</span><span class="p">)</span>
 </code></pre></div></div>
+
+<p><img src="../fig/cartopy/cartopy_purple_yellow.png" alt="Cartopy showing the boundaries against plasma colourmap." /></p>
 
 <blockquote class="callout">
   <h2 id="downloading-boundary-data-manually">Downloading boundary data manually</h2>
@@ -509,7 +523,18 @@ by using a wget or curl command from your terminal. Download the following files
 
   <p>Place the boundaries in <code class="language-plaintext highlighter-rouge">~/.local/share/cartopy/shapefiles/natural_earth/cultural</code></p>
 
+  <p>Cartopy also includes a script called</p>
+
   <p>Here’s the commands to do all of this:</p>
+
+  <p>Using Cartopy’s script:</p>
+  <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>cartopy_feature_download physical <span class="nt">--output</span>  ~/.local/share/cartopy/shapefiles/natural_earth/physical
+cartopy_feature_download gshhs <span class="nt">--output</span>  ~/.local/share/cartopy/shapefiles/natural_earth/physical
+cartopy_feature_download cultural <span class="nt">--output</span>  ~/.local/share/cartopy/shapefiles/natural_earth/cultural
+cartopy_feature_download cultural-extra <span class="nt">--output</span>  ~/.local/share/cartopy/shapefiles/natural_earth/cultural
+</code></pre></div>  </div>
+
+  <p>Manual method:</p>
   <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>wget https://naturalearth.s3.amazonaws.com/110m_physical/ne_110m_coastline.zip https://naturalearth.s3.amazonaws.com/110m_physical/ne_110m_lakes.zip https://naturalearth.s3.amazonaws.com/110m_physical/ne_110m_rivers_lake_centerlines.zip https://naturalearth.s3.amazonaws.com/110m_cultural/ne_110m_admin_0_boundary_lines_land.zip
 <span class="nb">mkdir</span> <span class="nt">-p</span> ~/.local/share/cartopy/shapefiles/natural_earth/cultural
 <span class="nb">mkdir</span> <span class="nt">-p</span> ~/.local/share/cartopy/shapefiles/natural_earth/physical
@@ -520,6 +545,7 @@ conda run <span class="nt">-n</span> esces unzip ~/ne_110m_coastline.zip
 conda run <span class="nt">-n</span> esces unzip ~/ne_110m_lakes.zip
 conda run <span class="nt">-n</span> esces unzip ~/ne_110m_rivers_lake_centerlines.zip
 </code></pre></div>  </div>
+
 </blockquote>
 
 <blockquote class="challenge">
@@ -536,10 +562,10 @@ of boundary features from the shapefiles supplied by the website Natural Earth. 
        <span class="n">facecolor</span><span class="o">=</span><span class="s">'none'</span><span class="p">)</span>
 <span class="n">axis</span><span class="p">.</span><span class="n">add_feature</span><span class="p">(</span><span class="n">states_provinces</span><span class="p">)</span>
 </code></pre></div>    </div>
+    <p><img src="../fig/cartopy_states_solution.png" alt="Cartopy showing the state boundaries in addition to other boundaries, coastlines, rivers etc." /></p>
   </blockquote>
 </blockquote>
 
-<p>g</p>
 
 
 

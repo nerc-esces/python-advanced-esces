@@ -10,7 +10,7 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta http-equiv="last-modified" content="2025-07-03 11:11:57 -0500">
+    <meta http-equiv="last-modified" content="2025-07-04 10:15:38 -0500">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- meta "search-domain" used for google site search function google_search() -->
     <meta name="search-domain" value="">
@@ -359,7 +359,7 @@
 
 <h1 id="dataset-parallelism-with-gnu-parallel">Dataset Parallelism with GNU Parallel</h1>
 
-<p>GNU Parallel is a very powerful command that lets us execute any command in parallel. To do this effectively we need what is often called an “embarrasingly parallel” problem. 
+<p>GNU Parallel is a very powerful command that lets us execute any command in parallel. To do this effectively we need what is often called an “embarrasingly parallel” problem.
 These are problems where a dataset can be split into several parts and each can be processed independently and simultaneously. Such problems often occur when a dataset is
 split across multiple files or there are multiple parameters to process.</p>
 
@@ -383,7 +383,7 @@ The <code class="language-plaintext highlighter-rouge">{1}</code> after the echo
 <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>parallel <span class="nb">echo</span> <span class="o">{</span>1<span class="o">}</span> ::: 1 2 3 4 5 6 7 8
 </code></pre></div></div>
 
-<p>Just running echo commands isn’t very useful, but we could use parallel to invoke a Python script too. 
+<p>Just running echo commands isn’t very useful, but we could use parallel to invoke a Python script too.
 The serial example to process a series of NetCDF files would be:</p>
 
 <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">for </span>file <span class="k">in</span> <span class="si">$(</span><span class="nb">ls</span> <span class="k">*</span>.nc<span class="si">)</span> <span class="p">;</span> <span class="k">do
@@ -398,7 +398,7 @@ The serial example to process a series of NetCDF files would be:</p>
 
 <h2 id="citing-software">Citing Software</h2>
 
-<p>It is good practice to cite the software we use in research. GNU Parallel is particularly vocal about this and it will remind you to cite it. 
+<p>It is good practice to cite the software we use in research. GNU Parallel is particularly vocal about this and it will remind you to cite it.
 Running <code class="language-plaintext highlighter-rouge">parallel --citation</code> will show us all of the information we’ll need if we are going to cite it in a publication, it will also prevent further reminders about it.</p>
 
 <h2 id="working-with-multiple-arguments">Working with multiple arguments</h2>
@@ -456,7 +456,7 @@ We can tell Parallel to limit how many cores it is running on with the <code cla
 
 <h2 id="logging">Logging</h2>
 
-<p>In more complex jobs it can be useful to have a log of which jobs ran, when they started and how long they took. 
+<p>In more complex jobs it can be useful to have a log of which jobs ran, when they started and how long they took.
 This is set with the <code class="language-plaintext highlighter-rouge">--joblog</code> option to Parallel and is followed by a file name. For example:</p>
 
 <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>parallel <span class="nt">--joblog</span><span class="o">=</span>jobs.log <span class="nb">echo</span> <span class="o">{</span>1<span class="o">}</span> ::: 1 2 3 4 5 6 7 8 9 10
@@ -479,7 +479,7 @@ This is set with the <code class="language-plaintext highlighter-rouge">--joblog
 
 <blockquote class="challenge">
   <h2 id="timing-the-speed-up-with-parallel">Timing the speed up with Parallel</h2>
-  <p>There is a script included with the example dataset called plot_tempanomaly.py. 
+  <p>There is a script included with the example dataset called plot_tempanomaly.py.
 This script will plot a map of the temperature anomaly data from our GISS dataset. It takes three arguments, the name of the NetCDF file to use, a start year (specified with –start)
 and an end year (specified with –end). It will create a PNG file for each month that it processes.</p>
 
@@ -518,6 +518,21 @@ Try adding the joblog option and examining how many jobs launched at once.
 How many jobs did Parallel launch simultaneously? How much faster was the parallel version than the serial version?
 Try adding the –max-procs option and setting this to 2,4 or 8 and compare the run time.</p>
 
+</blockquote>
+
+<blockquote class="challenge">
+  <h2 id="bonus-challenge-make-a-movie">Bonus Challenge: Make a Movie</h2>
+
+  <p>We now have 288 PNG images covering the time period of our dataset. A useful way to view these would be as a video.
+There are a number of programs you can use to convert these into a video file. One such program is <a href="https://ffmpeg.org">FFmpeg</a>.
+You might need to install FFmpeg via Conda/Mamba. Lookup in the <a href="https://trac.ffmpeg.org/wiki/Slideshow">FFmpeg documentation</a> how to
+make your images into a video. Create the video, download it to your computer (you can’t play it in Jupyter Lab) and play it.</p>
+
+  <blockquote class="solution">
+    <h2 id="solution">Solution</h2>
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ffmpeg <span class="nt">-framerate</span> 25 <span class="nt">-pattern_type</span> glob <span class="nt">-i</span> <span class="s2">"*.png"</span> <span class="nt">-c</span>:v libx264 output.mp4
+</code></pre></div>    </div>
+  </blockquote>
 </blockquote>
 
 

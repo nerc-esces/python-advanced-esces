@@ -17,7 +17,7 @@ keypoints:
 
 # Dataset Parallelism with GNU Parallel
 
-GNU Parallel is a very powerful command that lets us execute any command in parallel. To do this effectively we need what is often called an "embarrasingly parallel" problem. 
+GNU Parallel is a very powerful command that lets us execute any command in parallel. To do this effectively we need what is often called an "embarrasingly parallel" problem.
 These are problems where a dataset can be split into several parts and each can be processed independently and simultaneously. Such problems often occur when a dataset is
 split across multiple files or there are multiple parameters to process.
 
@@ -33,7 +33,7 @@ done
 {: .language-bash}
 
 We can ask GNU parallel to perform the same task and at least several of the echo commands will run simultaneously.
-The `{1}` after the echo will be substituted by what ever comes after `:::`, in this case the output of the ls command. 
+The `{1}` after the echo will be substituted by what ever comes after `:::`, in this case the output of the ls command.
 
 ```
 parallel echo {1} ::: $(ls)
@@ -47,7 +47,7 @@ parallel echo {1} ::: 1 2 3 4 5 6 7 8
 ```
 {: .language-bash}
 
-Just running echo commands isn't very useful, but we could use parallel to invoke a Python script too. 
+Just running echo commands isn't very useful, but we could use parallel to invoke a Python script too.
 The serial example to process a series of NetCDF files would be:
 
 ```
@@ -66,7 +66,7 @@ parallel python myscript.py {1} ::: $(ls *.nc)
 
 ## Citing Software
 
-It is good practice to cite the software we use in research. GNU Parallel is particularly vocal about this and it will remind you to cite it. 
+It is good practice to cite the software we use in research. GNU Parallel is particularly vocal about this and it will remind you to cite it.
 Running `parallel --citation` will show us all of the information we'll need if we are going to cite it in a publication, it will also prevent further reminders about it.
 
 ## Working with multiple arguments
@@ -82,7 +82,7 @@ parallel python myscript-2.py {1} {1}.out ::: $(ls *.nc)
 ## Using a list of files stored in a file
 
 Using commands or lists of arguments is fine for many use cases, but sometimes there are cases where we might want to use a list of files in a text file.
-For this we use the `::::` (note four, not three :s) separator and specify the file name after that, each line in file will be used as a line of input. 
+For this we use the `::::` (note four, not three :s) separator and specify the file name after that, each line in file will be used as a line of input.
 
 ~~~
 ls *.nc | grep "^ABC" > files.txt
@@ -127,7 +127,7 @@ hello world 3 c
 ```
 {: .output}
 
-## Job Control 
+## Job Control
 
 By default Parallel will use every processing core on the system. Sometimes, especially on shared systems this isn't what we want to do.
 On some HPC systems we might only be allocated a few cores, but the system will have many more and Parallel will try to use them all.
@@ -136,7 +136,7 @@ We can tell Parallel to limit how many cores it is running on with the `--max-pr
 
 ## Logging
 
-In more complex jobs it can be useful to have a log of which jobs ran, when they started and how long they took. 
+In more complex jobs it can be useful to have a log of which jobs ran, when they started and how long they took.
 This is set with the `--joblog` option to Parallel and is followed by a file name. For example:
 
 ```
@@ -162,7 +162,7 @@ Seq     Host    Starttime       JobRuntime      Send    Receive Exitval Signal  
 {: .output}
 
 > ## Timing the speed up with Parallel
-> There is a script included with the example dataset called plot_tempanomaly.py. 
+> There is a script included with the example dataset called plot_tempanomaly.py.
 > This script will plot a map of the temperature anomaly data from our GISS dataset. It takes three arguments, the name of the NetCDF file to use, a start year (specified with --start)
 > and an end year (specified with --end). It will create a PNG file for each month that it processes.
 >
@@ -217,11 +217,11 @@ Seq     Host    Starttime       JobRuntime      Send    Receive Exitval Signal  
 > You might need to install FFmpeg via Conda/Mamba. Lookup in the [FFmpeg documentation](https://trac.ffmpeg.org/wiki/Slideshow) how to
 > make your images into a video. Create the video, download it to your computer (you can't play it in Jupyter Lab) and play it.
 >
-> >
-> > ~~~
-> > ffmpeg -framerate 25 -pattern_type glob -i "*.png" -c:v libx264 output.mp4
-> > ~~~
-> > {: .language-bash}
+>> ## Solution
+>> ~~~
+>> ffmpeg -framerate 25 -pattern_type glob -i "*.png" -c:v libx264 output.mp4
+>> ~~~
+>> {: .language-bash}
 > {: .solution}
 {: .challenge}
 
