@@ -3,10 +3,10 @@ channels:
   - conda-forge
   - nodefaults
 dependencies:
-  - python=3.10.12
+  - python==3.11.9
   - jupyterlab
   - nb_conda_kernels
-  - dask
+  - dask=2024.8.0
   - distributed
   - numpy
   - numba
@@ -20,16 +20,19 @@ dependencies:
   - ca-certificates
   - certifi
   - openssl
-  - dask-gateway
+  - dask-gateway=2024.1.0
   - s3fs
-  - urllib3<2
+  - urllib3[version='<2']
   - parallel
-  - netcdf4
+  - dask-core=2024.8.0
+  - msgpack-python=1.0.8
+  - lz4=4.3.3
+  - toolz=0.12.1
+  - tornado=6.4.1
+  - cloudpickle=3.0.0
   - hvplot
   - pooch
   - scikit-image
-#  - jupyter-server-proxy
-#  - nodejs
   - graphviz
   - python-graphviz
   - unzip
