@@ -182,6 +182,7 @@ This is defined by a YAML file that is downloaded alongside the course materials
 > ## Setting up/choosing a Mamba environment
 > From the terminal run the following:
 > ~~~
+> curl https://github.com/NOC-OI/python-advanced-esces/blob/gh-pages/data/esces-env.yml > esces-env.yml
 > mamba env create -f esces-env.yml -n esces
 > mamba run -n esces python -m ipykernel install --user --name ESCES
 > ~~~
