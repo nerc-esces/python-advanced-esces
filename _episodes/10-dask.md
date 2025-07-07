@@ -346,7 +346,7 @@ cluster.adapt(minimum=1, maximum=15)
 If we now connect to one of the JASMIN sci servers (sci-vm-01 to 05 or sci-ph-01 to 03) we can see our jobs in the SLURM queue by running the `squeue` command.
 
 ~~~
-ssh -J <jasminusername>@login-02.jasmin.ac.uk sci-vm-03
+ssh -J <jasminusername>@login-02.jasmin.ac.uk <jasminusername>@sci-vm-03
 squeue -p dask
 ~~~
 {: .language-bash}
