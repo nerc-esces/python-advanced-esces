@@ -23,7 +23,7 @@ of coasts and country boundaries.
 ## Using Xarray data with Cartopy
 
 To plot some Xarray data from our example dataset we'll need to select a single day (or combine multiple days together). As Cartopy can work with array types such as Numpy arrays it will
-also work with Xarray arrays. 
+also work with Xarray arrays.
 
 Let's start a new notebook and do some initial setup to import xarray, cartopy and we'll also need matplotlib since Cartopy uses it.
 
@@ -51,7 +51,7 @@ dataset['tempanomaly'].sel(time="2000-01-15").plot(ax = axis)
 
 We should now see a map of the world with the temperature anomaly data, if we look in the top left we can see North America appearing mostly in red and in the lower right Australia in blue,
 but much of the other continents are harder to make out. To make it easier we can add coastlines by calling `axis.coastlines()` after the plot. But to make this appear on the same map
-as the rest of the plot it needs to be in the same Jupyter cell and we'll have to rerun the whole cell. 
+as the rest of the plot it needs to be in the same Jupyter cell and we'll have to rerun the whole cell.
 
 ~~~
 fig = plt.figure(figsize = (10,5))
@@ -77,7 +77,7 @@ axis.coastlines()
 ~~~
 {: .language-python}
 
-![Cartopy plotting data with the rotate pole projection](../fig/cartopy/cartopy_polar_incorrect.png)
+![Cartopy plotting data with the rotate pole projection](../fig/cartopy_polar_incorrect.png)
 
 The above example puts the map into a RotatedPole projection, but notice that the coastlines and coloured areas of the map don't match as they previously did. This is because
 we haven't told Cartopy how the data is structured and it has assumed it matches the projection. We didn't need to do this with the PlateCarree projection as the data matched the projection
@@ -91,7 +91,7 @@ axis.coastlines()
 ~~~
 {: .language-python}
 
-![Cartopy plotting data with the rotate pole projection and reprojecting the data.](../fig/cartopy/cartopy_polar_correct.png)
+![Cartopy plotting data with the rotate pole projection and reprojecting the data.](../fig/cartopy_polar_correct.png)
 
 The data should now match the coastlines.
 
@@ -158,7 +158,7 @@ axis.add_feature(cfeature.RIVERS)
 ~~~
 {: .language-python}
 
-![Cartopy showing the boundaires, rivers and lakes as well as the coastlines.](../fig/cartopy/cartopy_coastlines.png)
+![Cartopy showing the boundaires, rivers and lakes as well as the coastlines.](../fig/cartopy_coastlines.png)
 
 The above code will add country boundaries, lakes and rivers to our map. The lakes and rivers might be a little hard to see in places where there is a blue being used to render the
 temperature anomaly. We could apply a different colourmap to avoid this problem, the plasma colourmap in Matplotlib goes from purple, to orange to yellow and shows the contrast with
@@ -177,7 +177,7 @@ axis.add_feature(cfeature.RIVERS)
 ~~~
 {: .language-python}
 
-![Cartopy showing the boundaries against plasma colourmap.](../fig/cartopy/cartopy_purple_yellow.png)
+![Cartopy showing the boundaries against plasma colourmap.](../fig/cartopy_purple_yellow.png)
 
 > ## Downloading boundary data manually
 >
@@ -189,11 +189,11 @@ axis.add_feature(cfeature.RIVERS)
 > * [https://naturalearth.s3.amazonaws.com/110m_physical/ne_110m_rivers_lake_centerlines.zip](https://naturalearth.s3.amazonaws.com/110m_physical/ne_110m_rivers_lake_centerlines.zip)
 > * [https://naturalearth.s3.amazonaws.com/110m_cultural/ne_110m_admin_0_boundary_lines_land.zip](https://naturalearth.s3.amazonaws.com/110m_cultural/ne_110m_admin_0_boundary_lines_land.zip)
 >
-> Unzip these and place the coastlines, lakes and rivers files in `~/.local/share/cartopy/shapefiles/natural_earth/physical`. 
+> Unzip these and place the coastlines, lakes and rivers files in `~/.local/share/cartopy/shapefiles/natural_earth/physical`.
 >
 > Place the boundaries in `~/.local/share/cartopy/shapefiles/natural_earth/cultural`
 >
-> Cartopy also includes a script called 
+> Cartopy also includes a script called
 >
 > Here's the commands to do all of this:
 >
