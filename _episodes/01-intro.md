@@ -184,7 +184,7 @@ This is defined by a YAML file that is downloaded alongside the course materials
 > ~~~
 > curl https://raw.githubusercontent.com/NOC-OI/python-advanced-esces/refs/heads/gh-pages/data/esces-env.yml > esces-env.yml
 > mamba env create -f esces-env.yml -p ~/.conda/envs/esces
-> mamba run -n esces python -m ipykernel install --user --name ESCES
+> mamba run -p ~/.conda/envs/esces python -m ipykernel install --user --name ESCES
 > ~~~
 > After about one minute if you click on the blue plus icon near the top left or the file menu and "New Launcher" option you should see a notebook option called ESCES.
 > This will use the Mamba environment we just created and will have access to all the packages we need.
