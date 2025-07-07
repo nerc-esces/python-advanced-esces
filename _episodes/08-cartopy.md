@@ -193,11 +193,9 @@ axis.add_feature(cfeature.RIVERS)
 >
 > Place the boundaries in `~/.local/share/cartopy/shapefiles/natural_earth/cultural`
 >
-> Cartopy also includes a script called
+> Cartopy also includes a script called `cartopy_feature_download` which can download these files for you and place them in the correct location.
 >
-> Here's the commands to do all of this:
->
-> Using Cartopy's script:
+> Here's the commands to do all of this using Cartopy's script:
 > ~~~
 > cartopy_feature_download physical --output  ~/.local/share/cartopy/shapefiles/natural_earth/physical
 > cartopy_feature_download gshhs --output  ~/.local/share/cartopy/shapefiles/natural_earth/physical
