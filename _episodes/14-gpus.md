@@ -32,8 +32,8 @@ to the GPU memory and any results must be copied back.
 
 ## How can you access a GPU if your PC doesn't have one
 
-Many laptops and desktops won't have very powerful GPUs, instead we'll want to use HPC or Cloud systems to access a GPU. If you don't have access to any 
-services which offer one then you can use Google Colab (https://colab.research.google.com). This offers a Jupyter notebook interface with GPUs for free, 
+Many laptops and desktops won't have very powerful GPUs, instead we'll want to use HPC or Cloud systems to access a GPU. If you don't have access to any
+services which offer one then you can use Google Colab (https://colab.research.google.com). This offers a Jupyter notebook interface with GPUs for free,
 but the GPUs aren't very powerful. You can also pay for Google Colab and get access to faster GPUs.
 
 ### Orchid
@@ -45,7 +45,7 @@ you must be granted access to Orchid and select the GPU option when connecting.
 ## Checking what GPUs are available to us
 
 Systems with NVIDIA GPUs usually have a command called `nvidia-smi` installed, this will tell us some information about the GPUs that are attached to the system.
-We can invoke this either from a Jupyter terminal or in a notebook with the `!` prefix. 
+We can invoke this either from a Jupyter terminal or in a notebook with the `!` prefix.
 
 ~~~
 nvidia-smi
@@ -84,7 +84,7 @@ On the JASMIN notebooks service this will return something similar to this.
 |  1    5   0   0  |              13MiB /  9856MiB    | 14      0 |  1   0    1    0    0 |
 |                  |                 0MiB / 16383MiB  |           |                       |
 +------------------+----------------------------------+-----------+-----------------------+
-                                                                                         
+
 +-----------------------------------------------------------------------------------------+
 | Processes:                                                                              |
 |  GPU   GI   CI        PID   Type   Process name                              GPU Memory |
@@ -113,8 +113,8 @@ cuda.detect()
 {: .language-python}
 
 > ## Check what GPUs you have access to
-> 1. Ensure that you have Cuda installed, this can installed by adding the cupy and cudatoolkit packages to your Conda/Mamba environment.
-> 2. Use Numba/Cuda to check what version of Cuda you have installed and what GPUs you have available.
+> Ensure that you have Cuda installed, this can installed by adding the cupy and cudatoolkit packages to your Conda/Mamba environment.
+> Use Numba/Cuda to check what version of Cuda you have installed and what GPUs you have available.
 >> ## Solution
 >> ~~~
 >> mamba install -p ~/.conda/envs/esces cupy cudatoolkit
@@ -146,9 +146,9 @@ result_np = np.mean(a)
 {: .language-python}
 
 
-Now let's try and do the same thing with CuPy. 
-We'll use the same array we just created and copy it to the GPU, CuPy's `asarray` function 
-takes in a NumPy array and converts it to a CuPy array. 
+Now let's try and do the same thing with CuPy.
+We'll use the same array we just created and copy it to the GPU, CuPy's `asarray` function
+takes in a NumPy array and converts it to a CuPy array.
 
 ~~~
 import cupy as cp
@@ -157,11 +157,11 @@ result_cp = cp.mean(b)
 ~~~
 {: .language-python}
 
-Let's time how long this is taking, for the NumPy code we can use `%time` or `%timeit`. 
-Unfortunately `%time` and `%timeit` don't work properly with GPUs as calling a GPU function returns immediately 
-and the code continues to run on the GPU. So we'll have to take a different approach to measuring the time taken and use CuPy's 
-built-in profiler which includes a function called `benchmark`. 
-`timeit` will automatically decide how many runs to do, but defaults to 7, 
+Let's time how long this is taking, for the NumPy code we can use `%time` or `%timeit`.
+Unfortunately `%time` and `%timeit` don't work properly with GPUs as calling a GPU function returns immediately
+and the code continues to run on the GPU. So we'll have to take a different approach to measuring the time taken and use CuPy's
+built-in profiler which includes a function called `benchmark`.
+`timeit` will automatically decide how many runs to do, but defaults to 7,
 whereas `benchmark` needs to be told how many times to repeat with the `n_repeat` parameter.
 
 ~~~
@@ -193,7 +193,7 @@ and for NumPy:
 ~~~
 {: .output}
 
-So we have used about 2ms of GPU time (plus 54us of CPU time) to take the mean of 100,000,000 numbers on the GPU and 66ms on the CPU, so that's a 33 fold speedup! 
+So we have used about 2ms of GPU time (plus 54us of CPU time) to take the mean of 100,000,000 numbers on the GPU and 66ms on the CPU, so that's a 33 fold speedup!
 Although we did not include the time spent copying the array to the GPU.
 
 ### Measuring the time taken to copy data to the GPU memory
@@ -215,7 +215,7 @@ On JAMSIN this is taking around 100,000us or 100ms. So we need to add this to th
 faster to do this calculation on the CPU. But this is a very simple example where we've only done one very simple operation on quite a large amount of data.
 
 > ## Create random numbers with CuPy
-> So far we have created random numbers using NumPy on the CPU and copied these to the GPU. 
+> So far we have created random numbers using NumPy on the CPU and copied these to the GPU.
 > A more efficient way to do this might be to make the random numbers of the GPU.
 > Adjust the code to use CuPy to create 1,000,000 random numbers. Use the time library (or Cupyx's benchmark) to measure how long this takes.
 > Is this quicker than making the random numbers on the CPU?
@@ -228,7 +228,7 @@ faster to do this calculation on the CPU. But this is a very simple example wher
 >> b = cp.random.random(100_000_000)
 >> cp.cuda.stream.get_current_stream().synchronize()
 >> print(str((time.time() - t0)*1_000) + "ms")
->> 
+>>
 >> #alternative using benchmark
 >> from cupyx.profiler import benchmark
 >> benchmark(cp.random.random, (100_000_000,), n_repeat=7)
@@ -242,11 +242,11 @@ faster to do this calculation on the CPU. But this is a very simple example wher
 
 ## Using GPUs with Numba
 
-Numba code can be converted to run on a GPU using the `@cuda.jit` decorator, which is similar to the `@jit` decorator we saw earlier on. However there are a 
+Numba code can be converted to run on a GPU using the `@cuda.jit` decorator, which is similar to the `@jit` decorator we saw earlier on. However there are a
 few alterations that code might need first due to the way GPUs operate. Firstly the functions we use on the GPU can't return anything, we must instead have an extra
 parameter which contains an array where we will save any results.
 
-Here is an example that is similar to the function we used the JIT with earlier on with the CPU. 
+Here is an example that is similar to the function we used the JIT with earlier on with the CPU.
 
 ~~~
 @cuda.jit
