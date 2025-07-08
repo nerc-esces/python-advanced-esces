@@ -273,5 +273,6 @@ This has only been a very quick introduction to GPUs, but hopefully it has shown
  * [NVIDIA Profiling Guide](https://docs.nvidia.com/cuda/profiler-users-guide/) - NVIDIA have a very powerful visual profiling tool which graphically shows which operations are taking the most time.
  * [GPU Programming Carpentries Lesson](https://carpentries-incubator.github.io/lesson-gpu-programming/) - A Carpentries lesson on GPU programming including using CuPy and Numba.
  * [CuPy homepage](https://cupy.dev/)
+ * [GPU Hardware Introduction](https://www.youtube.com/watch?v=FcS_kQOIykU) - A short video explaining the hardware architecture of a GPU.
 
 {% include links.md %}
