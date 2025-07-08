@@ -179,7 +179,39 @@ It is important to note that this data is not on a regular grid. Therefore, slic
 >> {: .language-python}
 > {: .solution}
 >
->> ## Solution 2: (OPTIONAL) reprojecting and plotting with Cartopy
+>> ## Solution 2: (OPTIONAL) plotting with Cartopy
+>> ~~~
+>> import xarray as xr
+>> import matplotlib.pyplot as plt
+>> import cartopy.crs as ccrs
+>> import cartopy.feature as cfeature
+>> ds = xr.open_zarr("https://noc-msm-o.s3-ext.jc.rl.ac.uk/npd-eorca025-jra55v1/T1m/tos_con")
+>> sst = ds['tos_con'].sel(time_counter="1965-01-01",method="nearest")
+>>
+>> plt.figure(figsize=(12, 6))
+>> ax = plt.axes(projection=ccrs.PlateCarree())
+>>
+>> # Add white land background
+>> ax.add_feature(cfeature.LAND, facecolor='white', zorder=1)
+>>
+>> ax.coastlines()
+>> pcm = ax.pcolormesh(
+>>     sst.nav_lon, sst.nav_lat, sst,
+>>     transform=ccrs.PlateCarree(),
+>>     cmap="viridis",
+>>     shading="auto",
+>>     zorder=0  # Ensure it overlays the land
+>> )
+>>
+>> plt.title("Sea Surface Temperature with White Land")
+>> plt.colorbar(pcm, label=sst.attrs.get("units", ""))
+>> plt.tight_layout()
+>> plt.show()
+>> ~~~
+>> {: .language-python}
+> {: .solution}
+>
+>> ## Solution 3: (OPTIONAL) reprojecting and plotting with Cartopy
 >> ~~~
 >> # you will need to install xESMF to run this solution
 >> # conda install -c conda-forge "esmpy=8.6.1" "esmf=8.6.1"
