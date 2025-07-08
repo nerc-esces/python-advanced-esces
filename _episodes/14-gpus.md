@@ -32,14 +32,15 @@ to the GPU memory and any results must be copied back.
 
 ## How can you access a GPU if your PC doesn't have one
 
-- Many laptops and desktops won't have very powerful GPUs, instead we'll want to use HPC or Cloud systems to access a GPU.
-- Google Colab (https://colab.research.google.com) offers a Jupyter notebook interface with GPUs for free, but the GPUs aren't very powerful.
+Many laptops and desktops won't have very powerful GPUs, instead we'll want to use HPC or Cloud systems to access a GPU. If you don't have access to any 
+services which offer one then you can use Google Colab (https://colab.research.google.com). This offers a Jupyter notebook interface with GPUs for free, 
+but the GPUs aren't very powerful. You can also pay for Google Colab and get access to faster GPUs.
 
 ### Orchid
 
-JASMIN has a cluster known as [Orchid](https://help.jasmin.ac.uk/docs/batch-computing/orchid-gpu-cluster/) which has 16 nodes with 72 NVIDIA A100 GPUs between them.
+JASMIN has a cluster called [Orchid](https://help.jasmin.ac.uk/docs/batch-computing/orchid-gpu-cluster/) which has 16 nodes with 72 NVIDIA A100 GPUs between them.
 These are accessed via the Slurm batch scheduler. For more experimental work there are some A100 GPUs attached to the JASMIN notebook service. To use these
-you must be granted access to Orchid and select the GPU option when connecting. 
+you must be granted access to Orchid and select the GPU option when connecting.
 
 ## Checking what GPUs are available to us
 
