@@ -207,7 +207,7 @@ import time
 t0 = time.time()
 b = cp.asarray(a)
 cp.cuda.stream.get_current_stream().synchronize()
-print(time.time() - t0 * 1_000_000 + "us")
+print(str((time.time() - t0) * 1_000_000) + "us")
 ~~~
 {: .language-python}
 
