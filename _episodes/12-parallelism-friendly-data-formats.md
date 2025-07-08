@@ -100,6 +100,8 @@ about the chunks, when loading the file this header will be loaded to allow the 
 file in parallel using multiple threads or even with Dask tasks that are distributed across multiple computers. Zarr has been built with Python in mind and has libraries to
 allow native Python operations on Zarr. There is support for Zarr in other languages such as C in the recent versions of the NetCDF libraries.
 
+![Zarr representation](../fig/zarr.png)
+
 ## Zarr and Xarray
 
 Xarray can open Zarr files using the `open_zarr` function that is similar to the `open_dataset` function we've been using to open NetCDF data. We will be using the outputs of the [NEMO Near-Present-Day simulations developed by the National Oceanography Centre](https://noc-msm.github.io/NOC_Near_Present_Day/), specifically related to the eORCA025 model and covers the ocean globally. Each dataset can have more than 200GB, DO NOT DOWNLOAD IT!
@@ -251,7 +253,7 @@ It is important to note that this data is not on a regular grid. Therefore, slic
 >> options = gw.cluster_options()
 >> options.worker_cores = 1
 >> options.scheduler_cores = 1
->> options.worker_setup='source /apps/jasmin/jaspy/mambaforge_envs/jaspy3.10/mf-22.11.1-4/bin/activate ~/.conda/envs/esces'
+>> options.worker_setup='source /apps/jasmin/jaspy/miniforge_envs/jaspy3.11/mf3-23.11.0-0/bin/activate ~/.conda/envs/esces'
 >>
 >> clusters = gw.list_clusters()
 >> if not clusters:
@@ -259,8 +261,8 @@ It is important to note that this data is not on a regular grid. Therefore, slic
 >> else:
 >>     cluster = gw.connect(clusters[0].name)
 >>
->> cluster.adapt(minimum=1, maximum=10)
 >> client = cluster.get_client()
+>> cluster.adapt(minimum=1, maximum=10)
 >> client
 >>
 >> ds = xr.open_zarr("https://noc-msm-o.s3-ext.jc.rl.ac.uk/npd-eorca025-jra55v1/T1m/tos_con")
