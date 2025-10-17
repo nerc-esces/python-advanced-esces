@@ -172,7 +172,7 @@ This is defined by a YAML file that is downloaded alongside the course materials
 > ## Download the course material
 > Open a terminal and type:
 > ~~~
-> curl {{ site.baseurl }}/data/data.tgz > data.tgz
+> curl {{ site.url }}{{ site.baseurl }}/data/data.tgz > data.tgz
 > tar xvf data.tgz
 > ~~~
 > {: .language-bash}
@@ -185,7 +185,7 @@ If you are running on your own computer (or anything that isn't JASMIN) then you
 > ## Setting up/choosing a Mamba environment
 > From the terminal run the following:
 > ~~~
-> curl {{ site.baseurl }}/data/esces-env.yml > esces-env.yml
+> curl {{ site.url }}{{ site.baseurl }}/data/esces-env.yml > esces-env.yml
 > mamba env create -f esces-env.yml -p ~/.conda/envs/esces
 > mamba run -p ~/.conda/envs/esces python -m ipykernel install --user --name ESCES
 > ~~~
