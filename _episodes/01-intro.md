@@ -351,8 +351,8 @@ Therefore requesting `[0,0,0]` means the southern most and western most coordina
 > Write some code to get the temperature anomaly for January 2020 in Astana, Kazakhstan (approximately 51 North, 71 East)
 > > ## Solution
 > > ~~~
-> > latitude = 71
-> > longitude = 51
+> > latitude = 51
+> > longitude = 71
 > > latitude_index = int(((latitude) / 2) + 45)
 > > longitude_index = int((longitude / 2) + 90)
 > > time_index = 20 * 12   #we want jan 2020, dataset starts at jan 2000 and has monthly entries
