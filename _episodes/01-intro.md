@@ -185,8 +185,8 @@ If you are running on your own computer (or anything that isn't JASMIN) then you
 > ## Setting up/choosing a Mamba environment
 > From the terminal run the following:
 > ~~~
-> curl {{ site.url }}{{ site.baseurl }}/data/esces-env.yml > esces-env.yml
-> mamba env create -f esces-env.yml -p ~/.conda/envs/esces
+> curl {{ site.url }}{{ site.baseurl }}/data/esces-env-use-this-one.yml > esces-env-use-this-one.yml
+> mamba env create -f esces-env-use-this-one.yml -p ~/.conda/envs/esces
 > mamba run -p ~/.conda/envs/esces python -m ipykernel install --user --name ESCES
 > ~~~
 > After about one minute if you click on the blue plus icon near the top left or the file menu and "New Launcher" option you should see a notebook option called ESCES.
