@@ -215,7 +215,7 @@ dataset['tempanomaly'].sel(time="2000-01-15").plot()
 The plot function being called is actually part of the Matplotlib library and we can invoke Matplotlib if we need to modify some of the plotting parameters. For example we might
 want to change the colourmap to one which uses grayscale. This can be done by first importing `matplotlib.pyplot` and specifying the `cmap` parameter to `plot()`.
 
-![A colour 2D plot of the temperature anomaly for the whole world on January 15th 2000](../fig/xarray_plot_2d.png)
+![A colour 2D plot of the temperature anomaly for the whole world on January 15th 2000](../fig/xarray_2d_plot.png)
 
 ~~~
 import matplotlib.pyplot as plt
@@ -223,7 +223,7 @@ dataset['tempanomaly'].sel(time="2000-01-15").plot(cmap=plt.cm.Grays)
 ~~~
 {: .language-python}
 
-![A grayscale 2D plot of the temperature anomaly for the whole world on January 15th 2000](../fig/xarray_plot_2d_gray.png)
+![A grayscale 2D plot of the temperature anomaly for the whole world on January 15th 2000](../fig/xarray_2d_plot_gray.png)
 
 
 ## Plotting Histograms
@@ -236,7 +236,7 @@ dataset['tempanomaly'].sel(time="2010-09-15").plot.hist()
 ~~~
 {: .language-python}
 
-![A histogram showing the distribution of global temperature anomalies on September 15th 2010.](../fig_xarray_histogram.png)
+![A histogram showing the distribution of global temperature anomalies on September 15th 2010.](../fig/xarray_histogram.png)
 
 ## Interactive Plotting with Hvplot
 

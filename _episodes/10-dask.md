@@ -44,7 +44,7 @@ client
 The code above will create a local Dask cluster with one worker and 4 threads for each worker and a limit of 2GB of memory. Displaying the `client` object will tell us all about the
 cluster.
 
-![A screenshot of the Dask client information](../fig/dask-setup.png)
+![A screenshot of the Dask client information](../fig/dask_setup.png)
 
 
 ## Using the Dask dashboard
