@@ -407,8 +407,8 @@ Performance Computing (HPC) system then this is important!)
 > > ~~~
 > > {: .language-python}
 > >
-> > Timing this gives me 3.73 microseconds, whereas the `b ** 2 - 4 *
-> > a * c` Numpy expression takes 13.4 microseconds&mdash;almost four
+> > Timing this gives me 3.73 milliseconds, whereas the `b ** 2 - 4 *
+> > a * c` Numpy expression takes 13.4 milliseconds&mdash;almost four
 > > times as long. This is because each of the Numpy arithmetic
 > > operations needs to create a temporary array to hold the results,
 > > whereas the Numba ufunc can create a single final array, and
