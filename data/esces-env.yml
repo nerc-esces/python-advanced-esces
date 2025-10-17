@@ -3,36 +3,39 @@ channels:
   - conda-forge
   - nodefaults
 dependencies:
-  - python==3.11.9
-  - jupyterlab
-  - nb_conda_kernels
-  - dask=2024.8.0
-  - distributed
-  - numpy
-  - numba
-  - netcdf4
-  - xarray
-  - zarr
-  - intake-xarray
-  - matplotlib
-  - cartopy
-  - ipykernel
   - ca-certificates
+  - cartopy
   - certifi
-  - openssl
-  - dask-gateway=2024.1.0
-  - s3fs
-  - urllib3[version='<2']
-  - parallel
+  - cloudpickle=3.0.0
+  - cudatoolkit
+  - cupy
+  - dask=2024.8.0
   - dask-core=2024.8.0
-  - msgpack-python=1.0.8
+  - dask-gateway=2024.1.0
+  - distributed
+  - esmpy=8.8.1
+  - graphviz
+  - hvplot
+  - intake-xarray
+  - ipykernel
+  - jupyterlab
   - lz4=4.3.3
+  - msgpack-python=1.0.8
+  - nb_conda_kernels
+  - netcdf4
+  - numba
+  - numpy
+  - openssl
+  - parallel
+  - pooch
+  - python==3.11.9
+  - python-graphviz
+  - s3fs
+  - scikit-image
   - toolz=0.12.1
   - tornado=6.4.1
-  - cloudpickle=3.0.0
-  - hvplot
-  - pooch
-  - scikit-image
-  - graphviz
-  - python-graphviz
   - unzip
+  - urllib3<2
+  - xarray
+  - xesmf
+  - zarr
