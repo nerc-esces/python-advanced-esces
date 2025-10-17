@@ -136,6 +136,7 @@ axis.gridlines(draw_labels=True,xlocs=[-180,-90,0,90,180])
 A more concise way to do this is to use Numpy's `linspace` function which creates an array of evenly spaced elements, this takes a start, end and number of elements parameter for example:
 
 ~~~
+import numpy as np
 axis.gridlines(draw_labels=True,xlocs=np.linspace(-180,180,5))
 ~~~
 {: .language-python}
