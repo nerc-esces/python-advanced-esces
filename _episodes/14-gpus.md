@@ -113,14 +113,8 @@ cuda.detect()
 {: .language-python}
 
 > ## Check what GPUs you have access to
-> Ensure that you have Cuda installed, this can installed by adding the cupy and cudatoolkit packages to your Conda/Mamba environment.
 > Use Numba/Cuda to check what version of Cuda you have installed and what GPUs you have available.
 >> ## Solution
->> ~~~
->> mamba install -p ~/.conda/envs/esces cupy cudatoolkit
->> ~~~
->> {: .language-bash}
->>
 >> ~~~
 >> from numba import cuda
 >> print(cuda.__version__)
