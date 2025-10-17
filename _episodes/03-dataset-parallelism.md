@@ -23,6 +23,18 @@ split across multiple files or there are multiple parameters to process.
 
 ## Basic use of GNU Parallel
 
+First we will use an example dataset of five NetCDF files. 
+
+```
+mkdir parallel-data
+cd parallel-data
+curl https://github.com/NOC-OI/python-advanced-esces/raw/refs/heads/gh-pages/data/parallel-data.tar.gz > parallel-data.tar.gz
+tar xvfz parallel-data.tar.gz
+cd ..
+```
+{: .language-bash}
+
+
 In the Unix shell we could loop over a dataset one item at a time by using a for loop and the ls command together.
 
 ```
@@ -51,8 +63,8 @@ Just running echo commands isn't very useful, but we could use parallel to invok
 The serial example to process a series of NetCDF files would be:
 
 ```
-for file in $(ls *.nc) ; do
-    python myscript.py $file
+for file in $(ls parallel-data/*.nc) ; do
+    python summary.py $file
 done
 ```
 {: .language-bash}
@@ -60,7 +72,7 @@ done
 And with parllel it would be:
 
 ```
-parallel python myscript.py {1} ::: $(ls *.nc)
+parallel python myscript.py {1} ::: $(ls parallel-data/*.nc)
 ```
 {: .language-bash}
 
@@ -75,7 +87,7 @@ The `{1}` can be used multiple times if we want the same argument to be repeated
 If for example the script required an input and output file name and the output was the input file with .out on the end, then we could do the following:
 
 ```
-parallel python myscript-2.py {1} {1}.out ::: $(ls *.nc)
+parallel python myscript-2.py {1} {1}.out ::: $(ls parallel-data/*.nc)
 ```
 {: .language-bash}
 
@@ -218,8 +230,12 @@ Seq     Host    Starttime       JobRuntime      Send    Receive Exitval Signal  
 > make your images into a video. Create the video, download it to your computer (you can't play it in Jupyter Lab) and play it.
 >
 >> ## Solution
+>> FFmpeg has a choice of a few different codecs (compression algoithms), a sensible choice for a modern video player is x264. 
+>> You can get a list of these by running `ffmpeg -encoders`, anything starting with "V" is a video codec. Windows Media Player
+>> has problems with the default output from FFmpeg using the libx264 option, but adding the argument `-pix_fmt yuv420p` seems to fix this.
+>> Other media players such as [VLC](https://videolan.org) should have no problem playing video made without this.
 >> ~~~
->> ffmpeg -framerate 25 -pattern_type glob -i "*.png" -c:v libx264 output.mp4
+>> ffmpeg -framerate 25 -pattern_type glob -i "*.png" -vcodec libx264 -pix_fmt yuv420p output.mp4
 >> ~~~
 >> {: .language-bash}
 > {: .solution}
