@@ -330,7 +330,7 @@ import intake
 xcat = intake.open_catalog('https://raw.githubusercontent.com/intake/intake-xarray/master/examples/catalog.yml')
 list(xcat)
 ~~~
-{: .langauge-python}
+{: .language-python}
 
 Let's open the image example and use the skimage library to plot it
 
@@ -339,7 +339,7 @@ import matplotlib.pyplot as plt
 image = xcat.image.read()
 plt.imshow(image)
 ~~~
-{: .langauge-python}
+{: .language-python}
 
 
 
