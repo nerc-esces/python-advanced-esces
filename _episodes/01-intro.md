@@ -164,7 +164,7 @@ computer, but some of the larger examples will probably exceed the memory and pr
 > If you do not have a JASMIN account then please use one of the training accounts provided.
 {: .challenge}
 
-## Download examples and set up the Mamba environment
+## Download example data
 
 To ensure we have all the packages needed for this workshop we'll need to create a new mamba environment (mamba is a conda compatible package manger but is much faster than conda).
 This is defined by a YAML file that is downloaded alongside the course materials.
@@ -172,19 +172,37 @@ This is defined by a YAML file that is downloaded alongside the course materials
 > ## Download the course material
 > Open a terminal and type:
 > ~~~
-> curl https://raw.githubusercontent.com/NOC-OI/python-advanced-esces/gh-pages/data/data.tgz > data.tgz
+> curl {{ site.baseurl }}/data/data.tgz > data.tgz
 > tar xvf data.tgz
 > ~~~
 > {: .language-bash}
 {: .challenge}
 
+## Setup the Mamba environment (own computer/anything not JASMIN)
+
+If you are running on your own computer (or anything that isn't JASMIN) then you need to do this:
 
 > ## Setting up/choosing a Mamba environment
 > From the terminal run the following:
 > ~~~
-> curl https://raw.githubusercontent.com/NOC-OI/python-advanced-esces/refs/heads/gh-pages/data/esces-env.yml > esces-env.yml
+> curl {{ site.baseurl }}/data/esces-env.yml > esces-env.yml
 > mamba env create -f esces-env.yml -p ~/.conda/envs/esces
 > mamba run -p ~/.conda/envs/esces python -m ipykernel install --user --name ESCES
+> ~~~
+> After about one minute if you click on the blue plus icon near the top left or the file menu and "New Launcher" option you should see a notebook option called ESCES.
+> This will use the Mamba environment we just created and will have access to all the packages we need.
+> {: .language-bash}
+{: .challenge}
+
+## Setup the Mamba environment (JASMIN)
+
+Only follow this if you are using JASMIN. You do not need to install any dependencies on JASMIN, you can use an environment that is already installed in
+`/work/scratch/nopw2/colinsau/esces-env`. If you really want to then you can install the environment yourself using the instructions in the previous section.
+
+> ## Setting up/choosing a Mamba environment
+> From the terminal run the following:
+> ~~~
+> mamba run -p /work/scratch/nopw2/colinsau/esces-env python -m ipykernel install --user --name ESCES
 > ~~~
 > After about one minute if you click on the blue plus icon near the top left or the file menu and "New Launcher" option you should see a notebook option called ESCES.
 > This will use the Mamba environment we just created and will have access to all the packages we need.
