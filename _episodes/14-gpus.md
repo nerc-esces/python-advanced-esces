@@ -22,7 +22,7 @@ keypoints:
 
 # What are GPUs and why should we use them?
 
-- GPUs are Graphics Processing Units, they have large numbers (100s to 1000s) of very simple processing cores and are suited to some parallel tasks like machine learning and array operations.#
+- GPUs are Graphics Processing Units, they have large numbers (100s to 1000s) of very simple processing cores and are suited to some parallel tasks like machine learning and array operations.
 - GPUs have their own RAM (memory) which their processing units can access very quickly. Any data you wish to work on must be copied from the computer (known as the "host")
 to the GPU memory and any results must be copied back.
 - GPUs used to have to be programmed using specialised languages/libraries such as Cuda (NVIDIA proprietary) or OpenCL (cross platform and open source).
