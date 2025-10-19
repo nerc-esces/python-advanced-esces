@@ -471,10 +471,10 @@ a_plus_tr_tanh_a(a)
 
 > ## Compare Performance
 >
-> Try to run the same code without any Numba Jit or parallelisation.
-> Try decreasing and increasing the matrix size and compare the results.
+> Try to run the `a_plus_tr_tanh_a` function without any Numba JIT or parallelisation to establish a baseline speed.
+> Try decreasing and increasing the matrix size. Then compare these to results with JIT and parallelisation enabled.
 >
-> Which one has the best results?
+> At which sizes does it make sense to parallelise? At which sizes does it make senes to enable JIT?
 >
 > > ## Solution
 > > You might find a smaller matrix shows little or no difference in execution times, but a larger one sees the parallelised/JIT version go faster.
