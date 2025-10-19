@@ -260,7 +260,7 @@ dataset['tempanomaly'].sel(lat=53,lon=-3).hvplot()
 ![The Hvplot from the code above which plots temperature anomaly over time for Liverpool.](../fig/hvplot.png)
 
 
-> ## Challenge
+> ## Slicing and Plotting with Xarray
 > Using a slice of the array, plot a transect of the surface temperature anomaly across the Atlantic ocean at 23 degrees North between 70 and 17 degrees West on January 15th 2000 and
 > June 15th 2000.
 > > ## Solution
@@ -394,7 +394,7 @@ dataset['tempanomaly'].where(dataset['tempanomaly'].lon > 0)
 {: .language-python}
 
 
-> ## Challenge
+> ## Using Map and Reduce Operations
 > Using map/reduce operations and the where function to do the following on the example dataset:
 > 1. Calculate the 95th percentile of the data set using the `quantile` function in Xarray.
 > 2. Use the where function to remove any data above the 95th percentile.
@@ -572,7 +572,7 @@ dataset_corrected.to_netcdf("corrected.nc")
 
 
 
-> ## Challenge
+> ## Xarray example datasets
 > There are several example datasets built into Xarray. You can load them with the `tutorial.load_dataset` function from the main xarray library. One of these is the Extended Reconstructed 
 > Sea Surface Temperature data from NOAA, known as "ersstv5". Load this data with Xarray and do the following:
 > 1. Slice the data so that only data from before 2000 is included, by defalt the dataset runs up to the end of 2021.
