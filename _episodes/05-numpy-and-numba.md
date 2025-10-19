@@ -303,7 +303,7 @@ import numpy as np
 import math
 from numba import vectorize
 
-@vectorize()
+@vectorize
 def trig(a, b):
     return math.sin(a ** 2) * math.exp(b)
 
