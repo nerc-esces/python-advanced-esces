@@ -2,4 +2,3 @@
 
 # Advanced Python for Environmental Scientists
 
-Moved to https://github.com/nerc-esces/python-advanced-esces/, please use that version instead.
