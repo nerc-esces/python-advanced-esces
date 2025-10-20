@@ -23,12 +23,12 @@ split across multiple files or there are multiple parameters to process.
 
 ## Basic use of GNU Parallel
 
-First we will use an example dataset of five NetCDF files. 
+First we will use an example dataset of five NetCDF files.
 
 ```
 mkdir parallel-data
 cd parallel-data
-curl https://github.com/NOC-OI/python-advanced-esces/raw/refs/heads/gh-pages/data/parallel-data.tar.gz > parallel-data.tar.gz
+curl -L https://github.com/NOC-OI/python-advanced-esces/raw/refs/heads/gh-pages/data/parallel-data.tar.gz > parallel-data.tar.gz
 tar xvfz parallel-data.tar.gz
 cd ..
 ```
@@ -230,7 +230,7 @@ Seq     Host    Starttime       JobRuntime      Send    Receive Exitval Signal  
 > make your images into a video. Create the video, download it to your computer (you can't play it in Jupyter Lab) and play it.
 >
 >> ## Solution
->> FFmpeg has a choice of a few different codecs (compression algoithms), a sensible choice for a modern video player is x264. 
+>> FFmpeg has a choice of a few different codecs (compression algoithms), a sensible choice for a modern video player is x264.
 >> You can get a list of these by running `ffmpeg -encoders`, anything starting with "V" is a video codec. Windows Media Player
 >> has problems with the default output from FFmpeg using the libx264 option, but adding the argument `-pix_fmt yuv420p` seems to fix this.
 >> Other media players such as [VLC](https://videolan.org) should have no problem playing video made without this.
