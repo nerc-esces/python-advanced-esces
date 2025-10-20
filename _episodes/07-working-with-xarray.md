@@ -25,15 +25,15 @@ keypoints:
 
 # Introducing Xarray
 
-Xarray is a library for working with multidimensional array data in Python. Many of its ways of working are inspired by Pandas but Xarray is built to work well 
-with very large multidimensional array based data. It is designed to work with popular scientific Python libraries including NumPy and Matplotlib. 
+Xarray is a library for working with multidimensional array data in Python. Many of its ways of working are inspired by Pandas but Xarray is built to work well
+with very large multidimensional array based data. It is designed to work with popular scientific Python libraries including NumPy and Matplotlib.
 It is also designed to work with arrays that are larger than the memory of the computer and can load data from NetCDF files (and save them too).
 
 ## Datasets and DataArrays
 
-Xarray has two core data types, the DataArray and Dataset. A DataArray is a multidimensional array of data, similar to a NumPy array but with named dimensions. 
+Xarray has two core data types, the DataArray and Dataset. A DataArray is a multidimensional array of data, similar to a NumPy array but with named dimensions.
 Xarray takes advantage of a Python feature called "Duck Typing", where objects can be treated as another type if they implement the same methods (functions). This allows for
-Numpy to treat an Xarray DataArray as a Numpy array and vice-versa. A Dataset object contains multiple DataArrays and is what we can load NetCDF files into, it will also include metadata about the dataset. 
+Numpy to treat an Xarray DataArray as a Numpy array and vice-versa. A Dataset object contains multiple DataArrays and is what we can load NetCDF files into, it will also include metadata about the dataset.
 
 
 ### Opening a NetCDF Dataset
@@ -147,7 +147,7 @@ dataset['tempanomaly'].sel(time=slice("2000-01-15","2000-12-15")).values
 > Write a slicing command to get every other month from the temperature anomaly dataset.
 >> ## Solution
 >> ~~~
->> dataset['tempanomaly']['time'][:12:2]
+>> dataset['tempanomaly']['time'][::2]
 >> ~~~
 >> {: .language-python}
 > {: .solution}
@@ -198,14 +198,14 @@ dataset['tempanomaly'].sel(lat=53, lon=-3).plot()
 ~~~
 {: .language-python}
 
-One thing to note is that Xarray has not only plotted the graph, but has also automatically labelled it based on the long names and units for the variables that were in the metadata 
+One thing to note is that Xarray has not only plotted the graph, but has also automatically labelled it based on the long names and units for the variables that were in the metadata
 of the dataset. The dates on the X axis are also correctly labelled, whereas many plotting libraries require some extra steps to setup labelling dates correctly.
 
 ![The plot of the time series data at 53 North, 3 West from the code above.](../fig/xarray_plot.png)
 
 ## Plotting Two Dimensional Data
 
-Xarray isn't just restricted to plotting line graphs, if we select some data that returns latitude and longitude dimensions then the plot function will show a map. 
+Xarray isn't just restricted to plotting line graphs, if we select some data that returns latitude and longitude dimensions then the plot function will show a map.
 
 ~~~
 dataset['tempanomaly'].sel(time="2000-01-15").plot()
@@ -277,10 +277,10 @@ dataset['tempanomaly'].sel(lat=53,lon=-3).hvplot()
 
 ## Map operations
 
-One of the most powerful features of Xarray is the ability to apply a mathematical operation to part or all of an array. 
-Not only is this convienient for us to avoid needing to write one or more for loops to loop over the array applying the operation, it also performs better and can take advantage of 
+One of the most powerful features of Xarray is the ability to apply a mathematical operation to part or all of an array.
+Not only is this convienient for us to avoid needing to write one or more for loops to loop over the array applying the operation, it also performs better and can take advantage of
 some optimsations of our processor. Potentially it can also be parallelised to apply multiple operations simulatenously across different parts of the array, we'll see more about this later on.
-These types of operations are known as a "map" operation as they map all the values in the array onto a new of values. 
+These types of operations are known as a "map" operation as they map all the values in the array onto a new of values.
 
 If for example we want to apply a simple offset to our entire dataset we can add or subtract a constant value to every element by doing:
 
@@ -304,12 +304,12 @@ dataset_corrected = dataset['tempanomaly'] * 1.1 - 1.0
 ~~~
 {: .language-python}
 
-For more complicated operations we might want to write a function and apply that function to the array. Xarray's Dataset type supports this with its `map` function, 
+For more complicated operations we might want to write a function and apply that function to the array. Xarray's Dataset type supports this with its `map` function,
 but `map` will apply to all variables in the dataset, in the above example we only wanted to apply this to the tempanomaly variable.
 
 
 There are a couple of ways around this, we could drop the other variables from a copy of the dataset or we can use the `apply_ufunc` function that works on a single DataArray.
-By referencing `dataset['tempanomaly']` (or `dataset.tempanomaly`) we will get hold of a DataArray object that just represents a single variable. 
+By referencing `dataset['tempanomaly']` (or `dataset.tempanomaly`) we will get hold of a DataArray object that just represents a single variable.
 
 ~~~
 def apply_correction(x):
@@ -327,7 +327,7 @@ corrected_tempanomaly = xr.apply_ufunc(apply_correction,dataset['tempanomaly'])
 {: .language-python}
 
 We aren't just restricted to using our own functions with `map` and `apply_ufunc`, we can apply any function that can take in a DataArray object. Because of duck typing functions
-which take Numpy arrays will also work. For example we can use a function from the Numpy library, one possible function that we might use from Numpy is the clip function, this 
+which take Numpy arrays will also work. For example we can use a function from the Numpy library, one possible function that we might use from Numpy is the clip function, this
 requires three arguments, the array to apply the clipping to, the minimum value and maximum value. Any value below the minimum will be converted to the minimum and any value above
 the maximum will be converted to the maximum. If for example we wanted to clip our dataset between -2 and +2 degrees then we could do the following:
 
@@ -341,12 +341,12 @@ dataset_clipped = xr.apply_ufunc(numpy.clip,dataset['tempanomaly'],-2,2)
 
 ## Reduce Operations
 
-We've now seen map operations that apply a function to every point in an array and return a new array of the same size. Another type of operation is a "reduce" operation which will 
+We've now seen map operations that apply a function to every point in an array and return a new array of the same size. Another type of operation is a "reduce" operation which will
 reduce an array to a single result. Common examples are taking the mean, median, sum, minimum or maximum of an array. Like with map operations, traditionally we might have approached
 this by using for loops to work through the array and compute the answer. But Xarray allows us to use a single function call to get this result and this has the potential to be parallelised
-for improved performance. 
+for improved performance.
 
-Both Xarray's Dataset and DataArray objects have a set of built in functions for common reduce operations including `min`, `max`, `mean`, `median` and `sum`. 
+Both Xarray's Dataset and DataArray objects have a set of built in functions for common reduce operations including `min`, `max`, `mean`, `median` and `sum`.
 
 ~~~
 tempanomaly_mean = dataset['tempanomaly'].mean()
@@ -366,10 +366,10 @@ print(transect_mean.values)
 
 ## Conditionally Selecting and Replacing Data
 
-Sometimes we want to mask out certain regions of a dataset or to set part of the region to a certain value. Xarray's `where` function can be used to replace data based on certain 
+Sometimes we want to mask out certain regions of a dataset or to set part of the region to a certain value. Xarray's `where` function can be used to replace data based on certain
 criteria. There are two (or three depending on how you count) sublety different versions of the `where` function. One is part of the main Xarray library (e.g. invoked with `xr.where`)
 and it follows the syntax `where(cond, x, y)`, with cond being the condition to apply, x being what to do if it is true and y if it is false. The other version of the `where` function
-exists in the `xarray.DataArray` and `xarray.Dataset` packages and has a slightly different syntax of `where(cond, other)`, here `other` refers to what do when the condition is false, 
+exists in the `xarray.DataArray` and `xarray.Dataset` packages and has a slightly different syntax of `where(cond, other)`, here `other` refers to what do when the condition is false,
 if the condition is true then the value currently in this position is copied to the resulting array and if `other` is not specified the value is converted to an NaN (not a number).
 
 For example if we want all data that is negative to be converted to an NaN then we could use the Dataset/DataArray version of where:
@@ -379,7 +379,7 @@ dataset['tempanomaly'].where(dataset['tempanomaly'] >= 0.0)
 ~~~
 {: .language-python}
 
-If we decided that we wanted to make all negative values zero and multiply all positive values by 2 then we could use the `xr.where` function instead, 
+If we decided that we wanted to make all negative values zero and multiply all positive values by 2 then we could use the `xr.where` function instead,
 ~~~
 xr.where(dataset['tempanomaly'] < 0.0, 0, dataset['tempanomaly'] * 2.0)
 ~~~
@@ -428,9 +428,9 @@ Computational patterns are common operations that we might perform. Xarray has s
 
 Xarray can resample data to reduce its frequency, this is done through the `resample` function on a DataArray or Dataset. Resample only works on the time dimension of a dataset/array.
 
-Let's call resample on a selection of our data for a single location, we can then produce a line graph of the temperature over time and see the difference between the original and 
-resampled version. The `resample` function takes a paramter of a variable name mapped (with the = symbol) to a resampling frequency, this could be "h" for hourly, "D" for daily, "W" 
-for weekly, "ME" for month endings, "MS" for month starts, "YS" for year starts and "YE" for year ends. These options are borrowed from the Pandas resample frequency and a full list 
+Let's call resample on a selection of our data for a single location, we can then produce a line graph of the temperature over time and see the difference between the original and
+resampled version. The `resample` function takes a paramter of a variable name mapped (with the = symbol) to a resampling frequency, this could be "h" for hourly, "D" for daily, "W"
+for weekly, "ME" for month endings, "MS" for month starts, "YS" for year starts and "YE" for year ends. These options are borrowed from the Pandas resample frequency and a full list
 of them can be found in the [Pandas documentation](https://pandas.pydata.org/pandas-docs/stable/user_guide/timeseries.html#offset-aliases). In our example we'll do a yearly resampling,
 since the data is already monthly.
 
@@ -458,7 +458,7 @@ plt.legend()
 The group by pattern allows us to group related data together, a common example in environmental science is to group monthly data into seasonal groups of three months each.
 
 We can group these by calling the `groupby` function and specifying that we want the data in seasonal groups with "time.season" as the parameter to `groupby`. If we had
-daily data and wanted it grouped by months then we could use "time.month" instead. 
+daily data and wanted it grouped by months then we could use "time.month" instead.
 
 ~~~
 grouped = dataset['tempanomaly'].sel(lat=53,lon=-3).groupby("time.season")
@@ -477,9 +477,9 @@ plt.bar(grouped_mean.season,grouped_mean)
 
 ![A bar chart showing the seasonal temperature anomalies](../fig/xarray_groupby.png)
 
-### Binned Group By 
+### Binned Group By
 
-There is another version of the `groupby` function called `groupby_bins` which allows us to group data into bins covering a range of values. 
+There is another version of the `groupby` function called `groupby_bins` which allows us to group data into bins covering a range of values.
 
 ~~~
 bins = [-2.0,-1.0,0.0,1.0,2.0,3.0]
@@ -487,7 +487,7 @@ binned = dataset.groupby_bins("tempanomaly",bins)
 ~~~
 {: .language-python}
 
-Again as with our other functions we get an object back from groupby_bins that defines the bins, but doesn't put any data onto them. In this case 
+Again as with our other functions we get an object back from groupby_bins that defines the bins, but doesn't put any data onto them. In this case
 lets find out how many items are in each bin by using the count function to count them.
 
 ~~~
@@ -573,7 +573,7 @@ dataset_corrected.to_netcdf("corrected.nc")
 
 
 > ## Xarray example datasets
-> There are several example datasets built into Xarray. You can load them with the `tutorial.load_dataset` function from the main xarray library. One of these is the Extended Reconstructed 
+> There are several example datasets built into Xarray. You can load them with the `tutorial.load_dataset` function from the main xarray library. One of these is the Extended Reconstructed
 > Sea Surface Temperature data from NOAA, known as "ersstv5". Load this data with Xarray and do the following:
 > 1. Slice the data so that only data from before 2000 is included, by defalt the dataset runs up to the end of 2021.
 > 2. Resample the data to annual means.
