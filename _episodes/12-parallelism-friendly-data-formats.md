@@ -271,10 +271,12 @@ It is important to note that this data is not on a regular grid. Therefore, slic
 {: .challenge}
 
 
-> ## Calculate the mean sea surface temperature for 10 years with Dask
-> Calculate the mean sea surface temperature for 1990 and 1999. Use the JASMIN Dask gateway to parallelise the calculation, use 10 worker threads and set the
+> ## Calculate the mean sea surface temperature for the dataset with Dask
+> Calculate the mean sea surface temperature for 1976 and 2024. Use the JASMIN Dask gateway to parallelise the calculation, use 10 worker threads and set the
 > time_counter chunk size to 10 when opening the zarr file. Measure how long it takes to compute the result, try changing the number of workers up and down to see
-> what the optimal number is.
+> what the optimal number is. See if the number of workers you request are actually being created by monitoring the Dask qos on a JASMIN Sci server with the command
+> `watch squeue -q dask -u <your user id>`.
+>
 >> ## Solution
 >> ~~~
 >> import xarray as xr
@@ -285,7 +287,8 @@ It is important to note that this data is not on a regular grid. Therefore, slic
 >> options = gw.cluster_options()
 >> options.worker_cores = 1
 >> options.scheduler_cores = 1
->> options.worker_setup='source /apps/jasmin/jaspy/miniforge_envs/jaspy3.11/mf3-23.11.0-0/bin/activate ~/.conda/envs/esces'
+>> options.account = "workshop"
+>> options.worker_setup='source /apps/jasmin/jaspy/miniforge_envs/jaspy3.11/mf3-23.11.0-0/bin/activate /work/scratch-nopw2/colinsau/esces-env'
 >>
 >> clusters = gw.list_clusters()
 >> if not clusters:
@@ -298,7 +301,7 @@ It is important to note that this data is not on a regular grid. Therefore, slic
 >> client
 >>
 >> ds = xr.open_zarr("https://noc-msm-o.s3-ext.jc.rl.ac.uk/npd-eorca025-jra55v1/T1m/tos_con")
->> sst = ds['tos_con'].sel(time_counter=slice("1990","1999"))
+>> sst = ds['tos_con'].sel(time_counter=slice("1976","2024"))
 >> # mean_sst = dataset.mean(dim=['lat','lon']) #better way to do this
 >> grouped_mean = sst.groupby("time_counter.year").mean()
 >> mean_sst = grouped_mean.mean(dim=['y','x'])
@@ -307,7 +310,8 @@ It is important to note that this data is not on a regular grid. Therefore, slic
 >> cluster.shutdown()
 >> ~~~
 >> {: .language-python}
->> Optimal workers is probably 10 and execution should take around 22 seconds. Single threaded execution time is 57 seconds.
+>> Optimal workers is probably 10 and execution should take around 25 seconds. Single threaded execution time is about 1 minute 30 seconds.
+>> Beyond around 10 workers being requested Dask might not create them all if it isn't able to divide the task up.
 > {: .solution}
 {: .challenge}
 

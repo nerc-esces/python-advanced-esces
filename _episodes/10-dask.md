@@ -309,14 +309,15 @@ gw = dask_gateway.Gateway("https://dask-gateway.jasmin.ac.uk", auth="jupyterhub"
 The gateway can be given a set of options including how many worker cores to use, initially we can set this to one and scale it up later. We also need to allocate at least one core
 as to the scheduler which will manage our Dask cluster. JASMIN requires us to specify a project to associate the Dask jobs with. 
 You can find out which projects you are a member of by running the command `useraccounts` on a sci server. If you are not a member of any project then you can 
-use "no-project" here, but if you are a member of a project you must use a project name. Finally we need to tell Dask which Conda/Mamba environment to use and this needs to match the one we're running in our notebook.
+use "no-project" here, but if you are a member of a project you must use a project name. Users of training accounts should use "workshop".
+Finally we need to tell Dask which Conda/Mamba environment to use and this needs to match the one we're running in our notebook.
 
 ~~~
 options = gw.cluster_options()
 options.worker_cores = 1
 options.scheduler_cores = 1
-options.account = "no-project"
-options.worker_setup='source /apps/jasmin/jaspy/miniforge_envs/jaspy3.11/mf3-23.11.0-0/bin/activate ~/.conda/envs/esces'
+options.account = "workshop"
+options.worker_setup='source /apps/jasmin/jaspy/miniforge_envs/jaspy3.11/mf3-23.11.0-0/bin/activate /work/scratch-nopw2/colinsau/esces-env'
 ~~~
 {: .language-python}
 
@@ -363,7 +364,7 @@ cluster.shutdown()
 ### JASMIN Dask Dashboard
 
 If you display the contents of the `client` or `cluster` variable then you will be given an address beginning https://dask-gateway.jasmin.ac.uk that will take you to a Dask
-dashboard for your cluster. Unfortunately this server is only accessible within the JASMIN network, to access it you will have to use a web browser running inside an
+dashboard for your cluster. Unfortunately this server is only accessible within the JASMIN network, to access it you will have to use a web browser running inside a
 [NoMachine](https://help.jasmin.ac.uk/docs/interactive-computing/graphical-linux-desktop-access-using-nx/) session or port forward via the JASMIN login server.
 
 > ## Challenge
@@ -385,8 +386,8 @@ dashboard for your cluster. Unfortunately this server is only accessible within 
 > > options = gw.cluster_options()
 > > options.worker_cores = 2
 > > options.scheduler_cores = 1
-> > options.account = "no-project"
-> > options.worker_setup='source /apps/jasmin/jaspy/miniforge_envs/jaspy3.11/mf3-23.11.0-0/bin/activate ~/.conda/envs/esces'
+> > options.account = "workshop"
+> > options.worker_setup='source /apps/jasmin/jaspy/miniforge_envs/jaspy3.11/mf3-23.11.0-0/bin/activate /work/scratch-nopw2/colinsau/esces-env'
 > > clusters = gw.list_clusters()
 > > if not clusters:
 > >     cluster = gw.new_cluster(options, shutdown_on_close=False)
