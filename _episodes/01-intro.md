@@ -197,7 +197,7 @@ If you are running on your own computer (or anything that isn't JASMIN) then you
 ## Setup the Mamba environment (JASMIN)
 
 Only follow this if you are using JASMIN. You do not need to install any dependencies on JASMIN, you can use an environment that is already installed in
-`/work/scratch/nopw2/colinsau/esces-env`. If you really want to then you can install the environment yourself using the instructions in the previous section.
+`/work/scratch-nopw2/colinsau/esces-env`. If you really want to then you can install the environment yourself using the instructions in the previous section.
 
 > ## Setting up/choosing a Mamba environment
 > From the terminal run the following:
