@@ -202,7 +202,7 @@ Only follow this if you are using JASMIN. You do not need to install any depende
 > ## Setting up/choosing a Mamba environment
 > From the terminal run the following:
 > ~~~
-> mamba run -p /work/scratch/nopw2/colinsau/esces-env python -m ipykernel install --user --name ESCES
+> mamba run -p /work/scratch-nopw2/colinsau/esces-env python -m ipykernel install --user --name ESCES
 > ~~~
 > After about one minute if you click on the blue plus icon near the top left or the file menu and "New Launcher" option you should see a notebook option called ESCES.
 > This will use the Mamba environment we just created and will have access to all the packages we need.
