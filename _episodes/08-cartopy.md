@@ -222,7 +222,7 @@ axis.add_feature(cfeature.RIVERS)
 {: .callout}
 
 > ## Challenge
-> The [`cartopy.feature.NaturalEarthFeature`](https://scitools.org.uk/cartopy/docs/latest/reference/generated/cartopy.feature.NaturalEarthFeature.html) library allows access to a number
+> The [`cartopy.feature.NaturalEarthFeature`](https://scitools.org.uk/cartopy/docs/v0.22/reference/generated/cartopy.feature.NaturalEarthFeature.html) library allows access to a number
 > of boundary features from the shapefiles supplied by the website Natural Earth. One of these has administrative and state boundaries for many countries. Add this feature using the
 > "admin_1_states_provinces_lines" dataset. Use the 50m (1:50 million) scale for this.
 > > ## Solution
