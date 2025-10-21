@@ -272,7 +272,7 @@ It is important to note that this data is not on a regular grid. Therefore, slic
 
 
 > ## Calculate the mean sea surface temperature for the dataset with Dask
-> Calculate the mean sea surface temperature for 1976 and 2024. Use the JASMIN Dask gateway to parallelise the calculation, use 10 worker threads and set the
+> Calculate the mean sea surface temperature from 1976 to 2024. Use the JASMIN Dask gateway to parallelise the calculation, use 10 worker threads and set the
 > time_counter chunk size to 10 when opening the zarr file. Measure how long it takes to compute the result, try changing the number of workers up and down to see
 > what the optimal number is. See if the number of workers you request are actually being created by monitoring the Dask qos on a JASMIN Sci server with the command
 > `watch squeue -q dask -u <your user id>`.
