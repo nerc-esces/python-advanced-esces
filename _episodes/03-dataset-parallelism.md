@@ -28,7 +28,7 @@ First we will use an example dataset of five NetCDF files.
 ```
 mkdir parallel-data
 cd parallel-data
-curl -L https://github.com/NOC-OI/python-advanced-esces/raw/refs/heads/gh-pages/data/parallel-data.tar.gz > parallel-data.tar.gz
+curl {{ site.url }}{{ site.baseurl }}/data/parallel-data.tar.gz > parallel-data.tar.gz
 tar xvfz parallel-data.tar.gz
 cd ..
 ```
