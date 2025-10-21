@@ -120,7 +120,7 @@ cuda.detect()
 >> print(cuda.__version__)
 >> cuda.detect()
 >> ~~~
->> {: .language-bash}
+>> {: .language-python}
 > {: .solution}
 {: .challenge}
 
