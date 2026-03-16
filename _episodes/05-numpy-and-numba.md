@@ -113,7 +113,20 @@ This will output detailed profiling information for both functions.
 You can use this information to analyze the performance of your code
 and optimize it as needed.
 
+> ## Exercise: Why is Numpy faster?
+>
 > Do you know why the fast function is faster than the slow function?
+> Discuss in the group or with your neighbour reasons what could make Numpy faster.
+>
+> > ## Solution
+> >
+> > The reason why the Numpy operation is faster than the traditional loop-based approach is because:
+> > 1. **Vectorization**: Numpy operations are vectorized, meaning they are applied element-wise to the entire array at once. This allows for efficient parallelization and takes advantage of optimized low-level implementations.
+> > 2. **Avoiding Python overhead**: Traditional loops in Python incur significant overhead due to Python's dynamic typing and interpretation. Numpy operations are implemented in C, bypassing much of this overhead.
+> > 3. **Optimized algorithms**: Numpy operations often use highly optimized algorithms and data structures, further enhancing performance.
+> >
+> {: .solution}
+{: .challenge}
 
 # Numpy whole array operations
 
@@ -161,10 +174,57 @@ cProfile.run("numpy_multiply(arr)")
 In this example, `traditional_multiply` uses nested loops to multiply each element of the array by 2, while `numpy_multiply` performs the same operation using a single NumPy
 operation. When comparing the execution times using `%timeit`, you'll likely observe that `numpy_multiply` is significantly faster.
 
-> The reason why the Numpy operation is faster than the traditional loop-based approach is because:
-> 1. **Vectorization**: Numpy operations are vectorized, meaning they are applied element-wise to the entire array at once. This allows for efficient parallelization and takes advantage of optimized low-level implementations.
-> 2. **Avoiding Python overhead**: Traditional loops in Python incur significant overhead due to Python's dynamic typing and interpretation. Numpy operations are implemented in C, bypassing much of this overhead.
-> 3. **Optimized algorithms**: Numpy operations often use highly optimized algorithms and data structures, further enhancing performance.
+
+> ## Excercise: Compare multiplication speeds with the temperature anomaly dataset
+>
+> Load the data from the NetCDF file and apply a correction of multiplying all data by 1.1 using both the `traditional_multiply` and `numpy_multiply`.
+> Time each approach and compare how long they take. Hint: you can convert the data from the NetCDF file to a normal Python array (that will also work with Numpy) by using
+> `dataset.variables['tempanomaly'][:][:][:]`.
+>
+> > ## Solution
+> > ~~~
+> > import netCDF4
+> > dataset = netCDF4.Dataset("gistemp1200-21c.nc")
+> > arr = dataset.variables['tempanomaly'][:][:][:]
+> > print("Profiling traditional_multiply:")
+> > cProfile.run("traditional_multiply(arr)")
+> > print("\nProfiling numpy_multiply:")
+> > cProfile.run("numpy_multiply(arr)")
+> > ~~~
+> > {: .language-python}
+> >
+> > Traditional multiply
+> > ~~~
+> >         3734678 function calls in 1.195 seconds
+> >
+> >    Ordered by: standard name
+> >
+> >    ncalls  tottime  percall  cumtime  percall filename:lineno(function)
+> >         1    0.029    0.029    1.195    1.195 3644351867.py:4(traditional_multiply)
+> > .
+> > .
+> > .
+> > ~~~
+> > {: .output}
+> >
+> > Numpy multiply
+> > ~~~
+> >         87 function calls in 0.008 seconds
+> >
+> >   Ordered by: standard name
+> >
+> >   ncalls  tottime  percall  cumtime  percall filename:lineno(function)
+> >        1    0.000    0.000    0.008    0.008 3644351867.py:12(numpy_multiply)
+> > .
+> > .
+> > .
+> > ~~~
+> > {: .output}
+> >
+> {: .solution}
+{: .challenge}
+
+
 
 # Numba
 
@@ -198,9 +258,12 @@ giving them some extra behaviour or properties.
 (Adapted from the
 [Scipy 2017 Numba tutorial](https://github.com/gforsyth/numba_tutorial_scipy2017/blob/master/notebooks/07.Make.your.own.ufuncs.ipynb))
 
-Recall how Numpy gives us many operations that operate on whole arrays,
+Numpy gives us many operations that operate on whole arrays,
 element-wise. These are known as "universal functions", or "ufuncs"
-for short. Numpy has the facility for you to define your own ufuncs,
+for short. Ufuncs are an example of vectorization because they operate on the whole array in one operation, not just a single element at a time.
+This takes advantage of vectorization instructions in modern CPUs which conduct operations on an array in similar or even the same time a single operation would take.
+
+Numpy has the facility for you to define your own ufuncs,
 but it is quite difficult to use. Numba makes this much easier with
 the `@vectorize` decorator. With this, you are able to write a
 function that takes individual elements, and have it extend to operate
@@ -472,13 +535,15 @@ a_plus_tr_tanh_a(a)
 > ## Compare Performance
 >
 > Try to run the `a_plus_tr_tanh_a` function without any Numba JIT or parallelisation to establish a baseline speed.
-> Try decreasing and increasing the matrix size. Then compare these to results with JIT and parallelisation enabled.
->
+> Try matrix sizes of 10 thousand, 100 thousand, 1 million or 10 million. Compare these to results with JIT and parallelisation enabled.
+> Note that you can disable JIT with the `njit` decorator, which must also be imported from the numba package.
+> 
 > At which sizes does it make sense to parallelise? At which sizes does it make senes to enable JIT?
 >
 > > ## Solution
-> > You might find a smaller matrix shows little or no difference in execution times, but a larger one sees the parallelised/JIT version go faster.
-> > For small computations the overhead of parallelization can outweigh the benefits. It's essential to profile your code and experiment with different approaches to find the most efficient solution for your specific use case.
+> > You might find a smaller matrix (under 10 million elements) shows little or no benefit from parallelisation. Larger one sees the parallelised/JIT version go faster.
+> > For small computations the overhead of parallelization can outweigh the benefits. It's essential to profile your code and experiment with different approaches to 
+> > find the most efficient solution for your specific use case.
 > {: .solution}
 {: .challenge}
 
