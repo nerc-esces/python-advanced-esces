@@ -118,7 +118,7 @@ We can also mix the `:::` and `::::` notations to have some arguments come from 
 For example, if we had a list of NetCDF files in files.txt, and you wanted to perform an analysis of two of the varibles, we could use:
 
 ```
-parallel mean_variable.py {2} {1} ::: tempanomaly time :::: files.txt
+parallel python mean_variable.py {2} {1} ::: tempanomaly time :::: files.txt
 ```
 {: .language-bash}
 
