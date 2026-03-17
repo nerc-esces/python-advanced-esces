@@ -67,7 +67,7 @@ The serial example to process a series of NetCDF files would be:
 
 ```
 for file in $(ls parallel-data/*.nc) ; do
-    python mean_tempanomaly.py $file
+    python parallel-data/mean_tempanomaly.py $file
 done
 ```
 {: .language-bash}
@@ -75,7 +75,7 @@ done
 And with parallel it would be:
 
 ```
-parallel python mean_tempanomaly.py {1} ::: $(ls parallel-data/*.nc)
+parallel python parallel-data/mean_tempanomaly.py {1} ::: $(ls parallel-data/*.nc)
 ```
 {: .language-bash}
 
@@ -100,8 +100,8 @@ Using commands or lists of arguments is fine for many use cases, but sometimes t
 For this we use the `::::` (note four, not three :s) separator and specify the file name after that, each line in file will be used as a line of input.
 
 ~~~
-ls 200?.nc " > 2000s.txt
-parallel python mean_tempanomaly_out.py {1} {1}.out :::: 2000s.txt
+ls -1 19??.nc > 1900s.txt
+parallel python mean_tempanomaly_out.py {1} {1}.out :::: 1900s.txt
 ~~~
 {: .language-bash}
 
