@@ -41,7 +41,7 @@ cd ..
 In the Unix shell we could loop over a dataset one item at a time by using a for loop and the ls command together.
 
 ```
-for file in $(ls) ; do
+for file in $(ls parallel-data) ; do
     echo $file
 done
 ```
@@ -51,7 +51,7 @@ We can ask GNU parallel to perform the same task and at least several of the ech
 The `{1}` after the echo will be substituted by what ever comes after `:::`, in this case the output of the ls command.
 
 ```
-parallel echo {1} ::: $(ls)
+parallel echo {1} ::: $(ls parallel-data)
 ```
 {: .language-bash}
 
