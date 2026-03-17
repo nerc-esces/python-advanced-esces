@@ -123,7 +123,7 @@ use those cores.
 
 [JASMIN](https://jasmin.ac.uk) is the UK's data analysis facility for data intensive environmental science. It combines several computing services together including:
 
-* High Performance Computing system called Lotus with over 50,000 cores processing cores and ~300 nodes.
+* High Performance Computing system called Lotus with over 50,000 processing cores and ~300 nodes.
 * Virtual machines
 * Jupyter Notebooks service
 * Data Storage on both disk and tape
