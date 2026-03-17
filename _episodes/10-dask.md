@@ -51,34 +51,106 @@ cluster.
 
 In the information about the Dask cluster is a link to a Dashboard webpage. From the Dashboard we can monitor our Dask cluster and see how busy it is, view a graph of task dependencies,
  memory usage and the status of the Dask workers. This can be really useful when checking if our Dask cluster is behaving correctly and working out how optimially our code is making
-use of Dask's parallelism.
+use of Dask's parallelism. Note that it is not possible (or at least not without significant additional complexity) to access the Dask dashboard when running on the JASMIN notebook service.
 
 ![Dask dashboard graph view](../fig/Dask-Task-Graph.png)
 
 ![Dask dashboard task view](../fig/Dask-Status.png)
 
-### Using the Dask dashboard on JASMIN
+# Using the JASMIN Dask gateway
 
-Note that if you are using the JASMIN notebook service, the link to the dashboard won't work as the port it runs on isn't open to connections from the internet.
+JASMIN offers a Dask Gateway service which can submit Dask jobs to a special queue on the Lotus cluster. To use this we need to do a bit of extra setup. We will need to import
+the `dask_gateway` library and configure the gateway.
 
 ~~~
-ssh-keygen #MAKE SURE YOU SET A PASSPHRASE
-cat ~/.ssh/id_rsa.pub >> ~/.ssh/authorized_keys
-ssh -R 8788:localhost:8787 login-02.jasmin.ac.uk
+import dask_gateway
+gw = dask_gateway.Gateway("https://dask-gateway.jasmin.ac.uk", auth="jupyterhub")
+~~~
+{: .language-python}
+
+The gateway can be given a set of options including how many worker cores to use, initially we can set this to one and scale it up later. We also need to allocate at least one core
+as to the scheduler which will manage our Dask cluster. JASMIN requires us to specify a project to associate the Dask jobs with. 
+You can find out which projects you are a member of by running the command `useraccounts` on a sci server. If you are not a member of any project then you can 
+use "no-project" here, but if you are a member of a project you must use a project name. Users of training accounts should use "workshop".
+Finally we need to tell Dask which Conda/Mamba environment to use and this needs to match the one we're running in our notebook.
+
+~~~
+options = gw.cluster_options()
+options.worker_cores = 1
+options.scheduler_cores = 1
+options.account = "workshop"
+options.worker_setup='source /apps/jasmin/jaspy/miniforge_envs/jaspy3.11/mf3-23.11.0-0/bin/activate /work/scratch-nopw2/colinsau/esces-env'
+~~~
+{: .language-python}
+
+
+Finally we can check if we already had a cluster running and reuse that if we do and then get a `client` object from the cluster that will behave 
+the same way as the local Dask client did.
+~~~
+clusters = gw.list_clusters()
+if not clusters:
+    cluster = gw.new_cluster(options, shutdown_on_close=False)
+else:
+    cluster = gw.connect(clusters[0].name)
+
+client = cluster.get_client()
+~~~
+{: .language-python}
+
+
+Now that we have a running cluster we can allow it to adapt and scale up and down as we demand it. This will translate to Slurm jobs being launched on the JASMIN cluster itself.
+JASMIN allows users to spawn up to 16 jobs in the Dask queue, but one of these will be taken by the scheduler so the we can only launch a maximum of 15 workers.
+
+~~~
+cluster.adapt(minimum=1, maximum=15)
+~~~
+{: .language-python}
+
+If we now connect to one of the JASMIN sci servers (sci-vm-01 to 05 or sci-ph-01 to 03) we can see our jobs in the SLURM queue by running the `squeue` command.
+
+~~~
+ssh -J <jasminusername>@login-02.jasmin.ac.uk <jasminusername>@sci-vm-03
+squeue -p dask
 ~~~
 {: .language-bash}
 
-Port 8787 might not be the port your Dask cluster is using, make sure the first 8787 is the number your Dask cluster is running on.
-If anybody else is doing this then port 8788 on login-02 might be in use, change the second 8788 to something else to match. Now connect an SSH tunnel from your computer
-to Jasmin login-02 and forward port 8788 back to your computer where it will be presented as port 8789.
+
+Once we are done with Dask we can shutdown the cluster by calling its `shutdown` function. This should cause the jobs in the SLURM queue to finish.
 
 ~~~
-ssh -L 8789:localhost:8788 login-02.jasmin.ac.uk
+cluster.shutdown()
+~~~
+{: .language-python}
+
+
+### JASMIN Dask Dashboard
+
+If you display the contents of the `client` or `cluster` variable then you will be given an address beginning https://dask-gateway.jasmin.ac.uk that will take you to a Dask
+dashboard for your cluster. Unfortunately this server is only accessible within the JASMIN network, to access it you will have to use a web browser running inside a
+[NoMachine](https://help.jasmin.ac.uk/docs/interactive-computing/graphical-linux-desktop-access-using-nx/) session, remote X session or port forward via the JASMIN login server.
+
+#### Port Forwarding
+
+~~~
+ssh -L 8443:dask-gateway.jasmin.ac.uk:443 <username>@login.jasmin.ac.uk
 ~~~
 {: .language-bash}
 
-Open your web browser to http://127.0.0.1:8789 and you will see your Dask cluster page. Note that you have just exposed this to anybody else with JASMIN access and there is no password
-on it.
+This will make port 443 (the HTTPS port) on dask-gateway.jasmin.ac.uk into port 8443 on your computer.
+Copy the address of your JASMIN gateway URL (e.g. https://dask-gateway.jasmin.ac.uk/clusters/a94f54d1872a4986a4ae34e6479a7ab5/status) and change `dask-gateway.jasmin.ac.uk` to `127.0.0.1:8443`
+and paste this address into the address bar of your web browser. This will trigger a security warning as it is expecting to connect to dask-gateway.jasmin.ac.uk not your computer (127.0.0.1).
+But if you override the security warning you will be connected to your Dask Dashboard. 
+
+#### Remote X session
+
+Note: Windows users will need to use WSL or [MobaXTerm](https://mobaxterm.mobatek.net/download-home-edition.html) for this to work. 
+
+If you are not able to install NoMachine you might be able to login to JASMIN and enable X forwarding of a Firefox window. Note that this method can be quite slow.
+~~~
+ssh -X <your user name>@nx1.jasmin.ac.uk
+firefox
+~~~
+{: .language-bash}
 
 
 # Dask Arrays
@@ -295,77 +367,6 @@ The Dask documentation does not have much advice on when it is more appropriate 
 from the forums is to use Delayed functions and task graphs first, but to switch to futures for more complicated problems.
 
 
-# Using the JASMIN Dask gateway
-
-JASMIN offers a Dask Gateway service which can submit Dask jobs to a special queue on the Lotus cluster. To use this we need to do a bit of extra setup. We will need to import
-the `dask_gateway` library and configure the gateway.
-
-~~~
-import dask_gateway
-gw = dask_gateway.Gateway("https://dask-gateway.jasmin.ac.uk", auth="jupyterhub")
-~~~
-{: .language-python}
-
-The gateway can be given a set of options including how many worker cores to use, initially we can set this to one and scale it up later. We also need to allocate at least one core
-as to the scheduler which will manage our Dask cluster. JASMIN requires us to specify a project to associate the Dask jobs with. 
-You can find out which projects you are a member of by running the command `useraccounts` on a sci server. If you are not a member of any project then you can 
-use "no-project" here, but if you are a member of a project you must use a project name. Users of training accounts should use "workshop".
-Finally we need to tell Dask which Conda/Mamba environment to use and this needs to match the one we're running in our notebook.
-
-~~~
-options = gw.cluster_options()
-options.worker_cores = 1
-options.scheduler_cores = 1
-options.account = "workshop"
-options.worker_setup='source /apps/jasmin/jaspy/miniforge_envs/jaspy3.11/mf3-23.11.0-0/bin/activate /work/scratch-nopw2/colinsau/esces-env'
-~~~
-{: .language-python}
-
-
-Finally we can check if we already had a cluster running and reuse that if we do and then get a `client` object from the cluster that will behave 
-the same way as the local Dask client did.
-~~~
-clusters = gw.list_clusters()
-if not clusters:
-    cluster = gw.new_cluster(options, shutdown_on_close=False)
-else:
-    cluster = gw.connect(clusters[0].name)
-
-client = cluster.get_client()
-~~~
-{: .language-python}
-
-
-Now that we have a running cluster we can allow it to adapt and scale up and down as we demand it. This will translate to Slurm jobs being launched on the JASMIN cluster itself.
-JASMIN allows users to spawn up to 16 jobs in the Dask queue, but one of these will be taken by the scheduler so the we can only launch a maximum of 15 workers.
-
-~~~
-cluster.adapt(minimum=1, maximum=15)
-~~~
-{: .language-python}
-
-If we now connect to one of the JASMIN sci servers (sci-vm-01 to 05 or sci-ph-01 to 03) we can see our jobs in the SLURM queue by running the `squeue` command.
-
-~~~
-ssh -J <jasminusername>@login-02.jasmin.ac.uk <jasminusername>@sci-vm-03
-squeue -p dask
-~~~
-{: .language-bash}
-
-
-Once we are done with Dask we can shutdown the cluster by calling its `shutdown` function. This should cause the jobs in the SLURM queue to finish.
-
-~~~
-cluster.shutdown()
-~~~
-{: .language-python}
-
-
-### JASMIN Dask Dashboard
-
-If you display the contents of the `client` or `cluster` variable then you will be given an address beginning https://dask-gateway.jasmin.ac.uk that will take you to a Dask
-dashboard for your cluster. Unfortunately this server is only accessible within the JASMIN network, to access it you will have to use a web browser running inside a
-[NoMachine](https://help.jasmin.ac.uk/docs/interactive-computing/graphical-linux-desktop-access-using-nx/) session or port forward via the JASMIN login server.
 
 > ## Challenge
 > Setup Dask a Dask cluster on JASMIN. Load the GIS temperature anomaly dataset with Xarray and run the correction algorithm on it.
