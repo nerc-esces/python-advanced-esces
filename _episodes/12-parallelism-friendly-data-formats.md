@@ -168,7 +168,7 @@ It is important to note that this data is not on a regular grid. Therefore, slic
 
 
 > ## Plot Sea Surface Temperature
-> Extract and plot the sea surface temperature (`tos_con` variable from the `https://noc-msm-o.s3-ext.jc.rl.ac.uk/npd-eorca025-jra55v1/T1m/tos_con` file) for the nearest date to January 1st 1965 that is in the dataset.
+> Extract and plot the sea surface temperature (`tos_con`) variable from the `https://noc-msm-o.s3-ext.jc.rl.ac.uk/npd-eorca025-jra55v1/T1m/tos_con` file) for the nearest date to January 1st 1965 that is in the dataset.
 >> ## Solution 1
 >> ~~~
 >> import xarray as xr
