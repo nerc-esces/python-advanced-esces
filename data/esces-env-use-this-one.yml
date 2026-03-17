@@ -35,6 +35,7 @@ dependencies:
   - toolz=0.12.1
   - tornado=6.4.1
   - unzip
+  - ffmpeg
   - urllib3<2
   - xarray
   - xesmf
