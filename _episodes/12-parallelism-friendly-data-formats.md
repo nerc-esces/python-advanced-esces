@@ -272,8 +272,8 @@ It is important to note that this data is not on a regular grid. Therefore, slic
 
 
 > ## Calculate the mean sea surface temperature for the dataset with Dask
-> Calculate the mean sea surface temperature from 1976 to 2024. Use the JASMIN Dask gateway to parallelise the calculation, use 10 worker threads and set the
-> time_counter chunk size to 10 when opening the zarr file. Measure how long it takes to compute the result, try changing the number of workers up and down to see
+> Calculate the mean sea surface temperature from 1976 to 2024. Use the JASMIN Dask gateway to parallelise the calculation and use a maximum of 10 worker threads.
+> Measure how long it takes to compute the result, try changing the number of workers up and down to see
 > what the optimal number is. See if the number of workers you request are actually being created by monitoring the Dask qos on a JASMIN Sci server with the command
 > `watch squeue -q dask -u <your user id>`.
 >
@@ -302,7 +302,6 @@ It is important to note that this data is not on a regular grid. Therefore, slic
 >>
 >> ds = xr.open_zarr("https://noc-msm-o.s3-ext.jc.rl.ac.uk/npd-eorca025-jra55v1/T1m/tos_con")
 >> sst = ds['tos_con'].sel(time_counter=slice("1976","2024"))
->> # mean_sst = dataset.mean(dim=['lat','lon']) #better way to do this
 >> grouped_mean = sst.groupby("time_counter.year").mean()
 >> mean_sst = grouped_mean.mean(dim=['y','x'])
 >> result = client.compute(mean_sst).result()
