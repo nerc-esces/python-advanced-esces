@@ -94,6 +94,7 @@ else:
     cluster = gw.connect(clusters[0].name)
 
 client = cluster.get_client()
+client
 ~~~
 {: .language-python}
 
@@ -115,12 +116,6 @@ squeue -p dask
 {: .language-bash}
 
 
-Once we are done with Dask we can shutdown the cluster by calling its `shutdown` function. This should cause the jobs in the SLURM queue to finish.
-
-~~~
-cluster.shutdown()
-~~~
-{: .language-python}
 
 
 ### JASMIN Dask Dashboard
@@ -151,6 +146,7 @@ ssh -X <your user name>@nx1.jasmin.ac.uk
 firefox
 ~~~
 {: .language-bash}
+
 
 
 # Dask Arrays
@@ -328,6 +324,17 @@ result = squared.compute()
 ~~~
 {: .language-python}
 
+#### Fixing File not Found Errors with visualize()
+
+Sometimes the `visualize()` function fails to find the path of graphviz, the library it uses to build the visualisation. If this is happening then run the following to fix it.
+Replace "/work/scratch-nopw2/colinsau/esces-env/bin/" to the path of the bin directory in your Conda/Mamba environment if you aren't using the default one on JASMIN.
+
+~~~
+import os
+os.environ['PATH'] = "/work/scratch-nopw2/colinsau/esces-env/bin/:" + os.environ['PATH']
+~~~
+{: .language-python}
+
 ## Futures
 
 An alternative approach to using any function with Dask is to use Dask Futures. These begin execution immediately, but are non-blocking so execution (appears to) proceeds to the next
@@ -365,6 +372,15 @@ will be Dask future objects, if we display them we will see their status as to w
 
 The Dask documentation does not have much advice on when it is more appropriate to use Futures or Delayed functions. Some [general advice](https://dask.discourse.group/t/documentation-on-the-interplay-between-graphs-and-futures/269)
 from the forums is to use Delayed functions and task graphs first, but to switch to futures for more complicated problems.
+
+### Shutdown Dask Cluster
+
+Once we are done with Dask we can shutdown the cluster by calling its `shutdown` function. This should cause the jobs in the SLURM queue to finish.
+
+~~~
+cluster.shutdown()
+~~~
+{: .language-python}
 
 
 
