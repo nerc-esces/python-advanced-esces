@@ -23,12 +23,15 @@ split across multiple files or there are multiple parameters to process.
 
 ## Basic use of GNU Parallel
 
-First we will use an example dataset of five NetCDF files.
+First we will use an example dataset of five NetCDF files and three Python scripts that help process them.
 
 ```
 mkdir parallel-data
 cd parallel-data
 curl {{ site.url }}{{ site.baseurl }}/data/parallel-data.tar.gz > parallel-data.tar.gz
+curl {{ site.url }}{{ site.baseurl }}/code/mean_tempanomaly.py > mean_tempanomaly.py
+curl {{ site.url }}{{ site.baseurl }}/code/mean_tempanomaly_out.py > mean_tempanomaly_out.py
+curl {{ site.url }}{{ site.baseurl }}/code/mean_variable.py > mean_variable.py
 tar xvfz parallel-data.tar.gz
 cd ..
 ```
@@ -64,15 +67,15 @@ The serial example to process a series of NetCDF files would be:
 
 ```
 for file in $(ls parallel-data/*.nc) ; do
-    python summary.py $file
+    python mean_tempanomaly.py $file
 done
 ```
 {: .language-bash}
 
-And with parllel it would be:
+And with parallel it would be:
 
 ```
-parallel python myscript.py {1} ::: $(ls parallel-data/*.nc)
+parallel python mean_tempanomaly.py {1} ::: $(ls parallel-data/*.nc)
 ```
 {: .language-bash}
 
@@ -87,7 +90,7 @@ The `{1}` can be used multiple times if we want the same argument to be repeated
 If for example the script required an input and output file name and the output was the input file with .out on the end, then we could do the following:
 
 ```
-parallel python myscript-2.py {1} {1}.out ::: $(ls parallel-data/*.nc)
+parallel python mean_tempanomaly_out.py {1} {1}.out ::: $(ls parallel-data/*.nc)
 ```
 {: .language-bash}
 
@@ -97,8 +100,8 @@ Using commands or lists of arguments is fine for many use cases, but sometimes t
 For this we use the `::::` (note four, not three :s) separator and specify the file name after that, each line in file will be used as a line of input.
 
 ~~~
-ls *.nc | grep "^ABC" > files.txt
-parallel python myscript-2.py {1} {1}.out :::: files.txt
+ls 200?.nc " > 2000s.txt
+parallel python mean_tempanomaly_out.py {1} {1}.out :::: 2000s.txt
 ~~~
 {: .language-bash}
 
@@ -112,14 +115,14 @@ parallel echo "hello {1} {2}" ::: 1 2 3 ::: a b c
 {: .language-bash}
 
 We can also mix the `:::` and `::::` notations to have some arguments come from files and others from lists.
-For example, if we had a list of netcdf files in files.txt, and you wanted to perform an analysis of two of the varibles, we could use:
+For example, if we had a list of NetCDF files in files.txt, and you wanted to perform an analysis of two of the varibles, we could use:
 
 ```
-parallel process.py --variable={1} {2} ::: temp sal :::: files.txt
+parallel mean_variable.py {2} {1} ::: tempanomaly time :::: files.txt
 ```
 {: .language-bash}
 
-`{1}` will be substituted for temp or sal, while `{2}` will be given the filenames. Parallel will run process.py for both variables on every file.
+`{1}` will be substituted for tempanomaly or time, while `{2}` will be given the filenames. Parallel will run mean_variable.py for both variables on every file.
 
 ### Pairing arguments
 
