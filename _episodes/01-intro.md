@@ -121,13 +121,15 @@ use those cores.
 
 ### JASMIN
 
-[https://jasmin.ac.uk](JASMIN) is the UK's data analysis facility for data intensive environmental science. It combines several computing services together including:
+[JASMIN](https://jasmin.ac.uk) is the UK's data analysis facility for data intensive environmental science. It combines several computing services together including:
 
-* High Performance Computing system called Lotus with over 19,000 processing cores and 300 nodes.
+* High Performance Computing system called Lotus with over 50,000 cores processing cores and ~300 nodes.
 * Virtual machines
 * Jupyter Notebooks service
 * Data Storage on both disk and tape
-* Moderate sized shared "sci" servers, with between 8 and 48 CPU cores and 32G to 1TB of RAM
+* Moderate sized shared "sci" servers, with between 8 and 192 CPU cores and 32G to 1.5TB of RAM
+
+Documentation for JASMIN is available on the [JASMIN help site](https://help.jasmin.ac.uk/).
 
 ![An image illustrating the JASMIN system](https://help.jasmin.ac.uk/img/docs/lotus-overview/file-QPxolXD1Tu-1400x1587.webp)
 
