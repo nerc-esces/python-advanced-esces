@@ -100,7 +100,7 @@ Using commands or lists of arguments is fine for many use cases, but sometimes t
 For this we use the `::::` (note four, not three :s) separator and specify the file name after that, each line in file will be used as a line of input.
 
 ~~~
-ls -1 19??.nc > 1900s.txt
+ls -1 19??s.nc > 1900s.txt
 parallel python mean_tempanomaly_out.py {1} {1}.out :::: 1900s.txt
 ~~~
 {: .language-bash}
