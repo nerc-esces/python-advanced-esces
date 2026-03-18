@@ -136,7 +136,7 @@ The data should now match the coastlines.
 > > ~~~
 > > day = dataset.tempanomaly.sel(time="2000-01-15")
 > > vmax = max(abs(float(day.min())), abs(float(day.max())))
-> > views = [("Europe and Africa", 10, 35), ("Pacific", -160, 0), ("Australia and Asia", 120, -10)]
+> > views = [("Europe and Africa", 10, 35), ("Antartica", -160, -90), ("Australia and Asia", 120, -10)]
 > >
 > > fig = plt.figure(figsize=(15,5))
 > > for index, (title, lon, lat) in enumerate(views, start=1):
