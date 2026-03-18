@@ -7,7 +7,7 @@ break: 15
 # Feedback
 In the etherpad, answer the following questions:
 
-- Are we going too fast, too slow or just write? Record your answer in the etherpad
+- Are we going too fast, too slow or just right? Record your answer in the etherpad
 - What don't you understand or would like clarification on?
 
 
