@@ -3,7 +3,6 @@ title: "Storing and Accessing Data in Parallelism Friendly Formats"
 teaching: 50
 exercises: 30
 questions:
-- "How is the performance of data access impacted by bandwidth and latency?"
 - "How can we use an object store to store data that is accessible over the internet?"
 - "How do we access data in an object store using Xarray?"
 objectives:
@@ -20,52 +19,7 @@ keypoints:
 - "Xarray can be used to read in Zarr files"
 ---
 
-# Data Access Speeds
-
-The time spent accessing data from disk is orders of magnitude more than accessing data stored in RAM and accessing data over a network is orders of magnitude more than
-accessing data on a local disk. This is visualised nicely in the diagram below
-
-![graphical representation of how long different computational operations take](../fig/latency.png)
-
-(from [https://gist.github.com/hellerbarde/2843375](https://gist.github.com/hellerbarde/2843375))
-
-Lets multiply all these durations by a billion:
-
-Magnitudes:
-
-Minute:
- - L1 cache reference                  0.5 s         One heart beat (0.5 s)
- - Branch mispredict                   5 s           Yawn
- - L2 cache reference                  7 s           Long yawn
- - Mutex lock/unlock                   25 s          Making a coffee
-
-Hour:
- - Main memory reference               100 s         Brushing your teeth
- - Compress 1K bytes with Zippy        50 min        One episode of a TV show (including ad breaks)
-
-Day:
- - Send 2K bytes over 1 Gbps network   5.5 hr        From lunch to end of work day
-
-Week
- - SSD random read                     1.7 days      A normal weekend
- - Read 1 MB sequentially from memory  2.9 days      A long weekend
- - Round trip within same datacenter   5.8 days      A medium vacation
- - Read 1 MB sequentially from SSD    11.6 days      Waiting for almost 2 weeks for a delivery
-
-Year
- - Disk seek                           16.5 weeks    A semester in university
- - Read 1 MB sequentially from disk    7.8 months    Almost producing a new human being
- - The above 2 together                1 year
-
-Decade
- - Send packet CA->Netherlands->CA     4.8 years     Average time it takes to complete a bachelor's degree
-
-We are going to have to wait a really long time to get data from the internet when compared to processing it locally. But in the modern era when we might be working
-with multiterabyte (or even petabyte) datasets it isn't likely to be practical to store it all on our local computer. By applying parallel working patterns we can also
-have multiple computers each compute part of a dataset and/or we can have multiple computers each store part of the dataset allowing us to transfer several parts of it in parallel.
-
-
-## Parallel Filesystems
+# Parallel Filesystems
 
 On many high performance computing (HPC) systems it is common for there to be a large parallel filesystem. These will spread data across a large number of physical disks and servers,
 when a user requests some data it might be supplied by several servers simultaneously. Since each disk can only supply data so fast (usually between 10s and 100s of megabytes per second)
