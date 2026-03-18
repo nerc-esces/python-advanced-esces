@@ -100,7 +100,7 @@ The data should now match the coastlines.
 > - Mollweide
 > - InterruptedGoodeHomolosine
 > - Robinson
-> - Orthographic (requires latitude and longitue parameters)
+> - Orthographic (requires latitude and longitude parameters)
 > See [https://scitools.org.uk/cartopy/docs/v0.13/crs/projections.html](https://scitools.org.uk/cartopy/docs/v0.13/crs/projections.html) for more options.
 > Which do you like the most? Discuss what is the most useful aspects for showing data with the group.
 >
