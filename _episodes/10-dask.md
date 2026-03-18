@@ -25,7 +25,7 @@ keypoints:
 
 Dask is a Distributed processing library for Python. It enables parallel processing of Python code across multiple cores on the same computer or across multiple computers. It can be
 used behind the scenes by Xarray with minimal modification to code. JASMIN users can make use of a Dask gateway that allows their Dask code submitted from the Jupyter notebook interface
-to run on the Lotus HPC cluster. Dask has two broad categories of features, high level data structures which behave in a similar way to common Python data structures but with the
+to run on the LOTUS HPC cluster. Dask has two broad categories of features, high level data structures which behave in a similar way to common Python data structures but with the
 ability to perform operations in parallel and low level task scheduling to run any Python code in parallel.
 
 # Setting up Dask on your computer
@@ -110,8 +110,8 @@ cluster.adapt(minimum=1, maximum=15)
 If we now connect to one of the JASMIN sci servers (sci-vm-01 to 05 or sci-ph-01 to 03) we can see our jobs in the SLURM queue by running the `squeue` command.
 
 ~~~
-ssh -J <jasminusername>@login-02.jasmin.ac.uk <jasminusername>@sci-vm-03
-squeue -p dask
+ssh -J <jasminusername>@login.jasmin.ac.uk <jasminusername>@sci-vm-03
+squeue -q dask --me
 ~~~
 {: .language-bash}
 
