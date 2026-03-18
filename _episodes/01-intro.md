@@ -199,14 +199,15 @@ If you are running on your own computer (or anything that isn't JASMIN) then you
 ## Setup the Mamba environment (JASMIN)
 
 Only follow this if you are using JASMIN. You do not need to install any dependencies on JASMIN, you can use an environment that is already installed in
-`/work/scratch-nopw2/colinsau/esces-env`. If you really want to then you can install the environment yourself using the instructions in the previous section.
+`/work/scratch-nopw2/colinsau/esces-env`. If you really want to then you can install the environment yourself using the instructions in the previous section, this can take several minutes.
 
 > ## Setting up/choosing a Mamba environment
 > From the terminal run the following:
 > ~~~
-> mamba run -p /work/scratch-nopw2/colinsau/esces-env python -m ipykernel install --user --name ESCES
+> mamba activate /work/scratch-nopw2/colinsau/esces-env
+> register-kernel
 > ~~~
-> After about one minute if you click on the blue plus icon near the top left or the file menu and "New Launcher" option you should see a notebook option called ESCES.
+> After about one minute if you click on the blue plus icon near the top left or the file menu and "New Launcher" option you should see a notebook option called esces-env.
 > This will use the Mamba environment we just created and will have access to all the packages we need.
 > {: .language-bash}
 {: .challenge}
