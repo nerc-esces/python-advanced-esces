@@ -120,34 +120,12 @@ squeue -p dask
 
 ### JASMIN Dask Dashboard
 
-If you display the contents of the `client` or `cluster` variable then you will be given an address beginning https://dask-gateway.jasmin.ac.uk that will take you to a Dask
-dashboard for your cluster. Unfortunately this server is only accessible within the JASMIN network, to access it you will have to use a web browser running inside a
-[NoMachine](https://help.jasmin.ac.uk/docs/interactive-computing/graphical-linux-desktop-access-using-nx/) session, remote X session or port forward via the JASMIN login server.
+If you display the contents of the `client` or `cluster` variable then you will be given a dashboard address beginning  /_jasmin that will take you to a Dask
+dashboard for your cluster.
 
-#### Port Forwarding
+JASMIN training accounts should show an address beginning /_jasmin, if you click this link in the Dashboard section of the client/cluster object then it should open a connection to the dashboard.
 
-~~~
-ssh -L 8443:dask-gateway.jasmin.ac.uk:443 <username>@login.jasmin.ac.uk
-~~~
-{: .language-bash}
-
-This will make port 443 (the HTTPS port) on dask-gateway.jasmin.ac.uk into port 8443 on your computer.
-Copy the address of your JASMIN gateway URL (e.g. https://dask-gateway.jasmin.ac.uk/clusters/a94f54d1872a4986a4ae34e6479a7ab5/status) and change `dask-gateway.jasmin.ac.uk` to `127.0.0.1:8443`
-and paste this address into the address bar of your web browser. This will trigger a security warning as it is expecting to connect to dask-gateway.jasmin.ac.uk not your computer (127.0.0.1).
-But if you override the security warning you will be connected to your Dask Dashboard. 
-
-#### Remote X session
-
-Note: Windows users will need to use WSL or [MobaXTerm](https://mobaxterm.mobatek.net/download-home-edition.html) for this to work. 
-
-If you are not able to install NoMachine you might be able to login to JASMIN and enable X forwarding of a Firefox window. Note that this method can be quite slow.
-~~~
-ssh -X <your user name>@nx1.jasmin.ac.uk
-firefox
-~~~
-{: .language-bash}
-
-
+![A screenshot of the client object on a JASMIN training account.](../fig/dask_jasmin_dashboard.png)
 
 # Dask Arrays
 
