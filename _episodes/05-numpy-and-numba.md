@@ -133,46 +133,101 @@ and optimize it as needed.
 Numpy whole array operations refer to performing operations on entire arrays at once, rather than looping through individual elements.
 This approach leverages the optimized C and Fortran implementations underlying NumPy, leading to significantly faster computations compared to traditional Python loops.
 
-Let's illustrate this with an example:
+Let's illustrate this with an example that calculates the distance between two points on the earth's surface using the great circle method:
 
 ~~~
 import numpy as np
 import cProfile
 
-# Traditional loop-based operation
-def traditional_multiply(arr):
-    result = np.empty_like(arr)
-    for i in range(arr.shape[0]):
-        for j in range(arr.shape[1]):
-            result[i, j] = arr[i, j] * 2
-    return result
+def distance(lon1, lat1, lon2, lat2):
+    r_earth = 6371.0 # km
+    lat1 = m.radians(lat1)
+    lat2 = m.radians(lat2)
+    dlat = lat2 - lat1
+    dlon = m.radians(lon2 - lon1)
 
-# Numpy whole array operation
-def numpy_multiply(arr):
-    return arr * 2
+    a = m.sin(dlat/2.0)**2 + m.cos(lat1) * m.cos(lat2) * m.sin(dlon/2.0)**2
+    c = 2.0 * m.atan2(m.sqrt(a), m.sqrt(1-a))
 
-# Example array
-arr = np.random.rand(1000, 1000)
+    return c * r_earth
+~~~
+
+Let's test that between a point in London and one in New York. We place these into tuples to pair the latitude and longitudes. The * notation converts the tuples back into pairs of arguments for the function. 
+~~~
+new_york = (-74.0061, 40.7182)
+london = (-0.1275, 51.507222)
+print(distance(*london, *new_york))
 ~~~
 {: .language-python}
 
-Now calculate the time comparison and the profile performance of the code
+Now let's try to use this function with an array of 1000 randomly generated points. We'll need the latitudes to be between -90 and +90 and the longitudes to be between -180 and +180.
 
 ~~~
-# Time comparison
-%timeit traditional_multiply(arr)
-%timeit numpy_multiply(arr)
+lats_1 = 180.0 * np.random.random(1000) - 90.0 
+lats_2 = 180.0 * np.random.random(1000) - 90.0
+lons_1 = 360.0 * np.random.random(1000) - 180.0
+lons_2 = 360.0 * np.random.random(1000) - 180.0
+distance(lons_1, lats_1, lons_2, lats_2)
+~~~
+{: .language-python}
 
+This fails to work because the math. trigometric functions only work with a scalar (single) value, not a whole array. 
+
+Let's change it to use the NumPy versions of these functions which can take list inputs.
+~~~
+def distance_np(lon1, lat1, lon2, lat2):
+    r_earth = 6371.0 # km
+    lat1 = m.radians(lat1)
+    lat2 = m.radians(lat2)
+    dlat = lat2 - lat1
+    dlon = m.radians(lon2 - lon1)
+
+    a = np.sin(dlat/2.0)**2 + np.cos(lat1) * np.cos(lat2) * np.sin(dlon/2.0)**2
+    c = 2.0 * np.atan2(m.sqrt(a), np.sqrt(1-a))
+
+    return c * r_earth
+~~~
+{: .language-python}
+
+We can now process all of these elements in one call. The output for this will be a 1000 element array that we probably don't want to see.
+We can discard the output by storing it in a variable called "_". 
+
+~~~
+_ = distance_np(lons_1, lats_1, lons_2, lats_2)
+~~~
+{: .language-python}
+
+Now calculate the time comparison and the profile performance of the code for processing a 1000 element array. We'll write a for loop to process the data for the traditional version:
+
+~~~
+%timeit
+def loop_distance(lons1, lats1, lons2, lats2):
+    for lat1, lat2, lon1, lon2 in zip(lats1, lats2, lons1, lons2):
+        _ = distance(lon1, lat1, lon2, lat2)
+
+loop_distance(lons_1, lats_1, lons_2, lats_2)
+~~~
+{: .language-python}
+
+~~~
+%timeit distance_np(lons_1, lats_1, lons_2, lats_2)
+~~~
+{: .language-python}
+
+
+~~~
 # Profile numpy_multiply
-print("Profiling traditional_multiply:")
-cProfile.run("traditional_multiply(arr)")
-print("\nProfiling numpy_multiply:")
-cProfile.run("numpy_multiply(arr)")
+print("Profiling loop:")
+cProfile.run("loop_distance(lons_1, lats_1, lons_2, lats_2)")
+print("\nProfiling numpy:")
+cProfile.run("distance_np(lons_1, lats_1, lons_2, lats_2)")
 ~~~
 {: .language-python}
 
-In this example, `traditional_multiply` uses nested loops to multiply each element of the array by 2, while `numpy_multiply` performs the same operation using a single NumPy
-operation. When comparing the execution times using `%timeit`, you'll likely observe that `numpy_multiply` is significantly faster.
+We see that the loop version is around 10 times slower than the NumPy version. From the profiler output we see far fewer function calls taking place, which is one area we are reducing overhead in. 
+
+
+
 
 
 > ## Excercise: Compare multiplication speeds with the temperature anomaly dataset
@@ -269,65 +324,31 @@ the `@vectorize` decorator. With this, you are able to write a
 function that takes individual elements, and have it extend to operate
 element-wise across entire arrays.
 
-For example, consider the (relatively arbitrary) trigonometric
-function:
-
-~~~
-import math
-
-def trig(a, b):
-    return math.sin(a ** 2) * math.exp(b)
-~~~
-{: .language-python}
-
-If we try calling this function on a Numpy array, we correctly get an
-error, since the `math` library doesn't know about Numpy arrays, only
-single numbers.
-
-~~~
-%env OMP_NUM_THREADS=1
-import numpy as np
-
-a = np.ones((5, 5))
-b = np.ones((5, 5))
-
-trig(a, b)
-~~~
-{: .language-python}
-
-~~~
----------------------------------------------------------------------------
-TypeError                                 Traceback (most recent call last)
-<ipython-input-1-0d551152e5fe> in <module>
-      9 b = np.ones((5, 5))
-    10
----> 11 trig(a, b)
-
-<ipython-input-1-0d551152e5fe> in trig(a, b)
-      2
-      3 def trig(a, b):
-----> 4     return math.sin(a ** 2) * math.exp(b)
-      5
-      6 import numpy as np
-
-TypeError: only size-1 arrays can be converted to Python scalars
-~~~
-{: .output}
-
-However, if we use Numba to "vectorize" this function, then it becomes
-a ufunc, and will work on Numpy arrays!
+Let's take our standard distance function and vectorise it:
 
 ~~~
 from numba import vectorize
 
 @vectorize
-def trig(a, b):
-    return math.sin(a ** 2) * math.exp(b)
+def distance_vec(lon1, lat1, lon2, lat2):
+    r_earth = 6371.0 # km
+    lat1 = m.radians(lat1)
+    lat2 = m.radians(lat2)
+    dlat = lat2 - lat1
+    dlon = m.radians(lon2 - lon1)
 
-a = np.ones((5, 5))
-b = np.ones((5, 5))
+    a = m.sin(dlat/2.0)**2 + m.cos(lat1) * m.cos(lat2) * m.sin(dlon/2.0)**2
+    c = 2.0 * m.atan2(m.sqrt(a), m.sqrt(1-a))
 
-trig(a, b)
+    return c * r_earth
+~~~
+{: .language-python}
+
+Before we found this function couldn't work with arrays directly and we had to use a for loop to make it accept an array.
+Now we've used Numba to "vectorize" this function it becomes a ufunc, and will work on Numpy arrays!
+
+~~~
+_ = distance_vec(lons_1, lats_1, lons_2, lats_2)
 ~~~
 {: .language-python}
 
@@ -336,25 +357,21 @@ How does the performance compare with using the equivalent Numpy
 whole-array operation?
 
 ~~~
-def numpy_trig(a, b):
-    return np.sin(a ** 2) * np.exp(b)
-
-
-a = np.random.random((1000, 1000))
-b = np.random.random((1000, 1000))
-
-%timeit numpy_trig(a, b)
-%timeit trig(a, b)
+%timeit distance_np(lons_1, lats_1, lons_2, lats_2)
+%timeit distance_vec(lons_1, lats_1, lons_2, lats_2)
 ~~~
 {: .language-python}
 
 ~~~
-Numpy: 19 ms ± 168 µs per loop (mean ± std. dev. of 7 runs, 100 loops each)
-Numba: 25.4 ms ± 1.06 ms per loop (mean ± std. dev. of 7 runs, 10 loops each)
+%timeit distance_np(lons_1, lats_1, lons_2, lats_2)
+%timeit distance_vec(lons_1, lats_1, lons_2, lats_2)
+
+Numpy: 54 μs ± 341 ns per loop (mean ± std. dev. of 7 runs, 10,000 loops each)
+Numba: 45.9 μs ± 117 ns per loop (mean ± std. dev. of 7 runs, 10,000 loops each)
 ~~~
 {: .output}
 
-So Numba isn't quite competitive with Numpy in this case. But Numba
+So Numba is slightly faster (but within the same range) as Numpy in this case. But Numba
 still has more to give here: notice that we've forced Numpy to only
 use a single core. What happens if we use four cores with Numpy?
 We'll need to restart the kernel again to get Numpy to pick up the
@@ -367,17 +384,37 @@ import math
 from numba import vectorize
 
 @vectorize
-def trig(a, b):
-    return math.sin(a ** 2) * math.exp(b)
+def distance_vec(lon1, lat1, lon2, lat2):
+    r_earth = 6371.0 # km
+    lat1 = m.radians(lat1)
+    lat2 = m.radians(lat2)
+    dlat = lat2 - lat1
+    dlon = m.radians(lon2 - lon1)
 
-def numpy_trig(a, b):
-    return np.sin(a ** 2) * np.exp(b)
+    a = m.sin(dlat/2.0)**2 + m.cos(lat1) * m.cos(lat2) * m.sin(dlon/2.0)**2
+    c = 2.0 * m.atan2(m.sqrt(a), m.sqrt(1-a))
 
-a = np.random.random((1000, 1000))
-b = np.random.random((1000, 1000))
+    return c * r_earth
 
-%timeit numpy_trig(a, b)
-%timeit trig(a, b)
+def distance_np(lon1, lat1, lon2, lat2):
+    r_earth = 6371.0 # km
+    lat1 = m.radians(lat1)
+    lat2 = m.radians(lat2)
+    dlat = lat2 - lat1
+    dlon = m.radians(lon2 - lon1)
+
+    a = np.sin(dlat/2.0)**2 + np.cos(lat1) * np.cos(lat2) * np.sin(dlon/2.0)**2
+    c = 2.0 * np.atan2(m.sqrt(a), np.sqrt(1-a))
+
+    return c * r_earth
+
+lats_1 = 180.0 * np.random.random(1000) - 90.0 
+lats_2 = 180.0 * np.random.random(1000) - 90.0
+lons_1 = 360.0 * np.random.random(1000) - 180.0
+lons_2 = 360.0 * np.random.random(1000) - 180.0
+
+%timeit distance_vec(lons_1, lats_1, lons_2, lats_2)
+%timeit distance_np(lons_1, lats_1, lons_2, lats_2)
 ~~~
 {: .language-bash}
 
