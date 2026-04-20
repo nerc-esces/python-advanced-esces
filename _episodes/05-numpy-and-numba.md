@@ -138,6 +138,7 @@ Let's illustrate this with an example that calculates the distance between two p
 ~~~
 import numpy as np
 import cProfile
+import math as m
 
 def distance(lon1, lat1, lon2, lat2):
     r_earth = 6371.0 # km
@@ -151,7 +152,7 @@ def distance(lon1, lat1, lon2, lat2):
 
     return c * r_earth
 ~~~
-{: .langauge-python}
+{: .language-python}
 
 Let's test that between a point in London and one in New York. We place these into tuples to pair the latitude and longitudes. The * notation converts the tuples back into pairs of arguments for the function. 
 ~~~
@@ -233,7 +234,26 @@ We see that the loop version is around 10 times slower than the NumPy version. F
 
 > ## Excercise: Compare multiplication speeds with the temperature anomaly dataset
 >
-> Load the data from the NetCDF file and apply a correction of multiplying all data by 1.1 using both the `traditional_multiply` and `numpy_multiply`.
+> Use the following functions to apply a correction of multiplying all temperature anomaly data in our example dataset by 1.1.
+> ~~~
+> # Traditional loop-based operation
+> def traditional_multiply(arr):
+>     result = np.empty_like(arr)
+>     for i in range(arr.shape[0]):
+>         for j in range(arr.shape[1]):
+>             result[i, j] = arr[i, j] * 1.1
+>     return result
+> ~~~
+> {: .language-python}
+>
+> ~~~
+> # Numpy whole array operation
+> def numpy_multiply(arr):
+>     return arr * 1.1
+> ~~~
+> {: .language-python}
+>
+> Load the data from the NetCDF file and apply the correction using both the `traditional_multiply` and `numpy_multiply` functions.
 > Time each approach and compare how long they take. Hint: you can convert the data from the NetCDF file to a normal Python array (that will also work with Numpy) by using
 > `dataset.variables['tempanomaly'][:][:][:]`.
 >
@@ -399,20 +419,20 @@ def distance_vec(lon1, lat1, lon2, lat2):
 
 def distance_np(lon1, lat1, lon2, lat2):
     r_earth = 6371.0 # km
-    lat1 = m.radians(lat1)
-    lat2 = m.radians(lat2)
+    lat1 = np.radians(lat1)
+    lat2 = np.radians(lat2)
     dlat = lat2 - lat1
-    dlon = m.radians(lon2 - lon1)
+    dlon = np.radians(lon2 - lon1)
 
     a = np.sin(dlat/2.0)**2 + np.cos(lat1) * np.cos(lat2) * np.sin(dlon/2.0)**2
     c = 2.0 * np.atan2(m.sqrt(a), np.sqrt(1-a))
 
     return c * r_earth
 
-lats_1 = 180.0 * np.random.random(1000) - 90.0 
-lats_2 = 180.0 * np.random.random(1000) - 90.0
-lons_1 = 360.0 * np.random.random(1000) - 180.0
-lons_2 = 360.0 * np.random.random(1000) - 180.0
+lats_1 = 180.0 * np.random.random(1000_000) - 90.0 
+lats_2 = 180.0 * np.random.random(1000_000) - 90.0
+lons_1 = 360.0 * np.random.random(1000_000) - 180.0
+lons_2 = 360.0 * np.random.random(1000_000) - 180.0
 
 %timeit distance_vec(lons_1, lats_1, lons_2, lats_2)
 %timeit distance_np(lons_1, lats_1, lons_2, lats_2)
@@ -433,11 +453,11 @@ will work on&mdash;it can't work this out and also be able to
 parallelise. So our `vectorize` decorator becomes:
 
 ~~~
-@vectorize('float64(float64, float64)', target='parallel')
+@vectorize('float64(float64, float64, float64, float64)', target='parallel')
 ~~~
 {: .language-python}
 
-This tells Numba that the function accepts two variables of type
+This tells Numba that the function accepts four variables of type
 `float64` (8-byte floats, also known as "double precision"), and
 returns a single `float64`. We also need to tell Numba to use as many
 threads as we did Numpy; we control this via the `NUMBA_NUM_THREADS`
@@ -447,17 +467,28 @@ variable. Restarting the kernel and re-running the timing gives:
 %env NUMBA_NUM_THREADS=4
 
 import numpy as np
-import math
+import math as m
 from numba import vectorize
 
-@vectorize('float64(float64, float64)', target='parallel')
-def trig(a, b):
-    return math.sin(a ** 2) * math.exp(b)
+@vectorize('float64(float64, float64, float64, float64)', target='parallel')
+def distance_vec(lon1, lat1, lon2, lat2):
+    r_earth = 6371.0 # km
+    lat1 = m.radians(lat1)
+    lat2 = m.radians(lat2)
+    dlat = lat2 - lat1
+    dlon = m.radians(lon2 - lon1)
 
-a = np.random.random((1000, 1000))
-b = np.random.random((1000, 1000))
+    a = m.sin(dlat/2.0)**2 + m.cos(lat1) * m.cos(lat2) * m.sin(dlon/2.0)**2
+    c = 2.0 * m.atan2(m.sqrt(a), m.sqrt(1-a))
 
-%timeit trig(a, b)
+    return c * r_earth
+
+lats_1 = 180.0 * np.random.random(1000_000) - 90.0
+lats_2 = 180.0 * np.random.random(1000_000) - 90.0
+lons_1 = 360.0 * np.random.random(1000_000) - 180.0
+lons_2 = 360.0 * np.random.random(1000_000) - 180.0
+
+%timeit distance_vec(lons_1, lats_1, lons_2, lats_2)
 ~~~
 {: .language-python}
 
@@ -487,7 +518,7 @@ Performance Computing (HPC) system then this is important!)
 > equation, $$\Delta = b^2 - 4ac$$. (For now, make it a serial
 > function by just using the @vectorize decorator *WITHOUT* the parallel target).
 >
-> Use the existing 1000x1000 arrays `a` and `b` as the input. Make `c` a single integer value.
+> Create two 1,000,000 element arrays called `a` and `b` as the input. Make `c` a single integer value.
 >
 > Compare the timings with using Numpy whole-array operations in
 > serial. Do you see the results you might expect?
@@ -495,9 +526,9 @@ Performance Computing (HPC) system then this is important!)
 > > ## Solution
 > >
 > > ~~~
-> > # recalcuate a and b, just in case they were lost
-> > a = np.random.random((1000, 1000))
-> > b = np.random.random((1000, 1000))
+> > # create the random data
+> > a = np.random.random(1000_000)
+> > b = np.random.random(1000_000)
 > > @vectorize
 > > def discriminant(a, b, c):
 > >     return b**2 - 4 * a * c
