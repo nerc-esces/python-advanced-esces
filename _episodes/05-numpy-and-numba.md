@@ -110,8 +110,44 @@ cProfile.run("my_fast_function()")
 {: .language-python}
 
 This will output detailed profiling information for both functions.
-You can use this information to analyze the performance of your code
-and optimize it as needed.
+It will show how long was taken by each function and the functions
+that they called. You can use this information to analyze the 
+performance of your code and optimize it as needed.
+
+~~~
+         5 function calls in 0.069 seconds
+
+   Ordered by: standard name
+
+   ncalls  tottime  percall  cumtime  percall filename:lineno(function)
+        1    0.063    0.063    0.069    0.069 2712269264.py:4(my_slow_function)
+        1    0.000    0.000    0.069    0.069 <string>:1(<module>)
+        1    0.000    0.000    0.069    0.069 {built-in method builtins.exec}
+        1    0.006    0.006    0.006    0.006 {built-in method numpy.arange}
+        1    0.000    0.000    0.000    0.000 {method 'disable' of '_lsprof.Profiler' objects}
+
+
+         12 function calls in 0.004 seconds
+
+   Ordered by: standard name
+
+   ncalls  tottime  percall  cumtime  percall filename:lineno(function)
+        1    0.000    0.000    0.004    0.004 2712269264.py:12(my_fast_function)
+        1    0.000    0.000    0.004    0.004 <string>:1(<module>)
+        1    0.000    0.000    0.000    0.000 fromnumeric.py:2299(_sum_dispatcher)
+        1    0.000    0.000    0.002    0.002 fromnumeric.py:2304(sum)
+        1    0.000    0.000    0.002    0.002 fromnumeric.py:66(_wrapreduction)
+        1    0.000    0.000    0.000    0.000 fromnumeric.py:67(<dictcomp>)
+        1    0.000    0.000    0.004    0.004 {built-in method builtins.exec}
+        1    0.000    0.000    0.000    0.000 {built-in method builtins.isinstance}
+        1    0.003    0.003    0.003    0.003 {built-in method numpy.arange}
+        1    0.000    0.000    0.000    0.000 {method 'disable' of '_lsprof.Profiler' objects}
+        1    0.000    0.000    0.000    0.000 {method 'items' of 'dict' objects}
+        1    0.002    0.002    0.002    0.002 {method 'reduce' of 'numpy.ufunc' objects}
+~~~
+{: .output}
+
+You will see that Numpy is about 17 times faster than the loop in this example.
 
 > ## Exercise: Why is Numpy faster?
 >
@@ -179,13 +215,13 @@ Let's change it to use the NumPy versions of these functions which can take list
 ~~~
 def distance_np(lon1, lat1, lon2, lat2):
     r_earth = 6371.0 # km
-    lat1 = m.radians(lat1)
-    lat2 = m.radians(lat2)
+    lat1 = np.radians(lat1)
+    lat2 = np.radians(lat2)
     dlat = lat2 - lat1
-    dlon = m.radians(lon2 - lon1)
+    dlon = np.radians(lon2 - lon1)
 
     a = np.sin(dlat/2.0)**2 + np.cos(lat1) * np.cos(lat2) * np.sin(dlon/2.0)**2
-    c = 2.0 * np.atan2(m.sqrt(a), np.sqrt(1-a))
+    c = 2.0 * np.atan2(np.sqrt(a), np.sqrt(1-a))
 
     return c * r_earth
 ~~~
@@ -202,12 +238,11 @@ _ = distance_np(lons_1, lats_1, lons_2, lats_2)
 Now calculate the time comparison and the profile performance of the code for processing a 1000 element array. We'll write a for loop to process the data for the traditional version:
 
 ~~~
-%timeit
 def loop_distance(lons1, lats1, lons2, lats2):
     for lat1, lat2, lon1, lon2 in zip(lats1, lats2, lons1, lons2):
         _ = distance(lon1, lat1, lon2, lat2)
 
-loop_distance(lons_1, lats_1, lons_2, lats_2)
+%timeit loop_distance(lons_1, lats_1, lons_2, lats_2)
 ~~~
 {: .language-python}
 
@@ -271,26 +306,34 @@ We see that the loop version is around 10 times slower than the NumPy version. F
 > >
 > > Traditional multiply
 > > ~~~
-> >         3734678 function calls in 1.195 seconds
-> >
+> > Profiling traditional_multiply:
+> >          22467237 function calls in 7.472 seconds
+> > 
 > >    Ordered by: standard name
-> >
+> > 
 > >    ncalls  tottime  percall  cumtime  percall filename:lineno(function)
-> >         1    0.029    0.029    1.195    1.195 3644351867.py:4(traditional_multiply)
-> > .
-> > .
-> > .
+> >         1    0.175    0.175    7.465    7.465 2181099273.py:2(traditional_multiply)
+> >         1    0.007    0.007    7.472    7.472 <string>:1(<module>)
+> >    155700    0.043    0.000    0.200    0.000 _methods.py:55(_any)
+> >    155700    0.137    0.000    0.297    0.000 _ufunc_config.py:19(seterr)
+> >   .
+> >   .
+> >   .
 > > ~~~
 > > {: .output}
 > >
 > > Numpy multiply
 > > ~~~
-> >         87 function calls in 0.008 seconds
-> >
-> >   Ordered by: standard name
-> >
-> >   ncalls  tottime  percall  cumtime  percall filename:lineno(function)
-> >        1    0.000    0.000    0.008    0.008 3644351867.py:12(numpy_multiply)
+> > Profiling numpy_multiply:
+> >          87 function calls in 0.300 seconds
+> > 
+> >    Ordered by: standard name
+> > 
+> >    ncalls  tottime  percall  cumtime  percall filename:lineno(function)
+> >         1    0.000    0.000    0.293    0.293 3037342256.py:2(numpy_multiply)
+> >         1    0.007    0.007    0.300    0.300 <string>:1(<module>)
+> >         1    0.000    0.000    0.000    0.000 _methods.py:55(_any)
+> >         1    0.000    0.000    0.000    0.000 _ufunc_config.py:19(seterr)
 > > .
 > > .
 > > .
@@ -365,6 +408,16 @@ def distance_vec(lon1, lat1, lon2, lat2):
 ~~~
 {: .language-python}
 
+Let's also increase the size of our test data to one million elements instead of one thousand.
+
+~~~
+lats_1 = 180.0 * np.random.random(1000_000) - 90.0
+lats_2 = 180.0 * np.random.random(1000_000) - 90.0
+lons_1 = 360.0 * np.random.random(1000_000) - 180.0
+lons_2 = 360.0 * np.random.random(1000_000) - 180.0
+~~~
+{: .language-python}
+
 Before we found this function couldn't work with arrays directly and we had to use a for loop to make it accept an array.
 Now we've used Numba to "vectorize" this function it becomes a ufunc, and will work on Numpy arrays!
 
@@ -387,8 +440,8 @@ whole-array operation?
 %timeit distance_np(lons_1, lats_1, lons_2, lats_2)
 %timeit distance_vec(lons_1, lats_1, lons_2, lats_2)
 
-Numpy: 54 μs ± 341 ns per loop (mean ± std. dev. of 7 runs, 10,000 loops each)
-Numba: 45.9 μs ± 117 ns per loop (mean ± std. dev. of 7 runs, 10,000 loops each)
+Numpy: 61.4 ms ± 578 μs per loop (mean ± std. dev. of 7 runs, 10 loops each)
+Numba: 56.9 ms ± 52.9 μs per loop (mean ± std. dev. of 7 runs, 10 loops each)
 ~~~
 {: .output}
 
@@ -425,27 +478,22 @@ def distance_np(lon1, lat1, lon2, lat2):
     dlon = np.radians(lon2 - lon1)
 
     a = np.sin(dlat/2.0)**2 + np.cos(lat1) * np.cos(lat2) * np.sin(dlon/2.0)**2
-    c = 2.0 * np.atan2(m.sqrt(a), np.sqrt(1-a))
+    c = 2.0 * np.atan2(np.sqrt(a), np.sqrt(1-a))
 
     return c * r_earth
 
-lats_1 = 180.0 * np.random.random(1000_000) - 90.0 
-lats_2 = 180.0 * np.random.random(1000_000) - 90.0
-lons_1 = 360.0 * np.random.random(1000_000) - 180.0
-lons_2 = 360.0 * np.random.random(1000_000) - 180.0
-
-%timeit distance_vec(lons_1, lats_1, lons_2, lats_2)
 %timeit distance_np(lons_1, lats_1, lons_2, lats_2)
+%timeit distance_vec(lons_1, lats_1, lons_2, lats_2)
 ~~~
 {: .language-python}
 
 ~~~
-Numpy: 7.84 ms ± 54.7 µs per loop (mean ± std. dev. of 7 runs, 100 loops each)
-Numba: 24.9 ms ± 134 µs per loop (mean ± std. dev. of 7 runs, 1 loop each)
+Numpy: 60.9 ms ± 592 μs per loop (mean ± std. dev. of 7 runs, 10 loops each)
+Numba: 56.6 ms ± 175 μs per loop (mean ± std. dev. of 7 runs, 10 loops each)
 ~~~
 {: .output}
 
-Numpy has parallelised this, but isn't incredibly efficient - it's used $$7.84 \times 4 = 31.4$$ core-milliseconds rather than 19. But
+Numpy has parallelised this, but isn't incredibly efficient, the speed has hardly changed.
 Numba can also parallelise. If we alter our call to `vectorize`, we
 can pass the keyword argument `target='parallel'`. However, when we do
 this, we also need to tell Numba in advance what kind of variables it
@@ -471,7 +519,7 @@ import math as m
 from numba import vectorize
 
 @vectorize('float64(float64, float64, float64, float64)', target='parallel')
-def distance_vec(lon1, lat1, lon2, lat2):
+def distance_vec_par(lon1, lat1, lon2, lat2):
     r_earth = 6371.0 # km
     lat1 = m.radians(lat1)
     lat2 = m.radians(lat2)
@@ -493,24 +541,26 @@ lons_2 = 360.0 * np.random.random(1000_000) - 180.0
 {: .language-python}
 
 ~~~
-12.3 ms ± 162 µs per loop (mean ± std. dev. of 7 runs, 100 loops each)
+14.7 ms ± 28.4 μs per loop (mean ± std. dev. of 7 runs, 100 loops each)
 ~~~
 {: .output}
 
-In this case this is even less efficient than Numpy's. However, comparing
-this against the parallel version running on a single thread tells a different
-story. Retrying the above with `NUMBA_NUM_THREADS=1` gives
+In this case we are more efficient than Numpy's parallel version. 
+Let's compare this against the parallel version running on a single thread. 
+Retrying the above with `NUMBA_NUM_THREADS=1` gives
 
 ~~~
-47.8 ms ± 962 µs per loop (mean ± std. dev. of 7 runs, 10 loops each)
+57.9 ms ± 51.5 μs per loop (mean ± std. dev. of 7 runs, 10 loops each)
 ~~~
 {: .output}
 
-So in fact, the parallelisation is almost perfectly efficient, just the
-parallel implementation is slower than the serial one. If we had more
-processor cores available, then using this parallel implementation would
-make more sense than Numpy. (If you are running your code on a High-
-Performance Computing (HPC) system then this is important!)
+So in fact, the parallelisation is almost perfectly efficient with four
+cores taking a quarter of the time one core takes.
+
+If we had more processor cores available, then using this parallel 
+implementation would make more sense than Numpy. (If you are running 
+your code on a High-Performance Computing (HPC) system then this is 
+important!)
 
 > ## Creating your own ufunc
 >
@@ -545,6 +595,8 @@ Performance Computing (HPC) system then this is important!)
 > > operations needs to create a temporary array to hold the results,
 > > whereas the Numba ufunc can create a single final array, and
 > > use smaller intermediary values.
+> >
+> >
 > {: .solution}
 {: .challenge}
 
@@ -610,7 +662,28 @@ a_plus_tr_tanh_a(a)
 > At which sizes does it make sense to parallelise? At which sizes does it make senes to enable JIT?
 >
 > > ## Solution
-> > You might find a smaller matrix (under 10 million elements) shows little or no benefit from parallelisation. Larger one sees the parallelised/JIT version go faster.
+> >
+> > 10,000 samples:
+> > Jit, Parallel (4 cores) = 23.6 us
+> > Jit, No Parallel = 5.76 us
+> > No JIT = 5.93 us
+> >
+> > 100,000 samples:
+> > Jit, Parallel (4 cores) = 115 us
+> > Jit, No Parallel 23.8 us
+> > No Jit = 18 us
+> > 
+> > 1,000,000 samples:
+> > Jit, Parallel (4 cores) = 1.08 ms
+> > Jit, No Parallel = 186 us
+> > No Jit = 187 us
+> >
+> > 10,000,000 samples:
+> > Jit, Parallel (4 cores) = 2.8 ms
+> > Jit, No Parallel = 9.91 ms
+> > No Jit = 10.1 ms
+> >
+> > You will (probably) find a smaller matrix (under 10 million elements) shows little or no benefit from parallelisation. Larger one sees the parallelised/JIT version go faster.
 > > For small computations the overhead of parallelization can outweigh the benefits. It's essential to profile your code and experiment with different approaches to 
 > > find the most efficient solution for your specific use case.
 > {: .solution}
