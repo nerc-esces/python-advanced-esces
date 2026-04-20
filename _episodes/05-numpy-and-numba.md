@@ -151,6 +151,7 @@ def distance(lon1, lat1, lon2, lat2):
 
     return c * r_earth
 ~~~
+{: .langauge-python}
 
 Let's test that between a point in London and one in New York. We place these into tuples to pair the latitude and longitudes. The * notation converts the tuples back into pairs of arguments for the function. 
 ~~~
@@ -416,7 +417,7 @@ lons_2 = 360.0 * np.random.random(1000) - 180.0
 %timeit distance_vec(lons_1, lats_1, lons_2, lats_2)
 %timeit distance_np(lons_1, lats_1, lons_2, lats_2)
 ~~~
-{: .language-bash}
+{: .language-python}
 
 ~~~
 Numpy: 7.84 ms ± 54.7 µs per loop (mean ± std. dev. of 7 runs, 100 loops each)
@@ -458,7 +459,7 @@ b = np.random.random((1000, 1000))
 
 %timeit trig(a, b)
 ~~~
-{: .language-bash}
+{: .language-python}
 
 ~~~
 12.3 ms ± 162 µs per loop (mean ± std. dev. of 7 runs, 100 loops each)
