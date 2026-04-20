@@ -100,11 +100,60 @@ The data should now match the coastlines.
 > - Mollweide
 > - InterruptedGoodeHomolosine
 > - Robinson
-> - Orthographic (requires latitude and longitue parameters)
+> - Orthographic (requires latitude and longitude parameters)
 > See [https://scitools.org.uk/cartopy/docs/v0.13/crs/projections.html](https://scitools.org.uk/cartopy/docs/v0.13/crs/projections.html) for more options.
 > Which do you like the most? Discuss what is the most useful aspects for showing data with the group.
+>
+> > ## Solution 1
+> > This plots the challenge projections with the same data and colour scale.
+> > ~~~
+> > day = dataset.tempanomaly.sel(time="2000-01-15")
+> > vmax = max(abs(float(day.min())), abs(float(day.max())))
+> > projections = [
+> >     ("Mollweide", ccrs.Mollweide()),
+> >     ("Interrupted Goode Homolosine", ccrs.InterruptedGoodeHomolosine()),
+> >     ("Robinson", ccrs.Robinson()),
+> >     ("Orthographic", ccrs.Orthographic(central_longitude=-20, central_latitude=30)),
+> > ]
+> >
+> > fig = plt.figure(figsize=(14,8))
+> > for index, (title, projection) in enumerate(projections, start=1):
+> >     axis = fig.add_subplot(2, 2, index, projection=projection)
+> >     image = day.plot(ax=axis, transform=ccrs.PlateCarree(), cmap="RdBu_r",
+> >                      vmin=-vmax, vmax=vmax, add_colorbar=False)
+> >     axis.set_title(title)
+> >     axis.coastlines()
+> >
+> > fig.colorbar(image, ax=fig.axes, shrink=0.7, label="Surface temperature anomaly [K]")
+> > plt.show()
+> > ~~~
+> > {: .language-python}
+> > ![Cartopy comparing Mollweide, Interrupted Goode Homolosine, Robinson and Orthographic projections.](../fig/cartopy_compare_projections.png)
+> {: .solution}
+>
+> > ## Solution 2
+> > This shows how changing the orthographic centre changes the visible hemisphere.
+> > ~~~
+> > day = dataset.tempanomaly.sel(time="2000-01-15")
+> > vmax = max(abs(float(day.min())), abs(float(day.max())))
+> > views = [("Europe and Africa", 10, 35), ("Antartica", -160, -90), ("Australia and Asia", 120, -10)]
+> >
+> > fig = plt.figure(figsize=(15,5))
+> > for index, (title, lon, lat) in enumerate(views, start=1):
+> >     axis = fig.add_subplot(1, 3, index,
+> >                            projection=ccrs.Orthographic(central_longitude=lon, central_latitude=lat))
+> >     image = day.plot(ax=axis, transform=ccrs.PlateCarree(), cmap="RdBu_r",
+> >                      vmin=-vmax, vmax=vmax, add_colorbar=False)
+> >     axis.set_title(title)
+> >     axis.coastlines()
+> >
+> > fig.colorbar(image, ax=fig.axes, shrink=0.7, label="Surface temperature anomaly [K]")
+> > plt.show()
+> > ~~~
+> > {: .language-python}
+> > ![Cartopy showing three orthographic views with different central longitude and latitude values.](../fig/cartopy_orthographic_views.png)
+> {: .solution}
 {: .challenge}
-
 
 # Adding gridlines
 
