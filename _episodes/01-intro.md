@@ -13,12 +13,12 @@ objectives:
 - "To be able to launch a JupyterLab instance with the lesson's data and code present."
 - "To be aware of the key libraries used in this lesson (Xarray, Numba, Dask, Intake)."
 keypoints:
-- "Jupyter Lab is a system for interactive notebooks that can run Python code, these can be either on own computer or a remote computer."
-- "Python can scale to using large datasets with the Xarray library."
-- "Python can parallelise computation with Dask or Numba."
-- "NetCDF format is useful for large data structures as it is self-documenting and handles multiple dimensions."
-- "Zarr format is useful for cloud storage as it chunks data so we don't need to transfer the whole file."
-- "Intake catalogues make dealing with multifile datasets easier."
+- "Python has a number of libraries that can help us work better with big datasets."
+- "Every computer contains a Central Processing Unit or CPU. Modern CPUs tend to have multiple processing cores that can operate simultaneously."
+- "High Perfomance Computing (HPC) facilities operate clusters of computers known as nodes. Each node will typically have several multi-core CPUs."
+- "Parallel processing involves splitting a task up so that different parts of it can be performed simultaneously on different CPU cores, different CPUs or even different computers/HPC nodes."
+- "Computer memory can mean RAM which is relatively fast and loses its contents when powered off or disk storage which retains its contents but is slower."
+- "NetCDF files are commonly used for environmental science data and/or gridded datasets. They include metadata with them, store data in space efficient binary formats and libraries for reading/writing them can be found in most languages including Python."
 ---
 
 ## How do we scale Python to work with big data?
