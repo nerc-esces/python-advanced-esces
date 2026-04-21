@@ -90,7 +90,7 @@ The `{1}` can be used multiple times if we want the same argument to be repeated
 If for example the script required an input and output file name and the output was the input file with .out on the end, then we could do the following:
 
 ```
-parallel python mean_tempanomaly_out.py {1} {1}.out ::: $(ls parallel-data/*.nc)
+parallel python parallel-data/mean_tempanomaly_out.py {1} {1}.out ::: $(ls parallel-data/*.nc)
 ```
 {: .language-bash}
 
@@ -100,8 +100,8 @@ Using commands or lists of arguments is fine for many use cases, but sometimes t
 For this we use the `::::` (note four, not three :s) separator and specify the file name after that, each line in file will be used as a line of input.
 
 ~~~
-ls -1 19??s.nc > 1900s.txt
-parallel python mean_tempanomaly_out.py {1} {1}.out :::: 1900s.txt
+ls -1 parallel-data/19??s.nc > 1900s.txt
+parallel python parallel-data/mean_tempanomaly_out.py {1} {1}.out :::: 1900s.txt
 ~~~
 {: .language-bash}
 
@@ -115,10 +115,10 @@ parallel echo "hello {1} {2}" ::: 1 2 3 ::: a b c
 {: .language-bash}
 
 We can also mix the `:::` and `::::` notations to have some arguments come from files and others from lists.
-For example, if we had a list of NetCDF files in files.txt, and you wanted to perform an analysis of two of the varibles, we could use:
+For example, using the list of NetCDF files in 1900s.txt to perform an analysis of two of the varibles, we can use:
 
 ```
-parallel python mean_variable.py {2} {1} ::: tempanomaly time :::: files.txt
+parallel python parallel-data/mean_variable.py {2} {1} ::: tempanomaly time :::: 1900s.txt
 ```
 {: .language-bash}
 
