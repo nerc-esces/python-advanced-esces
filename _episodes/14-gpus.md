@@ -112,15 +112,28 @@ cuda.detect()
 ~~~
 {: .language-python}
 
+
+We can check the version of the Cuda library by doing:
+
+~~~
+runtime = cuda.cudadrv.runtime.Runtime()
+runtime.get_version()
+~~~
+{: .language-python}
+
 > ## Check what GPUs you have access to
-> Use Numba/Cuda to check what version of Cuda you have installed and what GPUs you have available.
+> Use Numba/Cuda to check what version of Cuda you have installed and what GPUs you have available. Do these match what you see from the `nvidia-smi` command?
 >> ## Solution
 >> ~~~
 >> from numba import cuda
->> print(cuda.__version__)
+>> runtime = cuda.cudadrv.runtime.Runtime()
+>> runtime.get_version()
 >> cuda.detect()
 >> ~~~
 >> {: .language-python}
+>> The Cuda version might not match the `nvidia-smi` output, but the version reported by Python should be no higher than the version reported by `nvidia-smi`.
+>> This is because Python is running the version of Cuda installed in our Mamba/Conda environment, which might not be up to date with the version run by the operating system.
+>> But as long as it is older this should be ok.
 > {: .solution}
 {: .challenge}
 
