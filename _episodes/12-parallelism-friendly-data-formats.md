@@ -222,10 +222,10 @@ temperature_2m_slice
 
 
 > ## Calculate the initialisation temperature for 2 meters using Dask
-> Using the Zarr dataset `https://data.dynamical.org/ecmwf/aifs-single/forecast/latest.zarr`, calculate the **daily mean initialisation temperature** at 2 meters above the surface (`temperature_2m`) for the last 3 months of 2024.
+> Using the Zarr dataset `https://data.dynamical.org/ecmwf/aifs-single/forecast/latest.zarr`, calculate the **daily mean initialisation temperature** at 2 meters above the surface (`temperature_2m`) for December 2024.
 > Use the JASMIN Dask Gateway to parallelise the computation, with a maximum of 10 worker threads.
 > To complete this task:
-> * Select the `init_time` range covering October to December 2024
+> * Select the `init_time` range covering all of December 2024
 > * Select the first `lead_time` (representing the model initialisation time)
 > * Compute the daily mean temperature across the `latitude` and `longitude` dimensions
 > Measure how long the computation takes. Then experiment by increasing and decreasing the number of workers to identify an efficient configuration.
@@ -240,7 +240,7 @@ temperature_2m_slice
 >> gw = dask_gateway.Gateway("https://dask-gateway.jasmin.ac.uk", auth="jupyterhub")
 >>
 >> options = gw.cluster_options()
->> options.worker_cores = 10
+>> options.worker_cores = 1
 >> options.scheduler_cores = 1
 >> options.account = "workshop"
 >> options.worker_setup='source /apps/jasmin/jaspy/miniforge_envs/jaspy3.11/mf3-23.11.0-0/bin/activate /work/scratch-nopw2/colinsau/esces-env'
@@ -252,12 +252,12 @@ temperature_2m_slice
 >>     cluster = gw.connect(clusters[0].name)
 >>
 >> client = cluster.get_client()
->> cluster.adapt(minimum=1, maximum=10)
+>> cluster.adapt(minimum=1, maximum=15)
 >> client
 >>
 >> ds = xr.open_zarr("https://data.dynamical.org/ecmwf/aifs-single/forecast/latest.zarr")
 >> temperature_2m = ds['temperature_2m'].sel(
->>     init_time=slice("2024-10-01", "2024-12-31"),
+>>     init_time=slice("2024-12-01", "2024-12-31"),
 >> ).isel(lead_time=0)
 >> grouped_mean = temperature_2m.groupby("init_time.day").mean()
 >> mean_temperature_2m = grouped_mean.mean(dim=['latitude','longitude'])
