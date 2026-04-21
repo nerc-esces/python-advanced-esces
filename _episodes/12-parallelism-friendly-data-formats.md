@@ -85,8 +85,9 @@ It contains variables such as:
 * `dew_point_temperature_2m`: dew point temperature at 2 meters above the surface
 * `wind_u_10m`: zonal wind at 10 meters above the surface
 
+Each variable includes metadata such as units and descriptions. All of this information has come from the header of the Zarr file, so far none of the actual data has been transferred, we have done what is known as a "lazy load" where data will only be transferred from the object store when we actually access it.
 
-Each variable includes metadata such as units and descriptions. In this lesson, we will work with this dataset. You can later explore others in the [dynamical.org catalog](https://dynamical.org/catalog/).
+In this lesson, we will work with this dataset. You can later explore others in the [dynamical.org catalog](https://dynamical.org/catalog/).
 
 If we inspect `temperature_2m`, we see that it represents hundreds of gigabytes of data:
 
@@ -122,7 +123,7 @@ temperature_2m_local = temperature_2m.compute()
 ~~~
 {: .language-python}
 
-We can now plot this by sel the data for the first lead time and then plotting it (we also need to select the first initialisation time since we only have one):
+We can now plot this by selecting the data for the first lead time and then plotting it (we also need to select the first initialisation time since we only have one):
 
 ~~~
 temperature_2m_local.isel(init_time=0, lead_time=0).plot()
