@@ -58,77 +58,102 @@ allow native Python operations on Zarr. There is support for Zarr in other langu
 
 ## Zarr and Xarray
 
-Xarray can open Zarr files using the `open_zarr` function that is similar to the `open_dataset` function we've been using to open NetCDF data. We will be using the outputs of the [NEMO Near-Present-Day simulations developed by the National Oceanography Centre](https://noc-msm.github.io/NOC_Near_Present_Day/), specifically related to the eORCA025 model and covers the ocean globally. Each dataset can have more than 200GB, DO NOT DOWNLOAD IT!
+Xarray can open Zarr files using the `open_zarr` function that is similar to the `open_dataset` function we've been using to open NetCDF data.
+We will use datasets from [dynamical.org](https://dynamical.org/), which provides a public, live-updating catalog of weather data in Zarr format. These datasets are stored in an object store and can be several terabytes in size. **DO NOT DOWNLOAD THEM LOCALLY**.
+
+For example, we can open the ECMWF AIFS model forecast dataset with the following code:
 
 ~~~
 import xarray as xr
 
-ds = xr.open_zarr("https://noc-msm-o.s3-ext.jc.rl.ac.uk/npd-eorca025-jra55v1/T1m/so_abs")
+ds = xr.open_zarr("https://data.dynamical.org/ecmwf/aifs-single/forecast/latest.zarr")
 ds
 ~~~
 {: .language-python}
 
-We can now see the metadata for the Zarr file. It includes 75 depth levels, 577 time steps and a 1206x1440
-spatial resolution. In this case, there is only one variable, `so_abs`, which is the absolute salinity of the ocean. To access other variables, you can take a look on the [NOC Near-Present-Day documentation](https://noc-msm.github.io/NOC_Near_Present_Day/outputs). For example:
+
+This dataset includes:
+
+* 3002 initialisation times (`init_time`)
+* 61 lead times (`lead_time`)
+* 721 latitude points
+* 1440 longitude points
+
+It contains variables such as:
+
+* `temperature_2m`: temperature at 2 meters above the surface
+* `dew_point_temperature_2m`: dew point temperature at 2 meters above the surface
+* `wind_u_10m`: zonal wind at 10 meters above the surface
+
+
+Each variable includes metadata such as units and descriptions. In this lesson, we will work with this dataset. You can later explore others in the [dynamical.org catalog](https://dynamical.org/catalog/).
+
+If we inspect `temperature_2m`, we see that it represents hundreds of gigabytes of data:
 
 ~~~
-import xarray as xr
-
-ds = xr.open_zarr("https://noc-msm-o.s3-ext.jc.rl.ac.uk/npd-eorca025-jra55v1/T1m/zos")
-ds
-~~~
-{: .language-python}
-
-In this case, the variable is `zos`, which is the "Sea Surface Height Above Geoid". It only covers the ocean surface and don't use the depth dimension. All of this information has come from the header of the Zarr file,
-so far none of the actual data has been transferred, we have done what is known as a "lazy load" where data will only be transferred from the object store when we actually access it.
-
-Let's try and read it by slicing out a small part of the file, we'll only get the `zos` dataset:
-
-~~~
-ssh = ds['zos'].isel(time_counter=slice(0,1),y=slice(500,700), x=slice(1000,1200))
-ssh
-~~~
-{: .language-python}
-
-We can see that `ssh` is now a 200x200x1 array that only takes up 156.25kB from the original 3.73GB file. Even at this point no data will have been transferred.
-If we explore further and print the `ssh` array we'll see that it is actually using a Dask array underneath.
-
-~~~
-print(ssh)
+ds['temperature_2m']
 ~~~
 {: .language-python}
 
-To convert this into a standard Xarray DataArray we can call `.compute` on the `ssh`.
+Let's try and read it by slicing out a small part of the file. We will slice out the last initialisation time, and get all the lead_times and latitude and longitudes related to it:
 
 ~~~
-ssh_local = ssh.compute()
+temperature_2m = ds['temperature_2m'].isel(init_time=slice(-1, None))
+temperature_2m
 ~~~
 {: .language-python}
 
-We can now plot this by using:
+Now:
+
+* `init_time` is reduced to 1
+* the selected time corresponds to the most recent model run (yesterday or today depending on the time of day)
+
+This subset is much smaller, but **no data has been loaded yet**. If we explore further and print the `temperature_2m` array we'll see that it is actually using a Dask array underneath.
+
 ~~~
-ssh_local.plot()
+print(temperature_2m)
+~~~
+{: .language-python}
+
+To convert this into a standard Xarray DataArray we can call `.compute` on the `temperature_2m`.
+
+~~~
+temperature_2m_local = temperature_2m.compute()
+~~~
+{: .language-python}
+
+We can now plot this by sel the data for the first lead time and then plotting it (we also need to select the first initialisation time since we only have one):
+
+~~~
+temperature_2m_local.isel(init_time=0, lead_time=0).plot()
 ~~~
 {: .language-python}
 
 Or access some of the data:
 
 ~~~
-ssh_local[0,0,0]
+temperature_2m_local[0,0,0,0]
 ~~~
 {: .language-python}
 
-It is important to note that this data is not on a regular grid. Therefore, slicing the data using `isel` will not give you an exact rectangular area, but only the data that lies within the boundaries of the grid. If you want to get a specific area, you may need to reproject the data to a regular grid. There are python libraries like `iris` and `xESMF` that help with this activity,
+If you want to slice the data by the latitude and longitude coordinates you can use `sel` instead of `isel`:
+
+~~~
+temperature_2m_slice = ds['temperature_2m'].sel(latitude=slice(50, 60), longitude=slice(-10, 0))
+temperature_2m_slice
+~~~
+{: .language-python}
 
 
-> ## Plot Sea Surface Temperature
-> Extract and plot the sea surface temperature (`tos_con`) variable from the `https://noc-msm-o.s3-ext.jc.rl.ac.uk/npd-eorca025-jra55v1/T1m/tos_con` file) for the nearest date to January 1st 1965 that is in the dataset.
+> ## Plot the zonal wind at 10 meters above the surface
+> Extract and plot the sea zonal wind at 10 meters above the surface (`wind_u_10m`) variable from the same zarr dataset `https://data.dynamical.org/ecmwf/aifs-single/forecast/latest.zarr`) for the initialisation time nearest to January 1st 2025.
 >> ## Solution 1
 >> ~~~
 >> import xarray as xr
->> ds = xr.open_zarr("https://noc-msm-o.s3-ext.jc.rl.ac.uk/npd-eorca025-jra55v1/T1m/tos_con")
->> sst = ds['tos_con'].sel(time_counter="1965-01-01",method="nearest")
->> sst.plot()
+>> ds = xr.open_zarr("https://data.dynamical.org/ecmwf/aifs-single/forecast/latest.zarr")
+>> wind_u_10m = ds['wind_u_10m'].sel(init_time="2025-01-01",method="nearest")
+>> # note that you already removed the init_time dimension by selecting a single value, so you only need to select the lead_time dimension for plotting
+>> wind_u_10m.isel(lead_time=0).plot()
 >> ~~~
 >> {: .language-python}
 > {: .solution}
@@ -139,8 +164,8 @@ It is important to note that this data is not on a regular grid. Therefore, slic
 >> import matplotlib.pyplot as plt
 >> import cartopy.crs as ccrs
 >> import cartopy.feature as cfeature
->> ds = xr.open_zarr("https://noc-msm-o.s3-ext.jc.rl.ac.uk/npd-eorca025-jra55v1/T1m/tos_con")
->> sst = ds['tos_con'].sel(time_counter="1965-01-01",method="nearest")
+>> ds = xr.open_zarr("https://data.dynamical.org/ecmwf/aifs-single/forecast/latest.zarr")
+>> wind_u_10m = ds['wind_u_10m'].sel(init_time="2025-01-01",method="nearest").isel(lead_time=0)
 >>
 >> plt.figure(figsize=(12, 6))
 >> ax = plt.axes(projection=ccrs.PlateCarree())
@@ -150,86 +175,61 @@ It is important to note that this data is not on a regular grid. Therefore, slic
 >>
 >> ax.coastlines()
 >> pcm = ax.pcolormesh(
->>     sst.nav_lon, sst.nav_lat, sst,
+>>     wind_u_10m.longitude, wind_u_10m.latitude, wind_u_10m,
 >>     transform=ccrs.PlateCarree(),
 >>     cmap="viridis",
 >>     shading="auto",
 >>     zorder=0  # Ensure it overlays the land
 >> )
 >>
->> plt.title("Sea Surface Temperature with White Land")
->> plt.colorbar(pcm, label=sst.attrs.get("units", ""))
+>> plt.title("Sea Zonal Wind at 10 Meters Above the Surface")
+>> plt.colorbar(pcm, label=wind_u_10m.attrs.get("units", ""))
 >> plt.tight_layout()
 >> plt.show()
 >> ~~~
 >> {: .language-python}
 > {: .solution}
->
->> ## Solution 3: (OPTIONAL) reprojecting and plotting with Cartopy
->> ~~~
->> # you will need to install xESMF to run this solution
->> # conda install -c conda-forge "esmpy=8.6.1" "esmf=8.6.1"
->> import xesmf as xe
->> import xarray as xr
->> import matplotlib.pyplot as plt
->> import cartopy.crs as ccrs
->> ds = xr.open_zarr("https://noc-msm-o.s3-ext.jc.rl.ac.uk/npd-eorca025-jra55v1/T1m/tos_con")
->> sst = ds['tos_con'].sel(time_counter="1965-01-01",method="nearest")
->> sst = sst.rename({'nav_lon': 'lon', 'nav_lat': 'lat'})
->> # Create source and target grids
->> ds = sst.to_dataset(name="tos_con")
->> # Define target regular grid (e.g., 1°)
->> import numpy as np
->> lon_target = np.linspace(-180, 180, 360)
->> lat_target = np.linspace(-90, 90, 180)
->> target_grid = xr.Dataset({
->>     "lon": (["lon"], lon_target),
->>     "lat": (["lat"], lat_target),
->> })
->> # Regrid
->> regridder = xe.Regridder(ds, target_grid, method="bilinear", periodic=True)
->> tos_regridded = regridder(ds)["tos_con"]
->>
->> # Plotting the regridded data
->> plt.figure(figsize=(12, 6))
->> ax = plt.axes(projection=ccrs.PlateCarree())
->> pcm = ax.pcolormesh(
->>     tos_regridded["lon"], tos_regridded["lat"],
->>     tos_regridded, transform=ccrs.PlateCarree(),
->>     cmap="viridis"
->> )
->> ax.coastlines()
->> plt.title("Regridded Sea Surface Temperature")
->> plt.colorbar(pcm, label=sst.attrs.get("units", ""))
->> plt.tight_layout()
->> ~~~
->> {: .language-python}
-> {: .solution}
 {: .challenge}
 
-
-> ## Calculate the mean sea surface temperature for two years
-> Calculate the mean sea surface temperature for the years between 1990 and 1991 using the same dataset as above.
+> ## Calculate the mean initialisation temperature for 2 meters above the surface for 15 days
+>
+> Using the Zarr dataset `https://data.dynamical.org/ecmwf/aifs-single/forecast/latest.zarr`, calculate the **daily mean initialisation temperature** at 2 meters above the surface (`temperature_2m`) for the first 15 days of January 2025 using Xarray.
+>
+> The *initialisation temperature* refers to the temperature at the time the model is initialised. To compute this:
+>
+> * Select the relevant `init_time` range covering the first 15 days of January 2025
+> * Select the first `lead_time` (i.e. the time corresponding to the model initialisation)
+> * Compute the mean temperature across the `latitude` and `longitude` dimensions
+>
+> Finally, try increasing the number of days (e.g. to 30 days) and observe how this affects the computation time.
 >> ## Solution
 >> ~~~
 >> import xarray as xr
->> ds = xr.open_zarr("https://noc-msm-o.s3-ext.jc.rl.ac.uk/npd-eorca025-jra55v1/T1m/tos_con")
->> sst = ds['tos_con'].sel(time_counter=slice("1990", "1991"))
->> grouped_mean = sst.groupby("time_counter.year").mean()
->> mean_sst = grouped_mean.mean(dim=['y','x']) # this will take the mean across the specified dimensions
->> mean_sst = mean_sst.compute()
->> mean_sst
+>> ds = xr.open_zarr("https://data.dynamical.org/ecmwf/aifs-single/forecast/latest.zarr")
+>> temperature_2m = ds['temperature_2m'].sel(
+>>     init_time=slice("2025-01-01", "2025-01-15"),
+>> ).isel(lead_time=0)
+>> grouped_mean = temperature_2m.groupby("init_time.day").mean()
+>> mean_temperature_2m = grouped_mean.mean(dim=['latitude','longitude']) # this will take the mean across the specified dimensions
+>> mean_temperature_2m = mean_temperature_2m.compute()
+>> mean_temperature_2m.plot()
+>> print(mean_temperature_2m)
 >> ~~~
 >> {: .language-python}
 > {: .solution}
 {: .challenge}
 
 
-> ## Calculate the mean sea surface temperature for the dataset with Dask
-> Calculate the annual mean sea surface temperature for each year from 1976 to 2024. Use the JASMIN Dask gateway to parallelise the calculation and use a maximum of 10 worker threads.
-> Measure how long it takes to compute the result, try changing the number of workers up and down to see
-> what the optimal number is. See if the number of workers you request are actually being created by monitoring the Dask qos on a JASMIN Sci server with the command
-> `watch squeue -q dask -u <your user id>`.
+> ## Calculate the initialisation temperature for 2 meters using Dask
+> Using the Zarr dataset `https://data.dynamical.org/ecmwf/aifs-single/forecast/latest.zarr`, calculate the **daily mean initialisation temperature** at 2 meters above the surface (`temperature_2m`) for the last 3 months of 2024.
+> Use the JASMIN Dask Gateway to parallelise the computation, with a maximum of 10 worker threads.
+> To complete this task:
+> * Select the `init_time` range covering October to December 2024
+> * Select the first `lead_time` (representing the model initialisation time)
+> * Compute the daily mean temperature across the `latitude` and `longitude` dimensions
+> Measure how long the computation takes. Then experiment by increasing and decreasing the number of workers to identify an efficient configuration.
+> You can monitor whether the requested workers are being created on JASMIN using:
+> `watch squeue -q dask -u <your user id>`
 >
 >> ## Solution
 >> ~~~
@@ -239,7 +239,7 @@ It is important to note that this data is not on a regular grid. Therefore, slic
 >> gw = dask_gateway.Gateway("https://dask-gateway.jasmin.ac.uk", auth="jupyterhub")
 >>
 >> options = gw.cluster_options()
->> options.worker_cores = 1
+>> options.worker_cores = 10
 >> options.scheduler_cores = 1
 >> options.account = "workshop"
 >> options.worker_setup='source /apps/jasmin/jaspy/miniforge_envs/jaspy3.11/mf3-23.11.0-0/bin/activate /work/scratch-nopw2/colinsau/esces-env'
@@ -254,17 +254,17 @@ It is important to note that this data is not on a regular grid. Therefore, slic
 >> cluster.adapt(minimum=1, maximum=10)
 >> client
 >>
->> ds = xr.open_zarr("https://noc-msm-o.s3-ext.jc.rl.ac.uk/npd-eorca025-jra55v1/T1m/tos_con")
->> sst = ds['tos_con'].sel(time_counter=slice("1976","2024"))
->> grouped_mean = sst.groupby("time_counter.year").mean()
->> mean_sst = grouped_mean.mean(dim=['y','x'])
->> result = client.compute(mean_sst).result()
+>> ds = xr.open_zarr("https://data.dynamical.org/ecmwf/aifs-single/forecast/latest.zarr")
+>> temperature_2m = ds['temperature_2m'].sel(
+>>     init_time=slice("2024-10-01", "2024-12-31"),
+>> ).isel(lead_time=0)
+>> grouped_mean = temperature_2m.groupby("init_time.day").mean()
+>> mean_temperature_2m = grouped_mean.mean(dim=['latitude','longitude'])
+>> result = client.compute(mean_temperature_2m).result()
 >> result.plot()
 >> cluster.shutdown()
 >> ~~~
 >> {: .language-python}
->> Optimal workers is probably 10 and execution should take around 25 seconds. Single threaded execution time is about 1 minute 30 seconds.
->> Beyond around 10 workers being requested Dask might not create them all if it isn't able to divide the task up.
 > {: .solution}
 {: .challenge}
 
