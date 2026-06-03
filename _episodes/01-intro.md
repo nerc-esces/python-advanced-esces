@@ -368,8 +368,8 @@ Therefore requesting `[0,0,0]` means the southern most and western most coordina
 > ~~~
 > {: .language-python}
 > For the time dimension, each element represents one month starting from January 2000, so for example element 12 will be January 2001 (0-11 are January to December 2000).
-> For example 52 degrees north (latitude) and 2 degrees west will translate to the array index 71, 91.
-> Write some code to get the temperature anomaly for January 2020 in Astana, Kazakhstan (approximately 51 North, 71 East)
+> For example 52 degrees North (latitude) and 2 degrees West (i.e. -2 degrees East longitude) will translate to the array index 71, 89.
+> Write some code to get the temperature anomaly for January 2020 in Astana, Kazakhstan (approximately 51 degrees North, 71 degrees East)
 > > ## Solution
 > > ~~~
 > > latitude = 51
