@@ -167,6 +167,24 @@ You will see that Numpy is about 17 times faster than the loop in this example.
 # Numpy whole array operations
 
 Numpy whole array operations refer to performing operations on entire arrays at once, rather than looping through individual elements.
+
+> ## Callout: How do Vectorised Operations Work
+>
+> Older CPUs (prior to the mid 1990s) could only perform scalar mathematical operations, adding, subtracing, multiplying or dividing a single pair of numbers in each instruction.
+> If we wanted to add (or subtract, multiply or divide) the corresponding elements in two arrays then we would need to use a loop and run an instruction for each pair from the two arrays.
+> This could be made faster by running the CPU's clock at a higher frequency. Between 1980 to 2000 clock speeds leapt from a few MHz to 1 GHz, yielding 100s-1000 fold speed increases.
+> Subsequently clock speeds have only increased by a factor of about three or four to 3-4 GHz as we have neared the limits of how fast silicon can be switched.
+>
+> To work around this CPUs have implemented vector operations where a single instruction can be used to add (subtract, multiply or divide) several numbers from two arrays.
+> This requires more transistors on the CPU to implement several parallel units to perform multiple operations, but CPU manufacturers have (or at least had) successfully increased the number of transistors on a CPU by making each one smaller 
+> far better than they had increased clock speeds. The size array that these vector units can work on has grown over time from 64 bits in the late 1990s to up to 512 bits by 2016.
+> More vector operations have also been introduced in that time, so it isn't just basic arithmetic but also min/max, square roots, dot products, string processing and floating point operations.
+>
+> The diagram below compares a traditional scalar addition with a vector addition.
+>
+> ![A diagram comparing vector and scalar addition. The vector version adds three pairs of numbers in one operation, while the scalar version needs three separate operations.](../fig/vector_addition.svg)
+{: .callout}
+
 This approach leverages the optimized C and Fortran implementations underlying NumPy, leading to significantly faster computations compared to traditional Python loops.
 
 Let's illustrate this with an example that calculates the distance between two points on the earth's surface using the great circle method:
