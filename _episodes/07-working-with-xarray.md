@@ -62,7 +62,7 @@ print(dataset.variables)
 ~~~
 {: .language-python}
 
-The `open_dataset` function isn't restricuted to just opening NetCDF files and can also be used with other formats such as GRIB and Zarr. We will look at using Zarr files later on.
+The `open_dataset` function isn't restricted to just opening NetCDF files and can also be used with other formats such as GRIB and Zarr. We will look at using Zarr files later on.
 
 ## Accessing data variables
 
