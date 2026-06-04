@@ -204,7 +204,7 @@ Seq     Host    Starttime       JobRuntime      Send    Receive Exitval Signal  
 > ~~~
 > {: .language-bash}
 >
-> Note that if you are using parallel from outside of Jupyter lab then you running parallel decativates your conda/mamba environment. The easiest solution to this is to
+> Note that if you are using parallel from outside of Jupyter lab, then running parallel deactivates your conda/mamba environment. The easiest solution to this is to
 > create a wrapper shell script that runs the python command. Type the following into your favourite text editor and save it as `plot_tempanomaly.sh`.
 > ~~~
 > #!/bin/bash
