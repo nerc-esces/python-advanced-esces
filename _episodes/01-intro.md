@@ -81,7 +81,7 @@ threads a CPU has, in Hyper Threaded systems this will be double the number of c
 ### Parallel Processing
 
 Parallel Processing is where a task is split across multiple processing cores to run different parts of it simultaneously and make it go faster.
-This can be acheived by using multiple processes and/or multiple threads. Bigger and more complex tasks might also be split across several computers.
+This can be achieved by using multiple processes and/or multiple threads. Bigger and more complex tasks might also be split across several computers.
 
 ### Computer memory
 
