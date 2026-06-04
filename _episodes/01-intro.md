@@ -374,7 +374,7 @@ Therefore requesting `[0,0,0]` means the southern most and western most coordina
 > > ~~~
 > > latitude = 51
 > > longitude = 71
-> > latitude_index = int(((latitude) / 2) + 45)
+> > latitude_index = int((latitude / 2) + 45)
 > > longitude_index = int((longitude / 2) + 90)
 > > time_index = 20 * 12   #we want jan 2020, dataset starts at jan 2000 and has monthly entries
 > > print(dataset.variables['tempanomaly'][time_index,latitude_index,longitude_index])
