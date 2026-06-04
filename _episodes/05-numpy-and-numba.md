@@ -271,7 +271,7 @@ def loop_distance(lons1, lats1, lons2, lats2):
 
 
 ~~~
-# Profile numpy_multiply
+# Profile distance calculation functions
 print("Profiling loop:")
 cProfile.run("loop_distance(lons_1, lats_1, lons_2, lats_2)")
 print("\nProfiling numpy:")
