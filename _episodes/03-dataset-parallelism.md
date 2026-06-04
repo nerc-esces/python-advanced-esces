@@ -110,7 +110,7 @@ parallel python parallel-data/mean_tempanomaly_out.py {1} {1}.out :::: 1900s.txt
 Parallel can also run two (or more) sets of arguments, the first argument will become `{1}`, the second `{2}` and so on. Each argument's input list must be separated by a `:::`.
 
 ```
-parallel echo "hello {1} {2}" ::: 1 2 3 ::: a b c
+parallel echo "hello world {1} {2}" ::: 1 2 3 ::: a b c
 ```
 {: .language-bash}
 
@@ -129,7 +129,7 @@ parallel python parallel-data/mean_variable.py {2} {1} ::: tempanomaly time ::::
 Sometimes we don't want to run every variable with every other variable, but will want to run them in pairs, for example:
 
 ```
-parallel echo "hello {1} {2}" ::: 1 2 3 :::+ a b c
+parallel echo "hello world {1} {2}" ::: 1 2 3 :::+ a b c
 ```
 {: .language-bash}
 
