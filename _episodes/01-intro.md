@@ -75,7 +75,7 @@ each will have its own memory allocated and won't be able to read or write data 
 
 A thread is a way of having multiple things happening simultaneously inside one process. Unlike processes, threads can access each other's memory. In multicore systems each thread
 might run on a different core. Some CPUs also have a feature called Hyper Threading where for every core they have some additional parts of a core, this can help run some multithreaded
-applications a little bit faster while only requiring a small amount of extra ciricuitry in the CPU. Some programs which tell us about the specifications of a CPU will mention how many
+applications a little bit faster while only requiring a small amount of extra circuitry in the CPU. Some programs which tell us about the specifications of a CPU will mention how many
 threads a CPU has, in Hyper Threaded systems this will be double the number of cores, in non-Hyper Threaded systems it will be the same as the number of cores.
 
 ### Parallel Processing
