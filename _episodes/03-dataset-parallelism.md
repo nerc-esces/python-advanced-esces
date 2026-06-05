@@ -17,7 +17,7 @@ keypoints:
 
 # Dataset Parallelism with GNU Parallel
 
-GNU Parallel is a very powerful command that lets us execute any command in parallel. To do this effectively we need what is often called an "embarrasingly parallel" problem.
+GNU Parallel is a very powerful command that lets us execute any command in parallel. To do this effectively we need what is often called an "embarrassingly parallel" problem.
 These are problems where a dataset can be split into several parts and each can be processed independently and simultaneously. Such problems often occur when a dataset is
 split across multiple files or there are multiple parameters to process.
 
