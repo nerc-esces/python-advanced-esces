@@ -429,7 +429,7 @@ Computational patterns are common operations that we might perform. Xarray has s
 Xarray can resample data to reduce its frequency, this is done through the `resample` function on a DataArray or Dataset. Resample only works on the time dimension of a dataset/array.
 
 Let's call resample on a selection of our data for a single location, we can then produce a line graph of the temperature over time and see the difference between the original and
-resampled version. The `resample` function takes a paramter of a variable name mapped (with the = symbol) to a resampling frequency, this could be "h" for hourly, "D" for daily, "W"
+resampled version. The `resample` function takes a parameter of a variable name mapped (with the = symbol) to a resampling frequency, this could be "h" for hourly, "D" for daily, "W"
 for weekly, "ME" for month endings, "MS" for month starts, "YS" for year starts and "YE" for year ends. These options are borrowed from the Pandas resample frequency and a full list
 of them can be found in the [Pandas documentation](https://pandas.pydata.org/pandas-docs/stable/user_guide/timeseries.html#offset-aliases). In our example we'll do a yearly resampling,
 since the data is already monthly.
@@ -575,7 +575,7 @@ dataset_corrected.to_netcdf("corrected.nc")
 > ## Xarray example datasets
 > There are several example datasets built into Xarray. You can load them with the `tutorial.load_dataset` function from the main xarray library. One of these is the Extended Reconstructed
 > Sea Surface Temperature data from NOAA, known as "ersstv5". Load this data with Xarray and do the following:
-> 1. Slice the data so that only data from before 2000 is included, by defalt the dataset runs up to the end of 2021.
+> 1. Slice the data so that only data from before 2000 is included, by default the dataset runs up to the end of 2021.
 > 2. Resample the data to annual means.
 > 3. Calculate a global annual mean for each year.
 > 4. Plot the global mean temperatures on a line graph.
