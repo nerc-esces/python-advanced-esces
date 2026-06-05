@@ -98,7 +98,7 @@ On the JASMIN notebooks service this will return something similar to this.
 
 There are two keys parts to the output here. The top part show's we have two NVIDIA A100 cards with 40GB of GPU RAM each.
 However we don't have exclusive use of these and they have been partitioned into smaller virtual GPUs known as MIGs (multi instance GPUs).
-Each of these only has 16GB of GPU RAM and we're restriucted to just 10GB of that. This is still more than most desktop GPUs
+Each of these only has 16GB of GPU RAM and we're restricted to just 10GB of that. This is still more than most desktop GPUs
 and is sufficient for many tasks. Where we might need more memory we will have to move our code over to a regular Python script running on Orchid's batch system.
 
 ### Checking the GPUs available to use from Python
