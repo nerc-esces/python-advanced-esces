@@ -34,7 +34,7 @@ Dask should already be installed in your Conda/Mamba environment. Dask refers to
 on your local computer (or the JASMIN notebook server). Later on we'll look at using a remote cluster running on a different computer, but for now let's create one on our own computer.
 
 ~~~
-from dask.distributed import Client, progress
+from dask.distributed import Client
 client = Client(processes=False, threads_per_worker=4,
                 n_workers=1, memory_limit='2GB')
 client
@@ -363,7 +363,7 @@ cluster.shutdown()
 
 
 > ## Challenge
-> Setup Dask a Dask cluster on JASMIN. Load the GIS temperature anomaly dataset with Xarray and run the correction algorithm on it.
+> Setup a Dask cluster on JASMIN. Load the GIS temperature anomaly dataset with Xarray and run the correction algorithm on it.
 > Time how long the compute operation takes by using the %%time magic.
 > Experiment with:
 > - Changing the chunk sizes you use in Xarray
