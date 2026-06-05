@@ -223,7 +223,7 @@ faster to do this calculation on the CPU. But this is a very simple example wher
 
 > ## Create random numbers with CuPy
 > So far we have created random numbers using NumPy on the CPU and copied these to the GPU.
-> A more efficient way to do this might be to make the random numbers of the GPU.
+> A more efficient way to do this might be to create the random numbers on the GPU.
 > Adjust the code to use CuPy to create 1,000,000 random numbers. Use the time library (or Cupyx's benchmark) to measure how long this takes.
 > Is this quicker than making the random numbers on the CPU?
 >> ## Solution
