@@ -223,7 +223,7 @@ temperature_2m_slice
 
 > ## Calculate the initialisation temperature for 2 meters using Dask
 > Using the Zarr dataset `https://data.dynamical.org/ecmwf/aifs-single/forecast/latest.zarr`, calculate the **daily mean initialisation temperature** at 2 meters above the surface (`temperature_2m`) for December 2024.
-> Use the JASMIN Dask Gateway to parallelise the computation, with a maximum of 10 worker threads.
+> Use the JASMIN Dask Gateway to parallelise the computation, with a maximum of 15 worker threads.
 > To complete this task:
 > * Select the `init_time` range covering all of December 2024
 > * Select the first `lead_time` (representing the model initialisation time)
