@@ -363,7 +363,7 @@ cluster.shutdown()
 
 
 > ## Challenge
-> Setup Dask a Dask cluster on JASMIN. Load the GIS temperature anomaly dataset with Xarray and run the correction algorithm on it.
+> Setup a Dask cluster on JASMIN. Load the GIS temperature anomaly dataset with Xarray and run the correction algorithm on it.
 > Time how long the compute operation takes by using the %%time magic.
 > Experiment with:
 > - Changing the chunk sizes you use in Xarray
